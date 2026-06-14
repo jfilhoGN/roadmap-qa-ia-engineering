@@ -5,6 +5,8 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { LEVEL_META, type Topic } from "@/data/roadmap";
 import { DEEP_DIVES } from "@/data/deepDives";
+import { QUIZZES } from "@/data/quizzes";
+import Quiz from "./Quiz";
 
 function Article({ markdown }: { markdown: string }) {
   return (
@@ -150,19 +152,20 @@ export default function TopicDetail({
   if (!topic) return null;
   const meta = LEVEL_META[topic.level];
   const deepDive = DEEP_DIVES[topic.id];
+  const quiz = QUIZZES[topic.id];
   const readingMinutes = deepDive
     ? Math.max(1, Math.round(deepDive.split(/\s+/).length / 200))
     : 0;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6">
       {/* backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in"
+        className="absolute inset-0 bg-black/70 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
       />
-      {/* drawer */}
-      <aside className="relative h-full w-full max-w-xl bg-[#101018] border-l border-white/10 shadow-2xl flex flex-col animate-slide-in">
+      {/* modal */}
+      <aside className="relative h-[92vh] w-[94vw] max-w-5xl bg-[#101018] border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-modal-in">
         <header className="p-6 pb-4 border-b border-white/10">
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -196,7 +199,8 @@ export default function TopicDetail({
           </div>
         </header>
 
-        <div className="detail-scroll flex-1 overflow-y-auto p-6">
+        <div className="detail-scroll flex-1 overflow-y-auto px-5 py-6 sm:px-8">
+          <div className="mx-auto max-w-3xl">
           {deepDive ? (
             <>
               <div className="mb-5 flex items-center gap-2 text-xs text-white/40">
@@ -235,6 +239,12 @@ export default function TopicDetail({
                 </pre>
               </div>
             </Block>
+          )}
+
+          {quiz && quiz.length > 0 && (
+            <div className="my-7">
+              <Quiz questions={quiz} />
+            </div>
           )}
 
           {topic.videos && topic.videos.length > 0 && (
@@ -279,6 +289,7 @@ export default function TopicDetail({
               </ul>
             </Block>
           )}
+          </div>
         </div>
 
         <footer className="p-4 border-t border-white/10">
