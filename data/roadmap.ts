@@ -668,6 +668,85 @@ export const ROADMAP: Section[] = [
         qaExample:
           "Para testar um classificador, você roda a mesma entrada 20 vezes com temperatura 0 e mede a taxa de consistência (idealmente 100%). Para texto livre, troca a igualdade exata por 'contém os pontos-chave' ou similaridade semântica.",
       },
+      {
+        id: "sdd",
+        title: "SDD — Spec-Driven Development",
+        short: "A especificação como fonte da verdade que a IA implementa e testa.",
+        level: "intermediario",
+        tags: ["dev-ia", "processo", "tendencia"],
+        whatIsIt:
+          "SDD (Spec-Driven Development) coloca a especificação no centro: um documento estruturado (requisitos, design, tarefas) vira o 'contrato executável' que guia a IA a gerar código, testes e documentação. Ferramentas: GitHub Spec Kit e AWS Kiro (que usa EARS para requisitos).",
+        whyQA:
+          "Para o QA é um presente: se a spec é a fonte da verdade, ela também é a fonte dos testes e dos critérios de aceite. O QA entra antes do código existir, garantindo specs testáveis — shift-left levado ao extremo, junto com PM, Agilista e Tech Lead.",
+        qaExample:
+          "Na sprint, em vez de esperar o Dev terminar, o QA ajuda a escrever a spec no formato EARS ('QUANDO o saldo for insuficiente, o sistema DEVE bloquear a transação'). A IA gera o código E os testes a partir dela; o QA valida que a spec cobre os casos de borda.",
+        prompt:
+          "Aja como QA. Transforme esta user story em uma especificação no estilo EARS (Easy Approach to Requirements Syntax), com requisitos testáveis e critérios de aceite explícitos, destacando ambiguidades. Story: [cole aqui].",
+        resources: [
+          { label: "GitHub Spec Kit (repositório oficial)", url: "https://github.com/github/spec-kit" },
+        ],
+      },
+      {
+        id: "agentic-coding",
+        title: "Agentic Coding e Vibe Coding",
+        short: "Do 'autocompletar' ao agente que implementa a tarefa inteira.",
+        level: "intermediario",
+        tags: ["dev-ia", "tendencia", "produtividade"],
+        whatIsIt:
+          "Agentic coding é quando um agente de IA (Claude Code, Cursor, Copilot em modo agente) planeja e executa uma tarefa de código de ponta a ponta — edita vários arquivos, roda testes e corrige. 'Vibe coding' é o estilo de guiar isso por intenção em linguagem natural, revisando o resultado.",
+        whyQA:
+          "Muda o que significa 'revisar'. Quando a IA escreve grande parte do código, a qualidade depende de quem valida — e isso é QA. É também como o QA vai construir suas próprias ferramentas e automações sem precisar ser dev sênior.",
+        qaExample:
+          "O QA usa um agente para criar uma suíte WebdriverIO do zero: descreve os fluxos, o agente gera os Page Objects e specs, roda e corrige os que falham. O QA revisa a cobertura e a qualidade dos seletores — o julgamento crítico continua sendo dele.",
+        resources: [
+          { label: "Anthropic — Building Effective Agents", url: "https://www.anthropic.com/engineering/building-effective-agents" },
+        ],
+      },
+      {
+        id: "ai-code-review",
+        title: "Code Review com IA",
+        short: "Revisão automática de PR como porta de qualidade.",
+        level: "intermediario",
+        tags: ["dev-ia", "processo", "qualidade"],
+        whatIsIt:
+          "Uso de IA para revisar pull requests: apontar bugs, riscos, falta de testes, problemas de segurança e violações de padrão — antes (ou junto) do reviewer humano. Integra ao fluxo de PR no Bitbucket/GitHub.",
+        whyQA:
+          "É um ponto natural de atuação do QA no fluxo de sprint: definir o que a IA deve checar no PR (cobertura de testes, casos de borda, segurança) transforma o review num gate de qualidade automatizado e consistente, aliviando o Tech Lead.",
+        qaExample:
+          "A cada PR, um agente (no CI ou via MCP do repositório) comenta: 'faltam testes para o caminho de erro X; este endpoint não valida a entrada Y'. O QA e o Tech Lead curam os achados. O humano decide; a IA amplia o alcance da revisão.",
+      },
+      {
+        id: "cypress-ai",
+        title: "Cypress AI (cy.prompt e self-healing)",
+        short: "Escrever testes Cypress em linguagem natural — e que se curam sozinhos.",
+        level: "intermediario",
+        tags: ["ferramenta", "automacao", "aplicacao"],
+        whatIsIt:
+          "O Cypress trouxe IA nativa: `cy.prompt()` escreve passos de teste em linguagem natural e a IA descobre os seletores; e o self-healing (via cache ou IA) conserta seletores quando a UI muda — no Cypress e no Cypress Cloud.",
+        whyQA:
+          "É IA dentro de uma ferramenta que o time já usa. Reduz o custo de escrita e a manutenção (a maior dor da automação E2E). O QA precisa entender quando confiar no self-heal e quando ele pode mascarar um bug real.",
+        qaExample:
+          "Em vez de caçar o seletor de um botão que muda toda sprint, você escreve `cy.prompt('clique em Finalizar compra')`. Quando o front renomeia o botão, o self-heal mantém o teste verde — e você revisa o relatório de curas para não esconder uma regressão.",
+        resources: [
+          { label: "Cypress — Lançamento do cy.prompt()", url: "https://www.cypress.io/blog/cy-prompt-experimental-launch" },
+        ],
+      },
+      {
+        id: "zephyr-ai",
+        title: "Zephyr + IA (Rovo Quality Intelligence)",
+        short: "Gerar casos de teste e avaliar risco de release dentro do Jira.",
+        level: "intermediario",
+        tags: ["ferramenta", "gestao", "aplicacao"],
+        whatIsIt:
+          "O Zephyr (SmartBear) integrou IA via Rovo no Jira: gera casos de teste estruturados a partir de itens do Jira ou de prompts, identifica gaps de cobertura e avalia risco de release — sem sair da ferramenta de gestão.",
+        whyQA:
+          "É produtividade direta no fluxo de sprint do time. Mas a IA gera rascunhos: o QA cura, prioriza e decide o que é risco real. Saber pedir e validar essa geração é a nova competência — não terceirizar o julgamento.",
+        qaExample:
+          "A partir da história 'JIRA-1234', o Zephyr+Rovo gera 12 casos no Zephyr Scale. O QA revisa: remove 3 redundantes, adiciona 2 de segurança que a IA não pensou e usa o 'risco de release' para priorizar a execução na sprint.",
+        resources: [
+          { label: "SmartBear — Rovo + Zephyr Quality Intelligence", url: "https://smartbear.com/blog/smartbear-rovo-zephyr-ai-quality-intelligence-jira/" },
+        ],
+      },
     ],
   },
 
@@ -1064,6 +1143,118 @@ export const ROADMAP: Section[] = [
           "Privacidade é qualidade não-funcional crítica. O QA testa: o sistema vaza PII para a IA externa? O mascaramento pega todos os formatos? Uma falha aqui é incidente de compliance, não só um bug.",
         qaExample:
           "Antes de mandar logs para uma IA externa analisar, um filtro mascara PII. Você testa esse filtro com casos difíceis: CPF sem máscara, e-mail no meio de uma frase, nome composto, dado em base64. Mede o que escapou.",
+      },
+      {
+        id: "playwright-mcp",
+        title: "Playwright MCP",
+        short: "O MCP oficial que deixa a IA dirigir o navegador.",
+        level: "avancado",
+        tags: ["ferramenta", "agente", "mcp", "automacao"],
+        whatIsIt:
+          "Servidor MCP oficial da Microsoft (`@playwright/mcp`) que expõe a automação do Playwright a agentes de IA. Em vez de screenshots, ele entrega a árvore de acessibilidade da página, então o agente raciocina sobre o DOM real (navigate, click, type, snapshot e ~30 ferramentas).",
+        whyQA:
+          "É o caminho mais maduro para automação E2E dirigida por IA na sua stack. Um agente pode explorar o app, reproduzir um bug ou rodar um fluxo sem seletores fixos. O QA define os objetivos e valida a confiabilidade — não-determinismo e custo entram na conta.",
+        qaExample:
+          "Você conecta o Playwright MCP ao Claude e pede: 'reproduza o bug do carrinho que zera ao aplicar cupom'. O agente navega, aplica o cupom, observa o estado e relata os passos exatos de reprodução — que viram um bug bem documentado no Jira.",
+        resources: [
+          { label: "Microsoft — Playwright MCP (repositório oficial)", url: "https://github.com/microsoft/playwright-mcp" },
+        ],
+      },
+      {
+        id: "wdio-mcp",
+        title: "WebdriverIO MCP",
+        short: "Um MCP para automação web E mobile por linguagem natural.",
+        level: "avancado",
+        tags: ["ferramenta", "agente", "mcp", "mobile"],
+        whatIsIt:
+          "Servidor MCP oficial do WebdriverIO (`@wdio/mcp`) que permite a agentes (Claude Desktop/Code) automatizar Chrome, iOS e Android numa interface unificada. Inclui gravação de sessão exportável como código WebdriverIO executável.",
+        whyQA:
+          "Cobre o que o Playwright MCP não alcança tão bem: mobile nativo (via Appium). Para times que testam web e app, é o agente E2E multiplataforma. O grande ganho: a sessão exploratória vira teste WDIO real e versionado.",
+        qaExample:
+          "Você testa o login no iPhone 15 e depois no Chrome desktop, na mesma conversa, descrevendo em português. Ao final, exporta a sessão como spec WebdriverIO — transformando um teste exploratório em automação que entra no repositório.",
+        resources: [
+          { label: "WebdriverIO — Documentação do MCP", url: "https://webdriver.io/docs/mcp/" },
+        ],
+      },
+      {
+        id: "browserstack-ai",
+        title: "BrowserStack AI Agents",
+        short: "Self-healing, geração de casos e low-code — IA no BrowserStack.",
+        level: "avancado",
+        tags: ["ferramenta", "automacao", "aplicacao"],
+        whatIsIt:
+          "O BrowserStack lançou uma suíte de AI Agents: Self-Healing Agent (conserta locators quebrados em tempo de execução), Low-Code Authoring Agent (transforma casos em testes low-code) e Test Case Generator Agent (lê PRDs/user stories e gera casos cobrindo borda e regra de negócio).",
+        whyQA:
+          "É IA nas três dores do time: manutenção (self-heal), criação (low-code) e cobertura (geração a partir de requisitos) — tudo na plataforma que vocês já usam para execução cross-browser e cross-device.",
+        qaExample:
+          "O Test Case Generator lê a PRD da feature e propõe 30 casos; você cura. O Self-Healing Agent mantém os builds verdes quando um locator muda. O QA monitora o relatório de curas para garantir que nenhuma escondeu um defeito real.",
+        resources: [
+          { label: "BrowserStack — AI Agents (Low-Code Automation)", url: "https://www.browserstack.com/low-code-automation/ai-agents" },
+        ],
+      },
+      {
+        id: "k6-ai",
+        title: "k6 + IA (Performance com IA)",
+        short: "Gerar, rodar e analisar testes de carga com apoio de IA.",
+        level: "avancado",
+        tags: ["ferramenta", "performance", "automacao"],
+        whatIsIt:
+          "O k6 2.0 (Grafana) trouxe testes assistidos por IA: comandos como `k6 x agent` (agentes que validam, rodam e iteram scripts) e `k6 x docs` (doc no contexto do agente), além do k6 Studio para gerar scripts a partir de gravações. Os resultados são analisados junto às métricas no Grafana.",
+        whyQA:
+          "Performance costuma ser subutilizada por falta de tempo e expertise. Com IA, o QA gera e itera scripts k6 mais rápido e correlaciona o resultado com as métricas reais do sistema — elevando o teste não-funcional dentro da sprint.",
+        qaExample:
+          "Você descreve o cenário ('100 usuários simultâneos no checkout por 5 min') e o agente gera o script k6, roda e, junto ao Grafana, aponta que o p95 estourou quando o serviço de pagamento saturou. Vira um achado de performance acionável para a retro.",
+        resources: [
+          { label: "Grafana — k6 2.0 com testes assistidos por IA", url: "https://grafana.com/blog/k6-2-0-release/" },
+        ],
+      },
+      {
+        id: "jira-rovo-mcp",
+        title: "Jira + IA (Atlassian Rovo MCP)",
+        short: "Agentes lendo e escrevendo no Jira por linguagem natural.",
+        level: "avancado",
+        tags: ["ferramenta", "mcp", "gestao", "automacao"],
+        whatIsIt:
+          "O Atlassian Rovo MCP Server (oficial, GA e grátis para o Cloud) conecta agentes de IA ao Jira/Confluence/Bitbucket com segurança (OAuth, respeitando as permissões existentes): buscar issues, resumir, criar e atualizar em massa — por linguagem natural.",
+        whyQA:
+          "Pluga a IA no centro do fluxo de sprint. O QA pode automatizar triagem, criação de bugs padronizados e relatórios — e precisa testar essas automações (criou o bug certo? respeitou permissões? não duplicou?). Um ponto natural de humano no loop.",
+        qaExample:
+          "Um agente conectado ao Rovo MCP recebe a falha de um teste, cria o bug no Jira no template do time, vincula à história e ao ciclo do Zephyr. O QA revisa antes de o card cair no board — automação com aprovação humana nos pontos críticos.",
+        resources: [
+          { label: "Atlassian — Remote (Rovo) MCP Server", url: "https://www.atlassian.com/blog/announcements/remote-mcp-server" },
+        ],
+      },
+      {
+        id: "grafana-mcp",
+        title: "Grafana MCP",
+        short: "A IA consultando suas métricas, dashboards e alertas.",
+        level: "avancado",
+        tags: ["ferramenta", "mcp", "observabilidade"],
+        whatIsIt:
+          "Servidor MCP oficial do Grafana (`grafana/mcp-grafana`) que dá a agentes acesso à sua instância: consultar métricas e logs (Prometheus, Loki), buscar e gerenciar dashboards, alertas e incidentes — por linguagem natural.",
+        whyQA:
+          "Leva o QA para a qualidade em produção. Em vez de abrir dez dashboards após um deploy, você pergunta e a IA correlaciona. Observabilidade vira conversa — e parte do trabalho de qualidade contínua, não só pré-produção.",
+        qaExample:
+          "Após um deploy, você pergunta ao agente (via Grafana MCP): 'a latência do checkout piorou na última hora?'. Ele consulta o dashboard, compara com a baseline e responde com o gráfico e o trecho que degradou — antecipando um incidente.",
+        resources: [
+          { label: "Grafana — MCP server (repositório oficial)", url: "https://github.com/grafana/mcp-grafana" },
+        ],
+      },
+      {
+        id: "dynatrace-ai",
+        title: "Dynatrace + Davis AI (MCP)",
+        short: "Causa-raiz e DQL por linguagem natural em produção.",
+        level: "avancado",
+        tags: ["ferramenta", "mcp", "observabilidade", "monitoramento"],
+        whatIsIt:
+          "O Dynatrace combina o Davis AI (IA causal) com um servidor MCP que dá a agentes acesso aos dados de observabilidade: o Davis CoPilot converte linguagem natural em DQL e explica queries; o MCP permite consultar, rodar DQL e gerenciar dashboards e workflows.",
+        whyQA:
+          "É qualidade em produção com IA causal: detecção de anomalia e causa-raiz automáticas. O QA usa isso para fechar o ciclo — validar que o que passou nos testes se comporta bem em produção e investigar incidentes com rapidez.",
+        qaExample:
+          "Um alerta de erro sobe após o deploy. Você pergunta em linguagem natural; o Davis CoPilot gera a DQL, e o Davis AI aponta a causa provável (ex.: timeout em uma dependência) com a cadeia de impacto. O QA leva isso para a retro da sprint com dados, não achismo.",
+        resources: [
+          { label: "Dynatrace — Model Context Protocol (MCP)", url: "https://www.dynatrace.com/knowledge-base/model-context-protocol/" },
+        ],
       },
     ],
   },
