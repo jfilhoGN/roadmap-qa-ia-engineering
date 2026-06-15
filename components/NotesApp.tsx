@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
   createNoteAction,
   deleteNoteAction,
@@ -43,31 +43,60 @@ function NoteEditor({
   onBack: () => void;
 }) {
   const [title, setTitle] = useState(note.title);
-  const [status, setStatus] = useState<"idle" | "saving" | "saved">("idle");
+  const [dirty, setDirty] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
   const titleRef = useRef(note.title);
   const htmlRef = useRef(note.content);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dirtyRef = useRef(false);
 
-  function schedule() {
-    setStatus("saving");
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(async () => {
-      try {
-        await updateNoteAction(note.id, titleRef.current, htmlRef.current);
-        setStatus("saved");
-        onSaved({
-          id: note.id,
-          title: titleRef.current || "Sem título",
-          updatedAt: new Date().toISOString(),
-        });
-      } catch {
-        setStatus("idle");
-      }
-    }, 700);
+  function markDirty() {
+    if (!dirtyRef.current) {
+      dirtyRef.current = true;
+      setDirty(true);
+      setSaved(false);
+    }
+  }
+
+  // onChange estável (não re-renderiza o editor enquanto digita)
+  const onChange = useCallback((html: string) => {
+    htmlRef.current = html;
+    if (!dirtyRef.current) {
+      dirtyRef.current = true;
+      setDirty(true);
+      setSaved(false);
+    }
+  }, []);
+
+  const save = useCallback(async () => {
+    if (saving) return;
+    setSaving(true);
+    try {
+      await updateNoteAction(note.id, titleRef.current, htmlRef.current);
+      dirtyRef.current = false;
+      setDirty(false);
+      setSaved(true);
+      onSaved({
+        id: note.id,
+        title: titleRef.current || "Sem título",
+        updatedAt: new Date().toISOString(),
+      });
+    } catch {
+      /* mantém dirty para tentar de novo */
+    } finally {
+      setSaving(false);
+    }
+  }, [saving, note.id, onSaved]);
+
+  function onKeyDown(e: React.KeyboardEvent) {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "s") {
+      e.preventDefault();
+      if (dirty) save();
+    }
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" onKeyDown={onKeyDown}>
       <div className="flex items-center gap-2 mb-3">
         <button
           onClick={onBack}
@@ -80,14 +109,29 @@ function NoteEditor({
           onChange={(e) => {
             setTitle(e.target.value);
             titleRef.current = e.target.value;
-            schedule();
+            markDirty();
           }}
           placeholder="Título da anotação"
           className="flex-1 bg-transparent text-xl font-bold text-white outline-none placeholder:text-white/30"
         />
-        <span className="text-xs text-white/40 shrink-0 w-16 text-right">
-          {status === "saving" ? "salvando…" : status === "saved" ? "✓ salvo" : ""}
+        <span className="text-xs shrink-0 flex items-center gap-1.5">
+          {saving ? (
+            <span className="text-white/40 flex items-center gap-1.5">
+              <Spinner className="h-3 w-3" /> salvando…
+            </span>
+          ) : dirty ? (
+            <span className="text-amber-300/80">• não salvo</span>
+          ) : saved ? (
+            <span className="text-white/40">✓ salvo</span>
+          ) : null}
         </span>
+        <button
+          onClick={save}
+          disabled={!dirty || saving}
+          className="shrink-0 rounded-lg bg-white text-black font-semibold px-4 py-1.5 text-sm hover:bg-white/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {saving ? "Salvando…" : "Salvar"}
+        </button>
         <button
           onClick={() => {
             if (confirm("Excluir esta anotação?")) onDeleted(note.id);
@@ -104,10 +148,7 @@ function NoteEditor({
           key={note.id}
           initialHtml={note.content}
           placeholder="Escreva sua anotação aqui…"
-          onChange={(html) => {
-            htmlRef.current = html;
-            schedule();
-          }}
+          onChange={onChange}
         />
       </div>
     </div>
