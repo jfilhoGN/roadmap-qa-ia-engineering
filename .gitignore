@@ -11,3 +11,6 @@ next-env.d.ts
 
 # Configurações locais do Claude Code
 .claude/
+
+# Seed com hashes de usuários — não publicar no repo público
+db/seed.sql

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   LEVEL_META,
   ROADMAP,
@@ -8,7 +8,7 @@ import {
   type Level,
   type Topic,
 } from "@/data/roadmap";
-import { useProgress } from "@/lib/progress";
+import { resetProgressAction, toggleProgressAction } from "@/app/actions/app";
 import TopicDetail from "./TopicDetail";
 
 function ProgressBar({ done, total }: { done: number; total: number }) {
@@ -75,12 +75,35 @@ function TopicCard({
   );
 }
 
-export default function RoadmapClient() {
-  const { isDone, toggle, done, reset, loaded } = useProgress();
+export default function RoadmapClient({
+  initialDone = [],
+}: {
+  initialDone?: string[];
+}) {
+  const [done, setDone] = useState<Set<string>>(() => new Set(initialDone));
   const [selected, setSelected] = useState<Topic | null>(null);
   const [filter, setFilter] = useState<Level | "todos">("todos");
 
+  const loaded = true;
   const doneCount = done.size;
+  const isDone = useCallback((id: string) => done.has(id), [done]);
+
+  const toggle = useCallback((id: string) => {
+    setDone((prev) => {
+      const next = new Set(prev);
+      const willComplete = !next.has(id);
+      if (willComplete) next.add(id);
+      else next.delete(id);
+      // persiste no banco (otimista; ignora falha de rede silenciosamente)
+      void toggleProgressAction(id, willComplete).catch(() => {});
+      return next;
+    });
+  }, []);
+
+  const reset = useCallback(() => {
+    setDone(new Set());
+    void resetProgressAction().catch(() => {});
+  }, []);
 
   const sections = useMemo(
     () =>
