@@ -2,7 +2,21 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useFormStatus } from "react-dom";
 import { logout } from "@/app/actions/auth";
+
+function LogoutButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="shrink-0 rounded-lg px-3 py-1.5 text-sm text-white/60 hover:text-white hover:bg-white/10 transition-colors disabled:opacity-60"
+    >
+      {pending ? "Saindo…" : "Sair"}
+    </button>
+  );
+}
 
 export default function Nav({
   username,
@@ -57,12 +71,7 @@ export default function Nav({
           )}
         </span>
         <form action={logout}>
-          <button
-            type="submit"
-            className="shrink-0 rounded-lg px-3 py-1.5 text-sm text-white/60 hover:text-white hover:bg-white/10 transition-colors"
-          >
-            Sair
-          </button>
+          <LogoutButton />
         </form>
       </nav>
     </header>

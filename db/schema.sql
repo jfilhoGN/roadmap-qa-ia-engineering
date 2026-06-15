@@ -22,15 +22,19 @@ create table if not exists progress (
 );
 
 -- Anotações do colaborador (várias notas por usuário; conteúdo em HTML rich-text)
+-- topic_id: quando a nota é feita estudando um tópico do roadmap (1 por tópico).
 create table if not exists notes (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references users(id) on delete cascade,
   title text not null default 'Sem título',
   content text not null default '',
+  topic_id text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 create index if not exists notes_user_idx on notes (user_id);
+create unique index if not exists notes_user_topic_uidx
+  on notes (user_id, topic_id) where topic_id is not null;
 
 -- Próximos estudos (checklist)
 create table if not exists study_items (

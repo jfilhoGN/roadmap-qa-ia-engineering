@@ -44,6 +44,24 @@ export async function deleteNoteAction(id: string) {
   return data.getNotes(uid);
 }
 
+// ---------- Anotação vinculada a um tópico (modal de estudo) ----------
+export async function getTopicNoteAction(topicId: string) {
+  return data.getNoteForTopic(await currentUid(), topicId);
+}
+
+export async function saveTopicNoteAction(
+  topicId: string,
+  title: string,
+  content: string,
+) {
+  await data.upsertNoteForTopic(
+    await currentUid(),
+    topicId,
+    title.trim() || "Sem título",
+    content,
+  );
+}
+
 // ---------- Próximos estudos ----------
 export async function addStudyItemAction(text: string) {
   const uid = await currentUid();

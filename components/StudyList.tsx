@@ -7,6 +7,7 @@ import {
   toggleStudyItemAction,
 } from "@/app/actions/app";
 import type { StudyItem } from "@/lib/data";
+import { Spinner } from "./PageLoading";
 
 /** Transforma URLs do texto em links clicáveis. */
 function Linkified({ text }: { text: string }) {
@@ -70,12 +71,19 @@ export default function StudyList({ initial }: { initial: StudyItem[] }) {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <div className="mb-5">
-        <h1 className="text-2xl font-bold text-white">🎯 Próximos estudos</h1>
-        <p className="text-sm text-white/50 mt-1">
-          Vídeos, cursos e materiais para estudar depois. Cole um link do
-          YouTube, o nome de um curso, o que quiser — e marque ao concluir.
-        </p>
+      <div className="mb-5 flex items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold text-white">🎯 Próximos estudos</h1>
+          <p className="text-sm text-white/50 mt-1">
+            Vídeos, cursos e materiais para estudar depois. Cole um link do
+            YouTube, o nome de um curso, o que quiser — e marque ao concluir.
+          </p>
+        </div>
+        {pending && (
+          <span className="shrink-0 inline-flex items-center gap-2 text-xs text-white/40 mt-1">
+            <Spinner className="h-3.5 w-3.5" /> salvando…
+          </span>
+        )}
       </div>
 
       <div className="flex gap-2 mb-6">
@@ -93,7 +101,7 @@ export default function StudyList({ initial }: { initial: StudyItem[] }) {
           disabled={pending || !text.trim()}
           className="shrink-0 rounded-xl bg-white text-black font-semibold px-4 hover:bg-white/90 disabled:opacity-50 transition-colors"
         >
-          Adicionar
+          {pending ? "Adicionando…" : "Adicionar"}
         </button>
       </div>
 

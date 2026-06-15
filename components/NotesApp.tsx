@@ -7,6 +7,8 @@ import {
   updateNoteAction,
 } from "@/app/actions/app";
 import type { Note } from "@/lib/data";
+import RichTextEditor from "./RichTextEditor";
+import { Spinner } from "./PageLoading";
 
 function formatDate(iso: string): string {
   const d = new Date(iso);
@@ -28,7 +30,7 @@ function stripHtml(html: string): string {
     .trim();
 }
 
-// ───────────────── Editor de uma nota (rich-text) ─────────────────
+// ───────────────── Editor de uma nota ─────────────────
 function NoteEditor({
   note,
   onSaved,
@@ -45,7 +47,6 @@ function NoteEditor({
   const titleRef = useRef(note.title);
   const htmlRef = useRef(note.content);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const editorRef = useRef<HTMLDivElement>(null);
 
   function schedule() {
     setStatus("saving");
@@ -64,34 +65,6 @@ function NoteEditor({
       }
     }, 700);
   }
-
-  function exec(command: string) {
-    document.execCommand(command, false);
-    editorRef.current?.focus();
-    htmlRef.current = editorRef.current?.innerHTML ?? "";
-    schedule();
-  }
-
-  const ToolbarBtn = ({
-    cmd,
-    children,
-    title: t,
-  }: {
-    cmd: string;
-    children: React.ReactNode;
-    title: string;
-  }) => (
-    <button
-      type="button"
-      title={t}
-      // preventDefault no mousedown mantém a seleção dentro do editor
-      onMouseDown={(e) => e.preventDefault()}
-      onClick={() => exec(cmd)}
-      className="h-8 min-w-8 px-2 grid place-items-center rounded-md text-white/70 hover:text-white hover:bg-white/10 transition-colors text-sm"
-    >
-      {children}
-    </button>
-  );
 
   return (
     <div className="flex flex-col h-full">
@@ -126,40 +99,17 @@ function NoteEditor({
         </button>
       </div>
 
-      {/* Barra de ferramentas */}
-      <div className="flex items-center gap-0.5 rounded-lg bg-white/5 border border-white/10 p-1 mb-2 flex-wrap">
-        <ToolbarBtn cmd="bold" title="Negrito (Ctrl+B)">
-          <b>B</b>
-        </ToolbarBtn>
-        <ToolbarBtn cmd="italic" title="Itálico (Ctrl+I)">
-          <i>I</i>
-        </ToolbarBtn>
-        <ToolbarBtn cmd="underline" title="Sublinhado (Ctrl+U)">
-          <u>U</u>
-        </ToolbarBtn>
-        <span className="w-px h-5 bg-white/10 mx-1" />
-        <ToolbarBtn cmd="insertUnorderedList" title="Lista com marcadores">
-          • Lista
-        </ToolbarBtn>
-        <ToolbarBtn cmd="insertOrderedList" title="Lista numerada">
-          1. Lista
-        </ToolbarBtn>
+      <div className="flex-1 min-h-0">
+        <RichTextEditor
+          key={note.id}
+          initialHtml={note.content}
+          placeholder="Escreva sua anotação aqui…"
+          onChange={(html) => {
+            htmlRef.current = html;
+            schedule();
+          }}
+        />
       </div>
-
-      {/* Área editável */}
-      <div
-        ref={editorRef}
-        // key garante remontagem ao trocar de nota (sem pulo de cursor)
-        contentEditable
-        suppressContentEditableWarning
-        data-placeholder="Escreva sua anotação aqui…"
-        onInput={(e) => {
-          htmlRef.current = (e.target as HTMLDivElement).innerHTML;
-          schedule();
-        }}
-        dangerouslySetInnerHTML={{ __html: note.content }}
-        className="rte flex-1 min-h-[55vh] overflow-y-auto rounded-2xl bg-white/[0.03] border border-white/10 focus:border-white/25 p-5 text-[15px] leading-relaxed text-white/90"
-      />
     </div>
   );
 }
@@ -170,19 +120,30 @@ export default function NotesApp({ initial }: { initial: Note[] }) {
   const [selectedId, setSelectedId] = useState<string | null>(
     initial[0]?.id ?? null,
   );
+  const [busy, setBusy] = useState(false);
 
   const selected = notes.find((n) => n.id === selectedId) ?? null;
 
   async function createNew() {
-    const list = await createNoteAction("Sem título");
-    setNotes(list);
-    setSelectedId(list[0]?.id ?? null); // mais recente primeiro
+    setBusy(true);
+    try {
+      const list = await createNoteAction("Sem título");
+      setNotes(list);
+      setSelectedId(list[0]?.id ?? null);
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function remove(id: string) {
-    const list = await deleteNoteAction(id);
-    setNotes(list);
-    setSelectedId(list[0]?.id ?? null);
+    setBusy(true);
+    try {
+      const list = await deleteNoteAction(id);
+      setNotes(list);
+      setSelectedId(list[0]?.id ?? null);
+    } finally {
+      setBusy(false);
+    }
   }
 
   function onSaved(u: { id: string; title: string; updatedAt: string }) {
@@ -204,17 +165,16 @@ export default function NotesApp({ initial }: { initial: Note[] }) {
         </div>
         <button
           onClick={createNew}
-          className="shrink-0 rounded-xl bg-white text-black font-semibold px-4 py-2 hover:bg-white/90 transition-colors"
+          disabled={busy}
+          className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-white text-black font-semibold px-4 py-2 hover:bg-white/90 disabled:opacity-60 transition-colors"
         >
-          + Nova anotação
+          {busy && <Spinner className="h-4 w-4 !border-black/30 !border-t-black" />}
+          {busy ? "Salvando…" : "+ Nova anotação"}
         </button>
       </div>
 
       <div className="grid md:grid-cols-[300px_1fr] gap-4 min-h-[60vh]">
-        {/* Lista */}
-        <aside
-          className={`${selected ? "hidden md:block" : "block"} space-y-2`}
-        >
+        <aside className={`${selected ? "hidden md:block" : "block"} space-y-2`}>
           {notes.length === 0 && (
             <p className="text-white/30 text-sm p-3">
               Nenhuma anotação ainda. Crie a primeira.
@@ -233,8 +193,15 @@ export default function NotesApp({ initial }: { initial: Note[] }) {
                     : "border-white/10 bg-white/[0.03] hover:bg-white/[0.05]"
                 }`}
               >
-                <div className="text-[11px] text-white/40">
-                  {formatDate(n.updatedAt)}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="text-[11px] text-white/40">
+                    {formatDate(n.updatedAt)}
+                  </div>
+                  {n.topicId && (
+                    <span className="text-[10px] font-semibold text-sky-300/80 bg-sky-500/10 ring-1 ring-sky-400/20 rounded px-1.5 py-0.5">
+                      📘 tópico
+                    </span>
+                  )}
                 </div>
                 <div className="font-semibold text-white/90 truncate mt-0.5">
                   {n.title || "Sem título"}
@@ -249,7 +216,6 @@ export default function NotesApp({ initial }: { initial: Note[] }) {
           })}
         </aside>
 
-        {/* Detalhe / editor */}
         <section className={`${selected ? "block" : "hidden md:block"}`}>
           {selected ? (
             <NoteEditor

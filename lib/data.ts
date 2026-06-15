@@ -59,14 +59,21 @@ export type Note = {
   id: string;
   title: string;
   content: string;
+  topicId: string | null;
   updatedAt: string;
 };
 
 export async function getNotes(userId: string): Promise<Note[]> {
   const rows = await sql<
-    { id: string; title: string; content: string; updated_at: string }[]
+    {
+      id: string;
+      title: string;
+      content: string;
+      topic_id: string | null;
+      updated_at: string;
+    }[]
   >`
-    select id, title, content,
+    select id, title, content, topic_id,
       to_char(updated_at at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') as updated_at
     from notes
     where user_id = ${userId}
@@ -75,8 +82,35 @@ export async function getNotes(userId: string): Promise<Note[]> {
     id: r.id,
     title: r.title,
     content: r.content,
+    topicId: r.topic_id,
     updatedAt: r.updated_at,
   }));
+}
+
+// Nota vinculada a um tópico do roadmap (1 por usuário/tópico)
+export async function getNoteForTopic(
+  userId: string,
+  topicId: string,
+): Promise<string> {
+  const rows = await sql<{ content: string }[]>`
+    select content from notes
+    where user_id = ${userId} and topic_id = ${topicId} limit 1`;
+  return rows[0]?.content ?? "";
+}
+
+export async function upsertNoteForTopic(
+  userId: string,
+  topicId: string,
+  title: string,
+  content: string,
+): Promise<void> {
+  await sql`
+    insert into notes (user_id, topic_id, title, content)
+    values (${userId}, ${topicId}, ${title}, ${content})
+    on conflict (user_id, topic_id) where topic_id is not null
+    do update set content = excluded.content,
+                  title = excluded.title,
+                  updated_at = now()`;
 }
 
 export async function createNote(

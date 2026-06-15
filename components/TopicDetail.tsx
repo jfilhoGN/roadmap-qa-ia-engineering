@@ -7,6 +7,7 @@ import { LEVEL_META, type Topic } from "@/data/roadmap";
 import { DEEP_DIVES } from "@/data/deepDives";
 import { QUIZZES } from "@/data/quizzes";
 import Quiz from "./Quiz";
+import TopicNotePanel from "./TopicNotePanel";
 
 function Article({ markdown }: { markdown: string }) {
   return (
@@ -165,7 +166,7 @@ export default function TopicDetail({
         onClick={onClose}
       />
       {/* modal */}
-      <aside className="relative h-[92vh] w-[94vw] max-w-5xl bg-[#101018] border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-modal-in">
+      <aside className="relative h-[92vh] w-[96vw] max-w-7xl bg-[#101018] border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-modal-in">
         <header className="p-6 pb-4 border-b border-white/10">
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -199,7 +200,8 @@ export default function TopicDetail({
           </div>
         </header>
 
-        <div className="detail-scroll flex-1 overflow-y-auto px-5 py-6 sm:px-8">
+        <div className="flex-1 flex min-h-0">
+        <div className="detail-scroll flex-1 min-w-0 overflow-y-auto px-5 py-6 sm:px-8">
           <div className="mx-auto max-w-3xl">
           {deepDive ? (
             <>
@@ -290,6 +292,12 @@ export default function TopicDetail({
             </Block>
           )}
           </div>
+        </div>
+
+        {/* Painel de anotação do tópico (lateral direita, em telas grandes) */}
+        <aside className="hidden lg:flex flex-col w-[380px] shrink-0 border-l border-white/10 bg-white/[0.015]">
+          <TopicNotePanel topicId={topic.id} topicTitle={topic.title} />
+        </aside>
         </div>
 
         <footer className="p-4 border-t border-white/10">
