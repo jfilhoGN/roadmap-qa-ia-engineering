@@ -1,5 +1,5 @@
 import Nav from "@/components/Nav";
-import NotesEditor from "@/components/NotesEditor";
+import NotesApp from "@/components/NotesApp";
 import { requireUser } from "@/lib/auth";
 import { getNotes } from "@/lib/data";
 
@@ -13,7 +13,7 @@ export default async function AnotacoesPage() {
   return (
     <>
       <Nav username={session.username} isAdmin={session.isAdmin} />
-      <NotesEditor initial={notes} />
+      <NotesApp initial={notes} />
     </>
   );
 }

@@ -54,22 +54,51 @@ export async function clearProgress(userId: string): Promise<void> {
   await sql`delete from progress where user_id = ${userId}`;
 }
 
-// ---------- Anotações ----------
-export async function getNotes(userId: string): Promise<string> {
-  const rows = await sql<{ content: string }[]>`
-    select content from notes where user_id = ${userId} limit 1`;
-  return rows[0]?.content ?? "";
+// ---------- Anotações (lista de notas por usuário) ----------
+export type Note = {
+  id: string;
+  title: string;
+  content: string;
+  updatedAt: string;
+};
+
+export async function getNotes(userId: string): Promise<Note[]> {
+  const rows = await sql<
+    { id: string; title: string; content: string; updated_at: string }[]
+  >`
+    select id, title, content,
+      to_char(updated_at at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') as updated_at
+    from notes
+    where user_id = ${userId}
+    order by updated_at desc`;
+  return rows.map((r) => ({
+    id: r.id,
+    title: r.title,
+    content: r.content,
+    updatedAt: r.updated_at,
+  }));
 }
 
-export async function saveNotes(
+export async function createNote(
   userId: string,
+  title: string,
+): Promise<void> {
+  await sql`insert into notes (user_id, title) values (${userId}, ${title})`;
+}
+
+export async function updateNote(
+  userId: string,
+  id: string,
+  title: string,
   content: string,
 ): Promise<void> {
   await sql`
-    insert into notes (user_id, content, updated_at)
-    values (${userId}, ${content}, now())
-    on conflict (user_id) do update
-      set content = excluded.content, updated_at = now()`;
+    update notes set title = ${title}, content = ${content}, updated_at = now()
+    where id = ${id} and user_id = ${userId}`;
+}
+
+export async function deleteNote(userId: string, id: string): Promise<void> {
+  await sql`delete from notes where id = ${id} and user_id = ${userId}`;
 }
 
 // ---------- Próximos estudos ----------

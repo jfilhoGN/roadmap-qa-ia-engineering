@@ -21,12 +21,16 @@ create table if not exists progress (
   primary key (user_id, topic_id)
 );
 
--- Anotações do colaborador (um documento markdown por usuário)
+-- Anotações do colaborador (várias notas por usuário; conteúdo em HTML rich-text)
 create table if not exists notes (
-  user_id uuid primary key references users(id) on delete cascade,
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references users(id) on delete cascade,
+  title text not null default 'Sem título',
   content text not null default '',
+  created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+create index if not exists notes_user_idx on notes (user_id);
 
 -- Próximos estudos (checklist)
 create table if not exists study_items (

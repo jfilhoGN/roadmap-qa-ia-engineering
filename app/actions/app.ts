@@ -19,8 +19,29 @@ export async function resetProgressAction() {
 }
 
 // ---------- Anotações ----------
-export async function saveNotesAction(content: string) {
-  await data.saveNotes(await currentUid(), content);
+export async function createNoteAction(title: string) {
+  const uid = await currentUid();
+  await data.createNote(uid, title.trim() || "Sem título");
+  return data.getNotes(uid);
+}
+
+export async function updateNoteAction(
+  id: string,
+  title: string,
+  content: string,
+) {
+  await data.updateNote(
+    await currentUid(),
+    id,
+    title.trim() || "Sem título",
+    content,
+  );
+}
+
+export async function deleteNoteAction(id: string) {
+  const uid = await currentUid();
+  await data.deleteNote(uid, id);
+  return data.getNotes(uid);
 }
 
 // ---------- Próximos estudos ----------
