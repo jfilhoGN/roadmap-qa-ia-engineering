@@ -1,14 +1,17 @@
 "use client";
 
-import { useRef } from "react";
+import { memo, useRef } from "react";
 
 /**
  * Editor rich-text simples baseado em contentEditable + execCommand.
  * Self-contained (toolbar + área editável). O conteúdo é HTML.
- * O componente é não-controlado: defina `initialHtml` e use `key` no pai
- * para remontar quando o documento mudar (evita pulo de cursor).
+ *
+ * IMPORTANTE: é memoizado e só re-renderiza quando `initialHtml`/`placeholder`
+ * mudam. Isso evita que re-renders do pai (ex.: status "salvando…") resetem o
+ * conteúdo digitado / pulem o cursor. Use `key` no pai para trocar o documento.
+ * Por isso o `onChange` deve ser estável (useCallback) e usar refs.
  */
-export default function RichTextEditor({
+function RichTextEditorBase({
   initialHtml,
   onChange,
   placeholder = "Escreva aqui…",
@@ -77,3 +80,12 @@ export default function RichTextEditor({
     </div>
   );
 }
+
+const RichTextEditor = memo(
+  RichTextEditorBase,
+  (prev, next) =>
+    prev.initialHtml === next.initialHtml &&
+    prev.placeholder === next.placeholder,
+);
+
+export default RichTextEditor;
