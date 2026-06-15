@@ -101,11 +101,11 @@ export default function RoadmapClient() {
           IA para QAs
         </h1>
         <p className="mt-4 max-w-2xl mx-auto text-white/60 leading-relaxed">
-          Do básico ao especialista. Domine os termos da IA que mais importam e
-          aprenda, com exemplos práticos, como transformá-los em ferramentas,
-          validadores e qualidade de verdade.{" "}
+          Domine a IA de ponta a ponta: dos fundamentos aos agentes, com
+          exemplos reais de QA em cada passo.{" "}
           <span className="text-white/80">
-            O futuro do QA é construir e validar inteligência.
+            Aqui você não aprende a usar IA — aprende a construí-la, testá-la e
+            confiar nela.
           </span>
         </p>
       </header>
