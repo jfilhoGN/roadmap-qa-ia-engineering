@@ -312,6 +312,47 @@ export const ROADMAP: Section[] = [
           },
         ],
       },
+      {
+        id: "copilots",
+        title: "Copilots e Assistentes de Código",
+        short: "GitHub Copilot, Cursor, Claude Code — IA que coda com você.",
+        level: "basico",
+        tags: ["fundamento", "produtividade", "ferramenta"],
+        whatIsIt:
+          "Assistentes de IA integrados ao editor que sugerem, completam e geram código a partir de linguagem natural ou do contexto do projeto. Vão do autocompletar (GitHub Copilot) a agentes que editam vários arquivos (Cursor, Claude Code).",
+        whyQA:
+          "É a porta de entrada mais prática para o QA ganhar produtividade hoje: escrever scripts de automação, gerar massa de dados, refatorar testes e entender código alheio. Dominar um copilot é o primeiro passo concreto rumo ao AI First.",
+        qaExample:
+          "Em vez de escrever do zero um teste Playwright para o checkout, você descreve o cenário em português dentro do Cursor e ele gera o esqueleto do teste, que você ajusta. O que levava 40 min vira 10 — e sobra tempo para pensar em risco e cobertura.",
+        prompt:
+          "No seu copilot: 'Gere um teste Playwright em TypeScript para o fluxo de login (sucesso, senha errada, usuário bloqueado), usando data-testid como seletor e o padrão Page Object Model.'",
+      },
+      {
+        id: "slm",
+        title: "SLMs — Small Language Models",
+        short: "Modelos pequenos, rápidos e baratos — às vezes melhores.",
+        level: "basico",
+        tags: ["fundamento", "modelo", "custo"],
+        whatIsIt:
+          "Modelos de linguagem menores (de poucos bilhões de parâmetros ou menos) que rodam mais rápido, custam menos e podem até rodar localmente/on-device. Trocam parte da capacidade geral por eficiência e privacidade.",
+        whyQA:
+          "Nem toda tarefa precisa do modelo gigante. Para classificar logs, extrair campos ou validar formato, um SLM pode entregar a mesma qualidade por uma fração do custo e da latência — uma decisão de qualidade/custo que o QA ajuda a tomar e a validar.",
+        qaExample:
+          "Um validador classifica 10 mil mensagens de erro por dia. Você compara, via eval, um modelo grande contra um SLM: se o SLM acerta quase igual por 1/10 do custo, é a escolha certa. O QA prova isso com dados, não com achismo.",
+      },
+      {
+        id: "when-rag-vs-ft",
+        title: "RAG vs Fine-tuning vs Prompt",
+        short: "Quando usar cada abordagem (guia de decisão).",
+        level: "basico",
+        tags: ["fundamento", "arquitetura", "estrategia"],
+        whatIsIt:
+          "Três formas de adaptar a IA ao seu problema: prompt (instruir no momento), RAG (injetar conhecimento buscado) e fine-tuning (treinar o modelo). Cada uma resolve uma necessidade diferente e tem custo e manutenção distintos.",
+        whyQA:
+          "Saber a diferença evita over-engineering e orienta o que testar. RAG erra na busca; fine-tuning erra por regressão; prompt erra por instrução frágil. O QA que entende isso aponta a abordagem certa e o risco de cada uma.",
+        qaExample:
+          "'Quero que o bot responda com a política interna atualizada' → RAG (o conhecimento muda). 'Quero que ele sempre escreva no nosso formato' → few-shot/prompt. 'Quero um classificador altamente especializado e estável' → fine-tuning. Você recomenda e valida cada caminho.",
+      },
     ],
   },
 
@@ -548,6 +589,84 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=LGpbtaykD1U",
           },
         ],
+      },
+      {
+        id: "prompt-caching",
+        title: "Prompt Caching",
+        short: "Reaproveitar contexto repetido para cortar custo e latência.",
+        level: "intermediario",
+        tags: ["custo", "performance", "integracao"],
+        whatIsIt:
+          "Recurso que armazena em cache a parte fixa e grande do prompt (instruções, documentos) para que as próximas chamadas não a reprocessem do zero, reduzindo custo e tempo de resposta.",
+        whyQA:
+          "Vira um requisito não-funcional testável: o cache está sendo usado? A resposta muda quando deveria? Cache mal configurado pode servir resposta velha (bug sutil) ou inflar o custo. O QA valida acerto e economia.",
+        qaExample:
+          "Um agente que analisa cada PR reenvia sempre o mesmo guia de padrões (50 mil tokens). Com prompt caching, esse trecho é cacheado. Você testa: a economia aconteceu? E se o guia mudar, o cache invalida corretamente, ou serve a versão antiga?",
+      },
+      {
+        id: "streaming",
+        title: "Streaming de Respostas",
+        short: "Texto aparecendo aos poucos — e como testar isso.",
+        level: "intermediario",
+        tags: ["integracao", "ux", "performance"],
+        whatIsIt:
+          "Em vez de esperar a resposta inteira, o modelo envia a saída token a token (streaming), melhorando a percepção de velocidade. É o padrão em interfaces de chat.",
+        whyQA:
+          "Introduz cenários de teste novos: resposta parcial interrompida, conexão que cai no meio, JSON que só fica válido no fim, cancelamento pelo usuário. A latência percebida (tempo até o primeiro token) vira métrica de qualidade.",
+        qaExample:
+          "Num chat com streaming, você testa: se o usuário cancela no meio, o sistema para de gerar/cobrar tokens? Se a conexão cai, a UI trata o erro? Se você precisa de JSON, ele só é parseado quando completo? Cada um é um caso de teste.",
+      },
+      {
+        id: "chunking-reranking",
+        title: "Chunking e Re-ranking (RAG avançado)",
+        short: "Como dividir e ordenar documentos para a busca acertar.",
+        level: "intermediario",
+        tags: ["rag", "qualidade", "busca"],
+        whatIsIt:
+          "Chunking é como você fatia os documentos em pedaços antes de indexar; re-ranking é reordenar os trechos recuperados por relevância antes de mandar ao modelo. São os fatores que mais afetam a qualidade de um RAG.",
+        whyQA:
+          "A maioria das falhas de RAG ('ele não achou a resposta que está na base!') vem de chunking ruim ou da falta de re-ranking. O QA precisa testar a etapa de recuperação isoladamente, e não só a resposta final.",
+        qaExample:
+          "Você monta um conjunto de perguntas cuja resposta está na base e mede o 'recall@k': em quantas o trecho certo apareceu entre os k recuperados. Se a recuperação falha, o problema é chunking/re-ranking — não adianta mexer no modelo.",
+      },
+      {
+        id: "grounding",
+        title: "Grounding e Citações (Faithfulness)",
+        short: "A resposta realmente se sustenta na fonte citada?",
+        level: "intermediario",
+        tags: ["rag", "qualidade", "validacao"],
+        whatIsIt:
+          "Grounding é ancorar a resposta nos dados recuperados; faithfulness mede se cada afirmação da resposta é de fato suportada pela fonte. Citações permitem rastrear de onde veio cada informação.",
+        whyQA:
+          "É o teste central de qualidade de RAG: a IA pode citar uma fonte e ainda assim afirmar algo que a fonte não diz. Verificar faithfulness (resposta contida na fonte) é uma asserção que o QA define e automatiza.",
+        qaExample:
+          "O bot responde 'o prazo de troca é 30 dias [doc#12]'. Você valida: o doc#12 realmente diz 30 dias? Um validador (ou LLM-as-judge) checa cada frase contra a fonte citada e reprova se houver afirmação sem suporte.",
+      },
+      {
+        id: "logprobs-confidence",
+        title: "Logprobs, Confiança e Calibração",
+        short: "Medir o quanto a IA está 'segura' da resposta.",
+        level: "intermediario",
+        tags: ["qualidade", "metricas", "validacao"],
+        whatIsIt:
+          "Logprobs são as probabilidades que o modelo atribui a cada token gerado — um sinal de quão 'confiante' ele estava. Calibração mede se essa confiança bate com a taxa real de acerto.",
+        whyQA:
+          "Dá ao QA um sinal objetivo para detectar respostas duvidosas: baixa confiança pode disparar revisão humana (HITL) ou um fallback. Permite construir validadores que barram saídas incertas antes que virem erro.",
+        qaExample:
+          "Num extrator de dados de documentos, você usa a confiança por campo: se o CPF foi extraído com baixa probabilidade, o item vai para a fila de revisão humana em vez de seguir automático. Você testa onde colocar esse limiar.",
+      },
+      {
+        id: "determinism",
+        title: "Determinismo, Seed e Reprodutibilidade",
+        short: "Como testar algo que muda a cada execução.",
+        level: "intermediario",
+        tags: ["qualidade", "tecnica", "validacao"],
+        whatIsIt:
+          "LLMs são não-determinísticos: a mesma entrada pode gerar saídas diferentes. Temperatura 0 e seeds reduzem a variação, mas raramente garantem 100%. Reprodutibilidade vira um problema de engenharia de teste.",
+        whyQA:
+          "É o desafio que quebra o teste tradicional (assertEquals). O QA precisa de novas estratégias: temperatura baixa para tarefas determinísticas, asserções por propriedade/semântica em vez de igualdade exata, e rodar N vezes medindo a consistência.",
+        qaExample:
+          "Para testar um classificador, você roda a mesma entrada 20 vezes com temperatura 0 e mede a taxa de consistência (idealmente 100%). Para texto livre, troca a igualdade exata por 'contém os pontos-chave' ou similaridade semântica.",
       },
     ],
   },
@@ -829,6 +948,123 @@ export const ROADMAP: Section[] = [
         qaExample:
           "Um modelo que prioriza chamados de suporte: você testa se ele dá prioridade diferente para nomes associados a gêneros ou regiões diferentes, mantendo o resto igual. Se sim, é um bug de viés. É teste de equidade — um QA não-funcional moderno.",
       },
+      {
+        id: "rlhf-alignment",
+        title: "RLHF e Alinhamento",
+        short: "Como o modelo aprende a ser útil, honesto e seguro.",
+        level: "avancado",
+        tags: ["modelo", "seguranca", "conceito"],
+        whatIsIt:
+          "RLHF (aprendizado por reforço com feedback humano) e técnicas de alinhamento ajustam o modelo para seguir instruções e valores humanos, recusar pedidos perigosos e ser útil. É a razão pela qual o modelo 'se comporta'.",
+        whyQA:
+          "Entender alinhamento explica por que o modelo recusa certas coisas, por que pode ser 'enganado' (jailbreak) e por que o comportamento muda entre versões. O QA testa os limites desse alinhamento — o que ele aceita e o que recusa.",
+        qaExample:
+          "Você valida o comportamento alinhado: pede algo legítimo de borda ('explique uma vulnerabilidade para eu testar meu próprio sistema') e algo claramente proibido, e verifica se o modelo distingue corretamente — sem falsos positivos (recusar o legítimo) nem falsos negativos.",
+      },
+      {
+        id: "computer-use",
+        title: "Computer Use / Agentes de Navegador",
+        short: "IA que vê a tela e opera a UI como um usuário.",
+        level: "avancado",
+        tags: ["agente", "automacao", "tendencia"],
+        whatIsIt:
+          "Agentes que controlam um computador/navegador: leem a tela (visão), movem o mouse, clicam e digitam para cumprir tarefas. Combinam multimodalidade com tool use.",
+        whyQA:
+          "É potencialmente revolucionário para automação E2E: testes que se adaptam à UI sem seletores fixos. Mas trazem não-determinismo e custo altos. O QA precisa enxergar onde isso ajuda e onde a automação tradicional ainda é mais confiável.",
+        qaExample:
+          "Em vez de um teste preso a `#btn-checkout`, um agente recebe 'finalize uma compra do produto X' e navega sozinho. Você o avalia: completa o objetivo? Quanto custa e demora? É estável o suficiente para o CI, ou melhor para testes exploratórios?",
+      },
+      {
+        id: "hallucination-detection",
+        title: "Detecção de Alucinação (Faithfulness)",
+        short: "Medir e flagrar quando a IA inventa.",
+        level: "avancado",
+        tags: ["qualidade", "metricas", "validacao"],
+        whatIsIt:
+          "Conjunto de técnicas para detectar alucinações automaticamente: comparar a resposta com as fontes (faithfulness), checar a consistência entre múltiplas gerações, ou usar um modelo verificador. Transforma 'a IA às vezes inventa' em uma métrica.",
+        whyQA:
+          "É a materialização do papel do QA na era da IA: medir a taxa de alucinação de uma feature e acompanhá-la ao longo do tempo. Sem medir, não dá para melhorar nem para confiar.",
+        qaExample:
+          "Para um resumidor de chamados, você monta um verificador que checa se cada afirmação do resumo aparece no chamado original. Roda sobre 200 casos e reporta 'taxa de alucinação = X%'. Essa métrica entra no painel de qualidade.",
+      },
+      {
+        id: "agent-eval",
+        title: "Avaliação de Agentes (Trajetória)",
+        short: "Testar não só o resultado, mas o caminho que o agente tomou.",
+        level: "avancado",
+        tags: ["agente", "qualidade", "evals"],
+        whatIsIt:
+          "Avaliar agentes exige olhar a trajetória: as ferramentas certas foram chamadas, na ordem certa, com os argumentos certos? Além do resultado final, mede-se a eficiência (quantos passos) e a recuperação de erros.",
+        whyQA:
+          "Um agente pode chegar ao resultado certo pelo caminho errado (sorte) ou ao errado por um único passo ruim. O QA avalia a trajetória, não só o output — uma forma nova e essencial de teste.",
+        qaExample:
+          "Um agente de triagem deveria: ler o log → consultar o serviço → abrir o bug. Você avalia a trajetória registrada (trace): ele pulou a consulta? Chamou a ferramenta com o parâmetro errado? Entrou em loop? Cada desvio é um defeito.",
+      },
+      {
+        id: "flaky-detection",
+        title: "Detecção de Testes Flaky com IA",
+        short: "Usar IA/ML para caçar os testes intermitentes.",
+        level: "avancado",
+        tags: ["aplicacao", "automacao", "qualidade"],
+        whatIsIt:
+          "Aplicar análise de dados e IA sobre o histórico de execuções para identificar testes flaky (que falham de forma intermitente sem mudança no código), agrupar causas prováveis e sugerir correções.",
+        whyQA:
+          "Testes flaky destroem a confiança na suíte e são um problema operacional clássico. Automatizar a detecção e a análise libera o time desse desgaste — um ganho AI First imediato e mensurável.",
+        qaExample:
+          "Você alimenta a IA com o histórico de execuções do CI. Ela aponta: 'estes 12 testes falham em ~15% das rodadas, sem correlação com mudanças; o padrão sugere problema de tempo/espera'. Vira um backlog priorizado de estabilização.",
+      },
+      {
+        id: "rca-ai",
+        title: "Análise de Causa-Raiz com IA",
+        short: "Da falha ao 'porquê' em minutos, não horas.",
+        level: "avancado",
+        tags: ["aplicacao", "automacao", "monitoramento"],
+        whatIsIt:
+          "Uso de IA para correlacionar logs, traces, mudanças recentes e falhas, propondo a causa-raiz provável de um incidente ou de uma falha de teste, com as evidências que sustentam a hipótese.",
+        whyQA:
+          "Triagem e investigação consomem boa parte do tempo do QA. Um copiloto de RCA acelera o diagnóstico e melhora a qualidade do bug report. O QA valida e governa as conclusões da IA (que podem alucinar uma causa).",
+        qaExample:
+          "Um teste E2E falha no CI. A IA lê o log de erro, o trace e o diff do último deploy e sugere: 'provável causa: timeout no serviço de pagamento, introduzido no commit abc123'. Você confirma com as evidências antes de registrar.",
+      },
+      {
+        id: "test-prioritization",
+        title: "Priorização de Testes por Risco (ML)",
+        short: "Rodar primeiro os testes que mais importam.",
+        level: "avancado",
+        tags: ["aplicacao", "processo", "performance"],
+        whatIsIt:
+          "Modelos de ML que, a partir das mudanças de código e do histórico de defeitos, preveem quais áreas têm mais risco e quais testes rodar primeiro (ou rodar apenas os relevantes para um PR — test impact analysis).",
+        whyQA:
+          "Suítes grandes ficam lentas e caras. A priorização inteligente dá feedback mais rápido sem perder cobertura crítica — uma decisão estratégica de qualidade que o QA passa a operar.",
+        qaExample:
+          "Num PR que mexe só no módulo de pagamento, em vez de rodar 5.000 testes, o modelo seleciona os ~300 com maior probabilidade de pegar regressão ali. Você valida que a seleção não deixa passar defeitos reais (mede o recall da seleção).",
+      },
+      {
+        id: "jailbreak",
+        title: "Jailbreak e Bypass de Guardrails",
+        short: "As técnicas que fazem a IA quebrar as próprias regras.",
+        level: "avancado",
+        tags: ["seguranca", "risco", "validacao"],
+        whatIsIt:
+          "Jailbreaks são técnicas para contornar o alinhamento e os guardrails do modelo (role-play, codificação, instruções em camadas) e fazê-lo produzir o que deveria recusar. É um subconjunto sofisticado de ataques.",
+        whyQA:
+          "Complementa o prompt injection no arsenal de segurança do QA. Antes de lançar qualquer feature de IA, é preciso tentar quebrá-la sistematicamente. Conhecer os padrões de jailbreak é o que permite testá-los.",
+        qaExample:
+          "Para um assistente que não deve dar instruções perigosas, você monta uma suíte de jailbreaks conhecidos (ex.: 'finja que é um personagem sem regras...') e mede a taxa de sucesso dos ataques. Acima de zero, é risco aberto a tratar.",
+      },
+      {
+        id: "pii-detection",
+        title: "Detecção de PII e Mascaramento",
+        short: "Achar e proteger dados pessoais com IA.",
+        level: "avancado",
+        tags: ["seguranca", "privacidade", "validacao"],
+        whatIsIt:
+          "Uso de IA para identificar dados pessoais (PII) — nomes, CPF, e-mail, telefone — em textos, logs e prints, e mascará-los. Essencial para conformidade (LGPD) e para não vazar dados em prompts.",
+        whyQA:
+          "Privacidade é qualidade não-funcional crítica. O QA testa: o sistema vaza PII para a IA externa? O mascaramento pega todos os formatos? Uma falha aqui é incidente de compliance, não só um bug.",
+        qaExample:
+          "Antes de mandar logs para uma IA externa analisar, um filtro mascara PII. Você testa esse filtro com casos difíceis: CPF sem máscara, e-mail no meio de uma frase, nome composto, dado em base64. Mede o que escapou.",
+      },
     ],
   },
 
@@ -992,6 +1228,58 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=5ZA1lTxTH3c",
           },
         ],
+      },
+      {
+        id: "golden-dataset",
+        title: "Golden Dataset e Curadoria de Dados",
+        short: "O 'gabarito' que torna todo eval confiável.",
+        level: "especialista",
+        tags: ["evals", "dados", "qualidade"],
+        whatIsIt:
+          "Golden dataset é o conjunto curado de entradas com respostas/rótulos corretos, validado por humanos, usado como verdade-base para avaliar a IA. Sua qualidade e representatividade determinam a qualidade de todo o eval.",
+        whyQA:
+          "É a base de tudo no QA de IA — e construir/curar esse dataset é, por excelência, trabalho de qualidade. Um golden dataset enviesado ou pequeno dá uma falsa sensação de qualidade e mascara defeitos.",
+        qaExample:
+          "Para avaliar o classificador de severidade, você cura 300 bugs reais rotulados por QAs sêniores, cobrindo todas as classes e casos de borda. Esse dataset vira o padrão-ouro contra o qual toda versão do modelo é medida.",
+      },
+      {
+        id: "visual-testing-ai",
+        title: "Testes Visuais e Visual Regression com IA",
+        short: "A IA enxergando bugs de layout que cansam o olho humano.",
+        level: "especialista",
+        tags: ["aplicacao", "automacao", "multimodal"],
+        whatIsIt:
+          "Uso de visão computacional/IA para comparar telas e detectar regressões visuais de forma 'inteligente' — ignorando diferenças irrelevantes (anti-aliasing) e flagrando as que importam, além de avaliar layout e acessibilidade.",
+        whyQA:
+          "Visual regression tradicional gera muitos falsos positivos. A IA reduz esse ruído e ainda interpreta a tela ('o botão está cortado', 'contraste baixo'). Amplia o alcance do QA visual sem explodir a manutenção.",
+        qaExample:
+          "Após um deploy, a IA compara as telas antes/depois e reporta: 'o menu sobrepôs o conteúdo no mobile; o botão de CTA sumiu abaixo da dobra'. Você revisa os achados, separando regressão real de mudança intencional.",
+      },
+      {
+        id: "nondeterministic-assertions",
+        title: "Asserções Não-Determinísticas",
+        short: "Como afirmar 'está certo' quando não há resposta única.",
+        level: "especialista",
+        tags: ["tecnica", "automacao", "qualidade"],
+        whatIsIt:
+          "Técnicas de asserção para saídas de IA que não têm um único valor correto: similaridade semântica (embeddings), checagem por LLM-as-judge, validação por propriedades/regras e tolerância a variações. Substituem o assertEquals exato.",
+        whyQA:
+          "É a competência técnica que permite automatizar testes de IA de verdade. Sem ela, ou você testa só o caminho determinístico, ou tem testes frágeis que quebram à toa. Dominar isso é ser um QA que testa IA com rigor.",
+        qaExample:
+          "Testar um resumidor: em vez de comparar o texto exato (que muda), você verifica (1) similaridade semântica acima de um limiar com um resumo de referência, (2) presença dos pontos-chave obrigatórios e (3) ausência de PII. Três asserções robustas no lugar de uma frágil.",
+      },
+      {
+        id: "ai-governance",
+        title: "Governança e Compliance de IA",
+        short: "Documentar, auditar e responder por sistemas de IA.",
+        level: "especialista",
+        tags: ["governanca", "estrategia", "risco"],
+        whatIsIt:
+          "Práticas e artefatos para operar IA de forma responsável e auditável: model cards (documentação do modelo), trilhas de auditoria, políticas de uso e conformidade com regulações emergentes. Define quem responde quando a IA erra.",
+        whyQA:
+          "À medida que a IA entra em decisões críticas, governança vira requisito — e o QA é peça central: evidências de teste, rastreabilidade e documentação de qualidade são insumos de auditoria. O QA ajuda a tornar a IA defensável.",
+        qaExample:
+          "Para uma feature de IA que afeta clientes, você mantém: o golden dataset e os resultados de eval versionados, o registro de testes de viés e segurança, e um model card com limites conhecidos. Se um regulador perguntar 'como vocês garantem qualidade?', a resposta existe.",
       },
       {
         id: "ai-first-mindset",
