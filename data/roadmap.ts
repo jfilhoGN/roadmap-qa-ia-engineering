@@ -353,6 +353,27 @@ export const ROADMAP: Section[] = [
         qaExample:
           "'Quero que o bot responda com a política interna atualizada' → RAG (o conhecimento muda). 'Quero que ele sempre escreva no nosso formato' → few-shot/prompt. 'Quero um classificador altamente especializado e estável' → fine-tuning. Você recomenda e valida cada caminho.",
       },
+      {
+        id: "harness-conceito",
+        title: "Harness: o arcabouço que faz a IA funcionar",
+        short: "O 'chassi' em volta do modelo — como um test harness, mas para IA.",
+        level: "basico",
+        tags: ["fundamento", "harness", "arquitetura"],
+        whatIsIt:
+          "Um harness é toda a estrutura que envolve o modelo para transformá-lo em algo útil: montar o prompt, injetar contexto, chamar ferramentas, tentar de novo quando falha, validar e formatar a resposta. O modelo (LLM) é só o motor; o harness é o chassi, a direção e os freios. O termo vem do 'test harness' que o QA já conhece — o arcabouço que prepara, executa e verifica um teste. Aqui é a mesma ideia, em volta da IA.",
+        whyQA:
+          "A maior parte das falhas de um produto de IA não está 'dentro do modelo' — está no harness: contexto errado, parsing frágil, ferramenta chamada com argumento inválido, retry que mascara um erro. É exatamente a camada que o QA sabe atacar. Entender o harness é entender ONDE testar, em vez de culpar 'a IA'.",
+        qaExample:
+          "Um chatbot responde errado. Não é 'o modelo é ruim': o harness enviou só a última mensagem do usuário, sem o histórico da conversa. O bug está na montagem do contexto — no harness — não no LLM. O QA que enxerga essas camadas reporta a causa certa em vez de escrever 'a IA errou'.",
+        prompt:
+          "Explique, para um QA, quais componentes existem entre a mensagem do usuário e a resposta final em um app de IA (o harness): montagem do prompt, contexto/memória, chamada de ferramentas, validação da saída e retries. Para cada componente, dê 1 exemplo de bug típico e como eu testaria esse ponto.",
+        resources: [
+          {
+            label: "Anthropic — Building effective agents",
+            url: "https://www.anthropic.com/research/building-effective-agents",
+          },
+        ],
+      },
     ],
   },
 
@@ -745,6 +766,27 @@ export const ROADMAP: Section[] = [
           "A partir da história 'JIRA-1234', o Zephyr+Rovo gera 12 casos no Zephyr Scale. O QA revisa: remove 3 redundantes, adiciona 2 de segurança que a IA não pensou e usa o 'risco de release' para priorizar a execução na sprint.",
         resources: [
           { label: "SmartBear — Rovo + Zephyr Quality Intelligence", url: "https://smartbear.com/blog/smartbear-rovo-zephyr-ai-quality-intelligence-jira/" },
+        ],
+      },
+      {
+        id: "harness-eval",
+        title: "Eval Harness: medir qualidade de IA de forma repetível",
+        short: "O 'framework de testes' da IA: dataset + execução + nota automática.",
+        level: "intermediario",
+        tags: ["harness", "eval", "qualidade"],
+        whatIsIt:
+          "Um eval harness é o arcabouço que roda a IA contra um conjunto de casos e mede a qualidade automaticamente. Tem três peças: um dataset (entradas + resposta esperada ou critério), um executor (que passa cada entrada pelo sistema) e um avaliador/scorer (que dá a nota — por regra, por métrica ou usando outro LLM como juiz). É o equivalente do seu runner de testes, só que para saídas probabilísticas.",
+        whyQA:
+          "Sem um eval harness você não sabe se a nova versão do prompt ou do modelo melhorou ou piorou — vira achismo. Com ele, você transforma qualidade de IA em número acompanhável, roda a cada mudança (como um CI) e pega regressão antes do usuário. É a competência que separa 'testar IA na mão' de 'ter qualidade de IA sob controle'.",
+        qaExample:
+          "Você monta um harness com 50 chamados reais rotulados como 'urgente' ou 'normal'. A cada mudança de prompt, o harness roda os 50, compara com o rótulo e cospe precisão e recall. Subiu o prompt novo e o recall caiu de 0.92 para 0.78 → você barra o deploy. Sem o harness, isso só apareceria em produção.",
+        prompt:
+          "Desenhe um eval harness simples para um classificador de sentimento de reviews. Liste: (1) o formato do dataset de casos, (2) como executar cada caso, (3) 3 métricas de qualidade e (4) um critério de aprovação/reprovação para bloquear o deploy. Responda em tópicos.",
+        resources: [
+          {
+            label: "OpenAI Evals — framework de avaliação (conceitos)",
+            url: "https://github.com/openai/evals",
+          },
         ],
       },
     ],
@@ -1524,6 +1566,31 @@ export const ROADMAP: Section[] = [
           {
             label: "Building Better AI Agents: Observability and Evaluation",
             url: "https://www.youtube.com/watch?v=reISMhbZ2XE",
+          },
+        ],
+      },
+      {
+        id: "harness-engineering",
+        title: "Harness Engineering: orquestrar e endurecer sistemas de IA",
+        short: "Projetar o arcabouço inteiro — agentes, ferramentas, retries e evals em CI.",
+        level: "especialista",
+        tags: ["harness", "arquitetura", "agentes", "lideranca"],
+        whatIsIt:
+          "Harness engineering é a disciplina de projetar e endurecer todo o arcabouço em volta do modelo: orquestração de agentes e ferramentas, gestão de contexto e memória, política de retries e timeouts, validação estruturada da saída, guardrails e o eval harness rodando em CI. É engenharia de confiabilidade aplicada a sistemas probabilísticos — decidir o que o modelo pode fazer, como ele falha e como se recupera.",
+        whyQA:
+          "É o ápice do QA como engenheiro de qualidade de IA. Aqui você não só testa o harness: você co-desenha ele para ser testável, observável e seguro. Define os pontos de verificação, os critérios de falha, os evals que bloqueiam o release e os guardrails que contêm o dano. Deixou de ser 'quem encontra bug' para 'quem projeta o sistema para não confiar cegamente no modelo'.",
+        qaExample:
+          "Um agente de suporte pode consultar pedidos e emitir reembolso. Você projeta o harness: a ferramenta de reembolso exige confirmação e teto de valor (guardrail), toda chamada é logada (observabilidade), as respostas passam por validação de schema e um eval de 200 conversas roda no pipeline barrando o merge se a taxa de ação indevida passar de 1%. O modelo é poderoso; o harness é o que o torna confiável.",
+        prompt:
+          "Aja como engenheiro de qualidade de IA. Para um agente que executa ações (consultar e reembolsar pedidos), proponha o desenho do harness: pontos de validação, guardrails, política de retry/timeout, o que logar para observabilidade e quais evals rodar em CI com critério de bloqueio. Organize a resposta por camadas.",
+        resources: [
+          {
+            label: "Anthropic — Building effective agents",
+            url: "https://www.anthropic.com/research/building-effective-agents",
+          },
+          {
+            label: "Chip Huyen — Building LLM applications for production",
+            url: "https://huyenchip.com/2023/04/11/llm-engineering.html",
           },
         ],
       },

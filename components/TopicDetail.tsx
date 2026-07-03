@@ -134,11 +134,13 @@ export default function TopicDetail({
   isDone,
   onToggle,
   onClose,
+  showNotes = true,
 }: {
   topic: Topic | null;
   isDone: boolean;
   onToggle: () => void;
   onClose: () => void;
+  showNotes?: boolean;
 }) {
   // Fecha com ESC
   useEffect(() => {
@@ -295,9 +297,11 @@ export default function TopicDetail({
         </div>
 
         {/* Painel de anotação do tópico (lateral direita, em telas grandes) */}
-        <aside className="hidden lg:flex flex-col w-[380px] shrink-0 border-l border-white/10 bg-white/[0.015]">
-          <TopicNotePanel topicId={topic.id} topicTitle={topic.title} />
-        </aside>
+        {showNotes && (
+          <aside className="hidden lg:flex flex-col w-[380px] shrink-0 border-l border-white/10 bg-white/[0.015]">
+            <TopicNotePanel topicId={topic.id} topicTitle={topic.title} />
+          </aside>
+        )}
         </div>
 
         <footer className="p-4 border-t border-white/10">

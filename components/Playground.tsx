@@ -4,8 +4,15 @@ import { useState } from "react";
 import TokenVisualizer from "./playground/TokenVisualizer";
 import JsonValidator from "./playground/JsonValidator";
 import HallucinationHunt from "./playground/HallucinationHunt";
+import AiPicker from "./playground/AiPicker";
 
 const TABS = [
+  {
+    id: "qual-ia",
+    label: "Qual IA usar?",
+    icon: "🧭",
+    desc: "Descubra a melhor IA para cada tarefa do dia a dia.",
+  },
   {
     id: "tokens",
     label: "Tokens & Custo",
@@ -29,7 +36,7 @@ const TABS = [
 type TabId = (typeof TABS)[number]["id"];
 
 export default function Playground() {
-  const [tab, setTab] = useState<TabId>("tokens");
+  const [tab, setTab] = useState<TabId>("qual-ia");
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-8">
@@ -67,6 +74,7 @@ export default function Playground() {
       </div>
 
       <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+        {tab === "qual-ia" && <AiPicker />}
         {tab === "tokens" && <TokenVisualizer />}
         {tab === "json" && <JsonValidator />}
         {tab === "alucinacao" && <HallucinationHunt />}

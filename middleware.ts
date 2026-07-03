@@ -2,11 +2,19 @@ import { NextResponse, type NextRequest } from "next/server";
 import { COOKIE_NAME, verifySession } from "@/lib/session";
 
 const PUBLIC = ["/login"];
+// Conteúdo público (mentores/comunidade): sempre liberado, sem redirecionar.
+const PUBLIC_CONTENT = ["/roadmap"];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get(COOKIE_NAME)?.value;
   const session = await verifySession(token);
+
+  // Rota pública de conteúdo: acessível logado ou não, sem redirecionamentos.
+  const isPublicContent = PUBLIC_CONTENT.some(
+    (p) => pathname === p || pathname.startsWith(p + "/"),
+  );
+  if (isPublicContent) return NextResponse.next();
 
   const isPublic = PUBLIC.some(
     (p) => pathname === p || pathname.startsWith(p + "/"),

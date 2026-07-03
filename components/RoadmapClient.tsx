@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   LEVEL_META,
   ROADMAP,
@@ -75,35 +75,64 @@ function TopicCard({
   );
 }
 
+const LS_KEY = "roadmap-progress";
+
 export default function RoadmapClient({
   initialDone = [],
+  isPublic = false,
 }: {
   initialDone?: string[];
+  isPublic?: boolean;
 }) {
   const [done, setDone] = useState<Set<string>>(() => new Set(initialDone));
   const [selected, setSelected] = useState<Topic | null>(null);
   const [filter, setFilter] = useState<Level | "todos">("todos");
 
+  // Modo público: progresso vive só no navegador (localStorage), nada no banco.
+  useEffect(() => {
+    if (!isPublic) return;
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (raw) setDone(new Set(JSON.parse(raw) as string[]));
+    } catch {}
+  }, [isPublic]);
+
   const loaded = true;
   const doneCount = done.size;
   const isDone = useCallback((id: string) => done.has(id), [done]);
 
-  const toggle = useCallback((id: string) => {
-    setDone((prev) => {
-      const next = new Set(prev);
-      const willComplete = !next.has(id);
-      if (willComplete) next.add(id);
-      else next.delete(id);
-      // persiste no banco (otimista; ignora falha de rede silenciosamente)
-      void toggleProgressAction(id, willComplete).catch(() => {});
-      return next;
-    });
-  }, []);
+  const toggle = useCallback(
+    (id: string) => {
+      setDone((prev) => {
+        const next = new Set(prev);
+        const willComplete = !next.has(id);
+        if (willComplete) next.add(id);
+        else next.delete(id);
+        if (isPublic) {
+          // só no navegador do visitante
+          try {
+            localStorage.setItem(LS_KEY, JSON.stringify([...next]));
+          } catch {}
+        } else {
+          // persiste no banco (otimista; ignora falha de rede silenciosamente)
+          void toggleProgressAction(id, willComplete).catch(() => {});
+        }
+        return next;
+      });
+    },
+    [isPublic],
+  );
 
   const reset = useCallback(() => {
     setDone(new Set());
-    void resetProgressAction().catch(() => {});
-  }, []);
+    if (isPublic) {
+      try {
+        localStorage.removeItem(LS_KEY);
+      } catch {}
+    } else {
+      void resetProgressAction().catch(() => {});
+    }
+  }, [isPublic]);
 
   const sections = useMemo(
     () =>
@@ -266,6 +295,7 @@ export default function RoadmapClient({
         isDone={selected ? isDone(selected.id) : false}
         onToggle={() => selected && toggle(selected.id)}
         onClose={() => setSelected(null)}
+        showNotes={!isPublic}
       />
     </main>
   );
