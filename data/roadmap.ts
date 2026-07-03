@@ -374,6 +374,39 @@ export const ROADMAP: Section[] = [
           },
         ],
       },
+      {
+        id: "quantization-distillation",
+        title: "Quantização e Destilação",
+        short: "Como nascem os modelos 'mini' — menores, mais rápidos, mais baratos.",
+        level: "basico",
+        tags: ["fundamento", "modelos", "custo"],
+        whatIsIt:
+          "Quantização reduz a precisão numérica dos pesos do modelo (ex.: de 16 bits para 4) para ele rodar mais rápido e barato. Destilação treina um modelo menor (o 'aluno') para imitar as respostas de um maior (o 'professor'). É assim que surgem as versões mini/lite/turbo dos modelos — mais eficientes, com alguma perda de capacidade.",
+        whyQA:
+          "Trocar para um modelo menor parece decisão só de custo/infra, mas muda o comportamento do produto. O QA precisa saber que 'mesmo prompt, modelo menor' exige re-validação: a qualidade pode cair só em casos específicos (raciocínio longo, matemática, português rebuscado, casos de borda) — exatamente onde o teste de fumaça não olha.",
+        qaExample:
+          "O time troca o modelo do chatbot pela versão mini para cortar 80% do custo. Os testes básicos passam, mas o seu eval mostra que a acurácia em perguntas com cálculo caiu de 95% para 71%. Você aprova a troca só para intents simples e mantém o modelo maior no fluxo de pagamento — decisão de qualidade, com número.",
+        prompt:
+          "Explique de forma simples o que é quantização e destilação de modelos de IA e por que a versão 'mini' de um modelo pode errar mais em raciocínio matemático. Depois liste 5 tipos de teste que um QA deveria rodar antes de aprovar a troca para um modelo menor em produção.",
+      },
+      {
+        id: "benchmarks",
+        title: "Benchmarks de Modelos (MMLU, SWE-bench & cia)",
+        short: "Como ler o anúncio de um modelo novo sem cair no marketing.",
+        level: "basico",
+        tags: ["fundamento", "avaliacao", "senso-critico"],
+        whatIsIt:
+          "Benchmarks são provas padronizadas para comparar modelos: MMLU (conhecimento geral), HumanEval e SWE-bench (código), GPQA (ciência), entre outros. Todo lançamento de modelo vem com uma tabela dessas notas — e rankings como o LMArena comparam modelos por votos de usuários.",
+        whyQA:
+          "Benchmark é o eval genérico de outra pessoa — não do SEU produto. Um modelo campeão de ranking pode ir mal no seu caso (português, domínio, formato de saída). Há ainda o risco de contaminação: o modelo pode ter visto a prova durante o treino. O QA usa benchmark para pré-selecionar candidatos; quem decide é o eval do próprio time.",
+        qaExample:
+          "Sai um modelo 'número 1 em SWE-bench'. Antes de migrar a geração de testes do time, você roda seu golden dataset de 50 casos reais e descobre que ele formata Gherkin em português pior que o modelo atual. A tabela do anúncio sugere; o seu eval decide.",
+        prompt:
+          "Explique, para um QA, o que medem os benchmarks MMLU, HumanEval, SWE-bench e GPQA, e liste 4 razões pelas quais um modelo bem colocado nesses rankings pode ainda assim ir mal no meu produto específico.",
+        resources: [
+          { label: "LMArena — ranking comparativo de modelos", url: "https://lmarena.ai" },
+        ],
+      },
     ],
   },
 
@@ -789,6 +822,42 @@ export const ROADMAP: Section[] = [
           },
         ],
       },
+      {
+        id: "agent-skills",
+        title: "Skills e Instruções de Projeto (AGENTS.md)",
+        short: "Ensine o padrão do time uma vez — e todo prompt já nasce com ele.",
+        level: "intermediario",
+        tags: ["agentes", "produtividade", "padrao"],
+        whatIsIt:
+          "Assistentes de código leem arquivos de instrução versionados no repositório — AGENTS.md, CLAUDE.md, instruções do Copilot — e 'skills': pacotes de instruções e exemplos que o agente carrega quando a tarefa pede. É transformar o conhecimento do time em configuração versionada, em vez de repetir tudo em cada prompt.",
+        whyQA:
+          "Consistência é qualidade: se cada QA pede teste de um jeito, o agente gera cada hora num padrão. Com instruções de projeto, a convenção (framework, nomenclatura, estrutura de pastas, o que rodar antes de finalizar) vale para todo mundo — e vira artefato revisável em code review, como código.",
+        qaExample:
+          "Você cria um AGENTS.md no repo de automação: 'testes em Playwright + TypeScript, padrão AAA, seletores por data-testid, um arquivo por fluxo, rode lint e os testes antes de concluir'. A partir daí, qualquer pessoa que pedir 'gere o teste do fluxo de login' recebe código já no padrão do time — independente de quem escreveu o prompt.",
+        prompt:
+          "Escreva um arquivo de instruções (AGENTS.md) para um repositório de automação de testes em Playwright: convenções de nomenclatura, estrutura de pastas, padrão de seletores, o que o agente deve fazer antes de finalizar (lint + testes) e o que ele nunca deve fazer.",
+        resources: [
+          { label: "AGENTS.md — formato aberto de instruções para agentes", url: "https://agents.md" },
+        ],
+      },
+      {
+        id: "meta-prompting",
+        title: "Meta-prompting: IA para melhorar prompts",
+        short: "O modelo como engenheiro do próprio prompt — com eval decidindo.",
+        level: "intermediario",
+        tags: ["prompt", "otimizacao", "tecnica"],
+        whatIsIt:
+          "Meta-prompting é usar o próprio modelo para escrever, criticar e otimizar prompts: você mostra o prompt atual e exemplos de saídas ruins, e pede uma versão melhor. Ferramentas de otimização automática (como o DSPy e os 'prompt improvers' dos provedores) industrializam esse ciclo de gerar → medir → manter o melhor.",
+        whyQA:
+          "Ajustar prompt na base da tentativa e erro manual não escala nem gera evidência. Meta-prompting + um eval para medir transforma a melhoria de prompt num ciclo controlado, igual a refatorar código com testes: você compara versões com número, não com impressão. O QA vira dono do critério de aceite do prompt.",
+        qaExample:
+          "Seu prompt de geração de casos de teste produz passos vagos. Você entrega ao modelo o prompt + 3 saídas ruins anotadas ('faltou pré-condição', 'passo não verificável') e pede a v2. Roda as duas versões no golden dataset: a v2 sobe a nota de completude de 6,8 para 8,9. A troca entra com evidência, versionada.",
+        prompt:
+          "Aqui está um prompt que uso para gerar casos de teste: [cole seu prompt]. Critique-o como um engenheiro de prompts: liste ambiguidades, informações faltantes e pontos frágeis. Depois proponha uma versão melhorada e explique cada mudança.",
+        resources: [
+          { label: "DSPy — otimização programática de prompts", url: "https://github.com/stanfordnlp/dspy" },
+        ],
+      },
     ],
   },
 
@@ -860,6 +929,27 @@ export const ROADMAP: Section[] = [
           {
             label: "IBM Technology — Multi AI Agent Systems: When One Brain Isn't Enough",
             url: "https://www.youtube.com/watch?v=kYkZI3oj2W4",
+          },
+        ],
+      },
+      {
+        id: "subagents",
+        title: "Subagentes e Delegação de Contexto",
+        short: "O principal delega; o subagente explora e volta só com a conclusão.",
+        level: "avancado",
+        tags: ["agentes", "arquitetura", "contexto", "tendencia"],
+        whatIsIt:
+          "Subagente é um agente auxiliar que o agente principal (orquestrador) dispara para uma tarefa específica — com contexto, ferramentas e instruções próprios. O padrão saiu da teoria multi-agente e virou recurso nativo das ferramentas de agentic coding: subagentes definidos em arquivos versionados no repo, delegação em paralelo. O motivo central é isolamento de contexto: o subagente faz a exploração 'suja' (ler dezenas de arquivos, varrer logs) e devolve só a conclusão, mantendo o contexto do principal limpo.",
+        whyQA:
+          "Dois ângulos. Para USAR: revisões paralelas (um subagente por dimensão de risco) e verificação adversarial — subagentes céticos tentando refutar cada achado antes do report. Para TESTAR: os pontos frágeis são os handoffs — o orquestrador resume mal a tarefa, a conclusão do subagente se perde na síntese (telefone sem fio), custo e latência multiplicam. Avaliar a trajetória de cada subagente, não só a resposta final.",
+        qaExample:
+          "Revisão de release com 4 subagentes em paralelo — segurança, performance, regressão visual e contratos de API — e um quinto, cético, que tenta refutar cada achado antes de entrar no relatório. Um agente único com tudo no contexto se perde no meio; com subagentes, cada um foca no seu recorte e o principal sintetiza só o que sobreviveu à verificação.",
+        prompt:
+          "Explique o padrão orquestrador + subagentes (com isolamento de contexto) e desenhe uma revisão de pull request usando 3 subagentes paralelos por dimensão de risco + 1 subagente verificador adversarial. Depois liste os modos de falha de handoff entre agentes que eu deveria testar.",
+        resources: [
+          {
+            label: "Anthropic — How we built our multi-agent research system",
+            url: "https://www.anthropic.com/engineering/built-multi-agent-research-system",
           },
         ],
       },
@@ -1298,6 +1388,39 @@ export const ROADMAP: Section[] = [
           { label: "Dynatrace — Model Context Protocol (MCP)", url: "https://www.dynatrace.com/knowledge-base/model-context-protocol/" },
         ],
       },
+      {
+        id: "a2a-protocol",
+        title: "A2A — Agent2Agent e Interoperabilidade",
+        short: "MCP conecta agente a ferramenta; A2A conecta agente a agente.",
+        level: "avancado",
+        tags: ["agentes", "protocolo", "arquitetura"],
+        whatIsIt:
+          "A2A (Agent2Agent) é um protocolo aberto — hoje mantido na Linux Foundation — para agentes de fornecedores diferentes se descobrirem e delegarem tarefas entre si. Complementa o MCP: o MCP padroniza a conexão agente↔ferramentas/dados; o A2A padroniza agente↔agente, com 'agent cards' que descrevem o que cada agente sabe fazer.",
+        whyQA:
+          "Quando o agente do seu produto conversa com o agente de um terceiro, a fronteira de teste muda: contrato entre agentes, autenticação, e o que acontece quando o outro lado responde errado, demora ou 'mente'. É teste de integração — só que entre inteligências, onde o parceiro também é não-determinístico.",
+        qaExample:
+          "O agente de compras da empresa negocia prazo de entrega com o agente do fornecedor via A2A. Você testa o contrato: e se o agente externo devolver um prazo absurdo? O seu aceita cegamente? Você cria a suíte do 'parceiro malicioso/quebrado' — o mock agora é um agente inteiro simulando o outro lado.",
+        prompt:
+          "Explique a diferença entre MCP e A2A para um QA e liste 8 cenários de teste para uma integração em que o agente da minha empresa delega tarefas a um agente de um fornecedor externo (inclua falhas, timeout, respostas maliciosas e violação de contrato).",
+        resources: [
+          { label: "A2A Project — protocolo Agent2Agent (Linux Foundation)", url: "https://github.com/a2aproject/A2A" },
+        ],
+      },
+      {
+        id: "agent-sandboxing",
+        title: "Sandboxing e Permissões de Agentes",
+        short: "O agente executa ações — a pergunta é: o que ele PODE tocar?",
+        level: "avancado",
+        tags: ["agentes", "seguranca", "arquitetura"],
+        whatIsIt:
+          "Agentes que agem (rodar código, mexer em arquivos, chamar APIs) precisam de limites técnicos: sandbox (ambiente isolado), permissões mínimas (least privilege), lista de ações que exigem aprovação humana e tetos de gasto/escopo. É a diferença entre confiar no modelo e conter o modelo.",
+        whyQA:
+          "O 'blast radius' (raio de dano) de um agente é requisito de qualidade. O QA testa não só se o agente faz o certo, mas se ele CONSEGUE fazer o errado: apagar dados, alcançar produção, vazar secrets, gastar sem teto. Um agente correto num ambiente sem limites continua sendo um risco reprovável.",
+        qaExample:
+          "Antes de liberar um agente que corrige testes quebrados no CI, você valida os limites: ele só escreve na pasta de testes? Não alcança secrets? Um prompt injection escondido num log conseguiria fazê-lo abrir um PR malicioso? Você escreve testes que TENTAM o abuso — e prova que o sandbox segura.",
+        prompt:
+          "Vou colocar um agente de IA para rodar comandos no repositório do time. Monte um checklist de sandboxing e permissões: o que isolar, o que bloquear por padrão, quais ações devem exigir aprovação humana e como eu testaria cada limite com testes de abuso.",
+      },
     ],
   },
 
@@ -1593,6 +1716,39 @@ export const ROADMAP: Section[] = [
             url: "https://huyenchip.com/2023/04/11/llm-engineering.html",
           },
         ],
+      },
+      {
+        id: "user-simulation",
+        title: "Simulação de Usuários: testar agentes com agentes",
+        short: "Personas sintéticas conversando com seu agente, em escala.",
+        level: "especialista",
+        tags: ["avaliacao", "agentes", "automacao"],
+        whatIsIt:
+          "Em vez de testar um chatbot mensagem a mensagem, você usa um segundo LLM como 'usuário simulado': personas com objetivo, humor e tática (apressado, confuso, mal-intencionado) que conversam com seu agente do início ao fim da tarefa. Benchmarks de agentes como o τ-bench usam exatamente essa técnica.",
+        whyQA:
+          "Conversas são infinitas — roteiro fixo cobre uma fração. Simulando usuários, você explora centenas de trajetórias por noite e mede a taxa de sucesso da TAREFA (o pedido foi resolvido dentro da política?), não só se a resposta 'parece boa'. É o salto de testar turnos para testar conversas completas.",
+        qaExample:
+          "Para o bot de suporte, você cria 8 personas ('furioso com cobrança duplicada', 'idoso com dificuldade', 'fraudador pedindo reembolso indevido') e roda 50 conversas de cada por build. Um LLM juiz marca sucesso da tarefa e violações de política; a taxa de fraudador que consegue reembolso vira métrica de release.",
+        prompt:
+          "Desenhe um sistema de simulação de usuários para testar um chatbot de suporte: 6 personas com objetivo e comportamento, critério de sucesso por conversa, como um LLM juiz avaliaria cada trajetória e quais métricas agregadas eu reportaria por build.",
+        resources: [
+          { label: "τ-bench — benchmark de agentes com usuários simulados", url: "https://github.com/sierra-research/tau-bench" },
+        ],
+      },
+      {
+        id: "model-migration",
+        title: "Migração de Modelo sem Regressão",
+        short: "Trocar de modelo (ou de versão) com rede de segurança.",
+        level: "especialista",
+        tags: ["evals", "processo", "lideranca"],
+        whatIsIt:
+          "Modelos são atualizados e aposentados o tempo todo (deprecations, versões novas, troca de fornecedor). Migração de modelo é o processo de re-certificar o produto: rodar os evals nos candidatos, comparar lado a lado, ajustar prompts (que foram otimizados para o modelo antigo) e fazer rollout gradual com rollback pronto.",
+        whyQA:
+          "É o QA quem dá o go. A versão nova pode melhorar a média e piorar exatamente o seu caso crítico — e prompts afinados para o modelo antigo podem se comportar diferente no novo. Sem processo, trocar de modelo é um deploy às cegas do componente mais imprevisível do sistema; com processo, vira rotina sem medo.",
+        qaExample:
+          "O fornecedor anuncia que o modelo atual será desligado em 90 dias. Você roda o golden dataset nos 2 candidatos: o novo ganha em raciocínio, mas quebra o formato JSON em 4% dos casos. Ajusta o prompt de saída, re-roda até zerar, faz canary com 10% do tráfego monitorando os evals online — e só então migra 100%.",
+        prompt:
+          "Monte um plano de migração de modelo de IA para um produto em produção: etapas (baseline, comparação com evals, ajuste de prompts, canary, rollback), critérios de aprovação por etapa e os riscos que cada etapa mitiga. Formate como checklist executável.",
       },
     ],
   },
