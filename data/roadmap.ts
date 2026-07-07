@@ -423,7 +423,7 @@ export const ROADMAP: Section[] = [
         level: "basico",
         tags: ["fundamento", "harness", "arquitetura"],
         whatIsIt:
-          "Um harness é toda a estrutura que envolve o modelo para transformá-lo em algo útil: montar o prompt, injetar contexto, chamar ferramentas, tentar de novo quando falha, validar e formatar a resposta. O modelo (LLM) é só o motor; o harness é o chassi, a direção e os freios. O termo vem do 'test harness' que o QA já conhece — o arcabouço que prepara, executa e verifica um teste. Aqui é a mesma ideia, em volta da IA.",
+          "Um harness é toda a estrutura que envolve o modelo para transformá-lo em algo útil: montar o prompt, injetar contexto, chamar ferramentas, tentar de novo quando falha, validar e formatar a resposta. O modelo (LLM) é só o motor; o harness é o chassi, a direção e os freios. O termo vem do 'test harness' de quem já trabalha com testes — o arcabouço que prepara, executa e verifica um teste. Aqui é a mesma ideia, em volta da IA.",
         whyQA:
           "A maior parte das falhas de um produto de IA não está 'dentro do modelo' — está no harness: contexto errado, parsing frágil, ferramenta chamada com argumento inválido, retry que mascara um erro. É exatamente a camada que o QA sabe atacar. Entender o harness é entender ONDE testar, em vez de culpar 'a IA'.",
         qaExample:
@@ -1046,7 +1046,7 @@ export const ROADMAP: Section[] = [
     level: "intermediario",
     title: "IA no Processo: do Upstream ao Downstream",
     subtitle:
-      "Discovery, delivery e portfólio com IA — para QAs e Agilistas trabalharem o fluxo juntos.",
+      "Discovery, delivery e portfólio com IA — para os times de qualidade e agilidade trabalharem o fluxo juntos.",
     goal: "Você usa IA do refinamento ao release: histórias melhores no upstream, fluxo visível no downstream e iniciativas bem quebradas no portfólio.",
     topics: [
       {
@@ -1983,9 +1983,9 @@ export const ROADMAP: Section[] = [
   {
     id: "ia-para-qa",
     level: "especialista",
-    title: "IA Aplicada a QA (Especialista)",
-    subtitle: "Construir, validar e operar IA — o QA como engenheiro de qualidade de IA.",
-    goal: "Você cria ferramentas/agentes de QA, pensa em fluxo AI First ponta a ponta e lidera a qualidade de IA no time.",
+    title: "IA Aplicada à Qualidade (Especialista)",
+    subtitle: "Construir, validar e operar IA — de quem testa a quem governa a qualidade da IA.",
+    goal: "Você cria ferramentas/agentes de qualidade, pensa em fluxo AI First ponta a ponta e lidera a qualidade de IA no time.",
     topics: [
       {
         id: "ai-test-generation",
@@ -1994,7 +1994,7 @@ export const ROADMAP: Section[] = [
         level: "especialista",
         tags: ["aplicacao", "automacao", "produtividade"],
         whatIsIt:
-          "Uso de IA para gerar casos de teste, dados de teste, cenários BDD e até código de automação a partir de requisitos, código ou specs de API. Não substitui o QA — amplia seu alcance, gerando rascunhos que o QA cura e prioriza.",
+          "Uso de IA para gerar casos de teste, dados de teste, cenários BDD e até código de automação a partir de requisitos, código ou specs de API. Não substitui você — amplia seu alcance, gerando rascunhos que o time cura e prioriza.",
         whyQA:
           "É o ganho de produtividade mais imediato e visível. Mas o valor real não é 'a IA escreve testes': é o QA usar o tempo liberado para pensar em risco, cobertura e cenários que a IA não imagina. O mindset muda de 'executor' para 'curador e estrategista'.",
         qaExample:
@@ -2265,7 +2265,7 @@ export const ROADMAP: Section[] = [
       },
       {
         id: "ai-first-qa-flow",
-        title: "Fluxo de QA AI First (ponta a ponta)",
+        title: "Fluxo de Qualidade AI First (ponta a ponta)",
         short: "A IA em cada etapa: do requisito à qualidade em produção.",
         level: "especialista",
         tags: ["carreira", "estrategia", "processo", "tendencia"],
@@ -2290,8 +2290,8 @@ export const ROADMAP: Section[] = [
       },
       {
         id: "quality-of-ai",
-        title: "Qualidade de Sistemas de IA (a nova QA)",
-        short: "A consolidação: o QA como engenheiro de qualidade de IA.",
+        title: "Qualidade de Sistemas de IA (a nova fronteira)",
+        short: "A consolidação: de quem testa a quem governa a qualidade da IA.",
         level: "especialista",
         tags: ["carreira", "estrategia", "tendencia"],
         whatIsIt:
