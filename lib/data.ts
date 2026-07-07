@@ -177,16 +177,17 @@ export type UserProgressRow = {
   id: string;
   username: string;
   is_admin: boolean;
+  area: "qa" | "agilidade";
   completed: number;
 };
 
 export async function getAllUsersProgress(): Promise<UserProgressRow[]> {
   return await sql<UserProgressRow[]>`
-    select u.id, u.username, u.is_admin,
+    select u.id, u.username, u.is_admin, u.area,
            count(p.topic_id)::int as completed
     from users u
     left join progress p on p.user_id = u.id
-    group by u.id, u.username, u.is_admin
+    group by u.id, u.username, u.is_admin, u.area
     order by completed desc, u.username asc`;
 }
 

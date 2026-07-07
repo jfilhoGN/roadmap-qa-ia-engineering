@@ -3,11 +3,38 @@
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { LEVEL_META, type Topic } from "@/data/roadmap";
+import { LEVEL_META, type RoadmapView, type Topic } from "@/data/roadmap";
 import { DEEP_DIVES } from "@/data/deepDives";
 import { QUIZZES } from "@/data/quizzes";
 import Quiz from "./Quiz";
 import TopicNotePanel from "./TopicNotePanel";
+
+const QA_SECTION = "## Por que isso importa para o QA";
+const AGILE_SECTION = "## Por que isso importa para o Agilista";
+
+/** Slug de âncora para headings do artigo (para os links "ir para a sua área"). */
+function slugForHeading(children: React.ReactNode): string {
+  const text = Array.isArray(children) ? children.join("") : String(children ?? "");
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+/**
+ * O artigo é generalista, mas tem seções por área. Na trilha QA escondemos a
+ * seção do Agilista e vice-versa; na visão geral mostramos as duas.
+ */
+function filterArticleByView(markdown: string, view: RoadmapView): string {
+  if (view === "geral") return markdown;
+  const drop = view === "qa" ? AGILE_SECTION : QA_SECTION;
+  return markdown
+    .split(/\n(?=## )/)
+    .filter((section) => !section.startsWith(drop))
+    .join("\n");
+}
 
 function Article({ markdown }: { markdown: string }) {
   return (
@@ -16,12 +43,18 @@ function Article({ markdown }: { markdown: string }) {
         remarkPlugins={[remarkGfm]}
         components={{
           h1: ({ children }) => (
-            <h2 className="text-xl font-bold text-white mt-7 mb-2.5 first:mt-0">
+            <h2
+              id={slugForHeading(children)}
+              className="text-xl font-bold text-white mt-7 mb-2.5 first:mt-0"
+            >
               {children}
             </h2>
           ),
           h2: ({ children }) => (
-            <h2 className="text-lg font-bold text-white mt-7 mb-2.5 first:mt-0 flex items-center gap-2">
+            <h2
+              id={slugForHeading(children)}
+              className="text-lg font-bold text-white mt-7 mb-2.5 first:mt-0 flex items-center gap-2 scroll-mt-4"
+            >
               {children}
             </h2>
           ),
@@ -135,12 +168,15 @@ export default function TopicDetail({
   onToggle,
   onClose,
   showNotes = true,
+  view = "qa",
 }: {
   topic: Topic | null;
   isDone: boolean;
   onToggle: () => void;
   onClose: () => void;
   showNotes?: boolean;
+  /** Lente de visualização: generalista, QA ou Agilidade. */
+  view?: RoadmapView;
 }) {
   // Fecha com ESC
   useEffect(() => {
@@ -207,11 +243,56 @@ export default function TopicDetail({
           <div className="mx-auto max-w-3xl">
           {deepDive ? (
             <>
-              <div className="mb-5 flex items-center gap-2 text-xs text-white/40">
+              <div className="mb-5 flex flex-wrap items-center gap-2 text-xs text-white/40">
                 <span aria-hidden>⏱️</span>
                 <span>~{readingMinutes} min de leitura</span>
+                {/* Visão geral: links para a parte dos exemplos de cada área */}
+                {view === "geral" && (
+                  <span className="flex items-center gap-1.5 ml-auto">
+                    <span className="text-white/30">Exemplos por área:</span>
+                    <a
+                      href={`#${slugForHeading(QA_SECTION.replace("## ", ""))}`}
+                      className="rounded-full bg-emerald-500/10 text-emerald-300 ring-1 ring-emerald-400/30 px-2.5 py-0.5 font-semibold hover:bg-emerald-500/20 transition-colors"
+                    >
+                      🧪 QA
+                    </a>
+                    {(deepDive.includes(AGILE_SECTION) || topic.whyAgile) && (
+                      <a
+                        href={
+                          deepDive.includes(AGILE_SECTION)
+                            ? `#${slugForHeading(AGILE_SECTION.replace("## ", ""))}`
+                            : "#para-agilidade"
+                        }
+                        className="rounded-full bg-sky-500/10 text-sky-300 ring-1 ring-sky-400/30 px-2.5 py-0.5 font-semibold hover:bg-sky-500/20 transition-colors"
+                      >
+                        🔄 Agilidade
+                      </a>
+                    )}
+                  </span>
+                )}
               </div>
-              <Article markdown={deepDive} />
+              <Article markdown={filterArticleByView(deepDive, view)} />
+              {/* Lente Agilidade (ou geral): bloco de exemplo da área quando o
+                  artigo ainda não tem a seção do Agilista embutida */}
+              {view !== "qa" &&
+                topic.whyAgile &&
+                !deepDive.includes(AGILE_SECTION) && (
+                  <div
+                    id="para-agilidade"
+                    className="mt-7 rounded-2xl bg-sky-500/[0.05] ring-1 ring-sky-400/20 p-5 scroll-mt-4"
+                  >
+                    <Block label="Por que importa para o Agilista" icon="🔄">
+                      {topic.whyAgile}
+                    </Block>
+                    {topic.agileExample && (
+                      <Block label="Exemplo aplicado a Agilidade" icon="📋">
+                        <div className="rounded-xl bg-white/[0.04] ring-1 ring-white/10 p-4">
+                          {topic.agileExample}
+                        </div>
+                      </Block>
+                    )}
+                  </div>
+                )}
               <hr className="my-7 border-white/10" />
             </>
           ) : (
@@ -220,15 +301,50 @@ export default function TopicDetail({
                 {topic.whatIsIt}
               </Block>
 
-              <Block label="Por que importa para o QA" icon="🎯">
-                {topic.whyQA}
-              </Block>
+              {view !== "agilidade" && (
+                <>
+                  <Block label="Por que importa para o QA" icon="🎯">
+                    {topic.whyQA}
+                  </Block>
 
-              <Block label="Exemplo aplicado a QA" icon="🧪">
-                <div className="rounded-xl bg-white/[0.04] ring-1 ring-white/10 p-4">
-                  {topic.qaExample}
-                </div>
-              </Block>
+                  <Block label="Exemplo aplicado a QA" icon="🧪">
+                    <div className="rounded-xl bg-white/[0.04] ring-1 ring-white/10 p-4">
+                      {topic.qaExample}
+                    </div>
+                  </Block>
+                </>
+              )}
+
+              {view !== "qa" && topic.whyAgile && (
+                <>
+                  <Block label="Por que importa para o Agilista" icon="🔄">
+                    {topic.whyAgile}
+                  </Block>
+
+                  {topic.agileExample && (
+                    <Block label="Exemplo aplicado a Agilidade" icon="📋">
+                      <div className="rounded-xl bg-white/[0.04] ring-1 ring-white/10 p-4">
+                        {topic.agileExample}
+                      </div>
+                    </Block>
+                  )}
+                </>
+              )}
+
+              {/* Trilha Agilidade sem conteúdo específico ainda: mostra a lente QA
+                  como referência, sinalizada. */}
+              {view === "agilidade" && !topic.whyAgile && (
+                <>
+                  <Block label="Por que importa (exemplo do QA)" icon="🎯">
+                    {topic.whyQA}
+                  </Block>
+                  <Block label="Exemplo aplicado a QA" icon="🧪">
+                    <div className="rounded-xl bg-white/[0.04] ring-1 ring-white/10 p-4">
+                      {topic.qaExample}
+                    </div>
+                  </Block>
+                </>
+              )}
             </>
           )}
 

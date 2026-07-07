@@ -1,11 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   LEVEL_META,
   ROADMAP,
   TOTAL_TOPICS,
   type Level,
+  type RoadmapView,
   type Topic,
 } from "@/data/roadmap";
 import { resetProgressAction, toggleProgressAction } from "@/app/actions/app";
@@ -77,12 +79,48 @@ function TopicCard({
 
 const LS_KEY = "roadmap-progress";
 
+/** Textos do cabeçalho por lente de visualização. */
+const VIEW_HEADER: Record<
+  RoadmapView,
+  { badge: string; title: string; sub: string; highlight: string }
+> = {
+  geral: {
+    badge: "COE Qualidade & Agilidade · Roadmap Dinâmico",
+    title: "Roadmap de IA",
+    sub: "Domine a IA de ponta a ponta: dos fundamentos aos agentes. O conteúdo é o mesmo para todos —",
+    highlight:
+      " escolha sua lente (QA ou Agilidade) e veja cada conceito aplicado à sua área.",
+  },
+  qa: {
+    badge: "COE Qualidade · Roadmap Dinâmico",
+    title: "IA para QAs",
+    sub: "Domine a IA de ponta a ponta: dos fundamentos aos agentes, com exemplos reais de QA em cada passo.",
+    highlight:
+      " Aqui você não aprende a usar IA — aprende a construí-la, testá-la e confiar nela.",
+  },
+  agilidade: {
+    badge: "Agilidade · Roadmap Dinâmico",
+    title: "IA para Agilistas",
+    sub: "Domine a IA de ponta a ponta: dos fundamentos aos agentes, com exemplos reais de Agilidade em cada passo.",
+    highlight:
+      " Aqui você não aprende a usar IA — aprende a colocá-la a serviço do fluxo e do time.",
+  },
+};
+
+const VIEW_TABS: { view: RoadmapView; href: string; label: string }[] = [
+  { view: "geral", href: "/", label: "🌐 Geral" },
+  { view: "qa", href: "/qa", label: "🧪 QA" },
+  { view: "agilidade", href: "/agilidade", label: "🔄 Agilidade" },
+];
+
 export default function RoadmapClient({
   initialDone = [],
   isPublic = false,
+  view = "qa",
 }: {
   initialDone?: string[];
   isPublic?: boolean;
+  view?: RoadmapView;
 }) {
   const [done, setDone] = useState<Set<string>>(() => new Set(initialDone));
   const [selected, setSelected] = useState<Topic | null>(null);
@@ -147,20 +185,35 @@ export default function RoadmapClient({
       {/* ───────────── Cabeçalho ───────────── */}
       <header className="text-center mb-10">
         <span className="inline-block text-xs font-semibold tracking-widest text-white/40 uppercase">
-          COE Qualidade · Roadmap Dinâmico
+          {VIEW_HEADER[view].badge}
         </span>
         <h1 className="mt-3 text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-br from-white via-white to-white/60 bg-clip-text text-transparent">
-          IA para QAs
+          {VIEW_HEADER[view].title}
         </h1>
         <p className="mt-4 max-w-2xl mx-auto text-white/60 leading-relaxed">
-          Domine a IA de ponta a ponta: dos fundamentos aos agentes, com
-          exemplos reais de QA em cada passo.{" "}
-          <span className="text-white/80">
-            Aqui você não aprende a usar IA — aprende a construí-la, testá-la e
-            confiar nela.
-          </span>
+          {VIEW_HEADER[view].sub}
+          <span className="text-white/80">{VIEW_HEADER[view].highlight}</span>
         </p>
       </header>
+
+      {/* ───────────── Seletor de lente (só na área logada) ───────────── */}
+      {!isPublic && (
+        <div className="flex items-center justify-center gap-2 mb-8">
+          {VIEW_TABS.map((t) => (
+            <Link
+              key={t.view}
+              href={t.href}
+              className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-semibold transition-colors ${
+                view === t.view
+                  ? "bg-white text-black"
+                  : "bg-white/5 text-white/60 ring-1 ring-white/10 hover:bg-white/10 hover:text-white"
+              }`}
+            >
+              {t.label}
+            </Link>
+          ))}
+        </div>
+      )}
 
       {/* ───────────── Painel de progresso ───────────── */}
       <div className="mx-auto max-w-xl rounded-2xl border border-white/10 bg-white/[0.03] p-5 mb-8">
@@ -285,8 +338,11 @@ export default function RoadmapClient({
 
       {/* ───────────── Rodapé ───────────── */}
       <footer className="mt-16 text-center text-xs text-white/30">
-        Feito para o time de COE Qualidade · Clique em cada tópico para ver o
-        exemplo aplicado a QA e um prompt para testar.
+        {view === "qa"
+          ? "Feito para o time de COE Qualidade · Clique em cada tópico para ver o exemplo aplicado a QA e um prompt para testar."
+          : view === "agilidade"
+            ? "Feito para o time de Agilidade · Clique em cada tópico para ver o exemplo aplicado a Agilidade e um prompt para testar."
+            : "Feito para os times de COE Qualidade & Agilidade · Clique em cada tópico e use os links de área para ver o exemplo aplicado ao seu contexto."}
       </footer>
 
       {/* Drawer de detalhe */}
@@ -296,6 +352,7 @@ export default function RoadmapClient({
         onToggle={() => selected && toggle(selected.id)}
         onClose={() => setSelected(null)}
         showNotes={!isPublic}
+        view={view}
       />
     </main>
   );

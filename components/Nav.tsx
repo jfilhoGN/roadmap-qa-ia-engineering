@@ -28,36 +28,40 @@ export default function Nav({
   const pathname = usePathname();
 
   const links = [
-    { href: "/", label: "Roadmap", icon: "🗺️" },
-    { href: "/playground", label: "Playground", icon: "🧪" },
-    { href: "/anotacoes", label: "Anotações", icon: "📝" },
-    { href: "/estudos", label: "Próximos estudos", icon: "🎯" },
-    ...(isAdmin
-      ? [{ href: "/relatorio", label: "Relatório", icon: "📊" }]
-      : []),
+    { href: "/", label: "Roadmap" },
+    { href: "/playground", label: "Playground" },
+    { href: "/anotacoes", label: "Anotações" },
+    { href: "/estudos", label: "Próximos estudos" },
+    ...(isAdmin ? [{ href: "/relatorio", label: "Relatório" }] : []),
   ];
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-[#0a0a0f]/80 backdrop-blur">
       <nav className="mx-auto max-w-6xl px-4 h-14 flex items-center gap-1">
-        <span className="font-bold text-white mr-3 hidden sm:block">
-          IA<span className="text-white/40">/</span>QA
-        </span>
+        <Link
+          href="/"
+          className="font-bold text-white mr-3 hidden sm:block whitespace-nowrap tracking-tight"
+        >
+          Roadmap <span className="text-white/40">IA</span>
+        </Link>
         <div className="flex items-center gap-1 flex-1 overflow-x-auto">
           {links.map((l) => {
             const active =
-              l.href === "/" ? pathname === "/" : pathname.startsWith(l.href);
+              l.href === "/"
+                ? pathname === "/" ||
+                  pathname.startsWith("/qa") ||
+                  pathname.startsWith("/agilidade")
+                : pathname.startsWith(l.href);
             return (
               <Link
                 key={l.href}
                 href={l.href}
-                className={`shrink-0 inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
+                className={`shrink-0 inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
                   active
                     ? "bg-white text-black"
                     : "text-white/60 hover:text-white hover:bg-white/10"
                 }`}
               >
-                <span aria-hidden>{l.icon}</span>
                 {l.label}
               </Link>
             );
