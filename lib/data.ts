@@ -7,13 +7,14 @@ export type DbUser = {
   password_hash: string;
   is_admin: boolean;
   must_change_password: boolean;
+  area: "qa" | "agilidade";
 };
 
 export async function getUserByUsername(
   username: string,
 ): Promise<DbUser | null> {
   const rows = await sql<DbUser[]>`
-    select id, username, password_hash, is_admin, must_change_password
+    select id, username, password_hash, is_admin, must_change_password, area
     from users where username = ${username} limit 1`;
   return rows[0] ?? null;
 }
@@ -178,16 +179,17 @@ export type UserProgressRow = {
   username: string;
   is_admin: boolean;
   area: "qa" | "agilidade";
+  must_change_password: boolean;
   completed: number;
 };
 
 export async function getAllUsersProgress(): Promise<UserProgressRow[]> {
   return await sql<UserProgressRow[]>`
-    select u.id, u.username, u.is_admin, u.area,
+    select u.id, u.username, u.is_admin, u.area, u.must_change_password,
            count(p.topic_id)::int as completed
     from users u
     left join progress p on p.user_id = u.id
-    group by u.id, u.username, u.is_admin, u.area
+    group by u.id, u.username, u.is_admin, u.area, u.must_change_password
     order by completed desc, u.username asc`;
 }
 

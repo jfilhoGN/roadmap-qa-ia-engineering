@@ -2,9 +2,9 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Roadmap de IA para QAs — COE Qualidade",
+  title: "Roadmap de IA — COE Qualidade & Agilidade",
   description:
-    "Roadmap dinâmico para QAs dominarem IA, do básico ao especialista, com exemplos práticos aplicados a Qualidade.",
+    "Roadmap dinâmico de IA, do básico ao especialista, com exemplos práticos por trilha — Qualidade (QA) e Agilidade.",
 };
 
 export const viewport: Viewport = {

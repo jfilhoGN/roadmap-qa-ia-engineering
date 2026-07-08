@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import { LEVEL_META, type RoadmapView, type Topic } from "@/data/roadmap";
 import { DEEP_DIVES } from "@/data/deepDives";
 import { QUIZZES } from "@/data/quizzes";
+import { QUIZZES_AGILE } from "@/data/quizzesAgile";
 import Quiz from "./Quiz";
 import TopicNotePanel from "./TopicNotePanel";
 
@@ -191,7 +192,11 @@ export default function TopicDetail({
   if (!topic) return null;
   const meta = LEVEL_META[topic.level];
   const deepDive = DEEP_DIVES[topic.id];
-  const quiz = QUIZZES[topic.id];
+  // Agilidade usa o quiz do agilista; QA e Geral usam o quiz padrão.
+  const quiz =
+    view === "agilidade"
+      ? (QUIZZES_AGILE[topic.id] ?? QUIZZES[topic.id])
+      : QUIZZES[topic.id];
   const readingMinutes = deepDive
     ? Math.max(1, Math.round(deepDive.split(/\s+/).length / 200))
     : 0;

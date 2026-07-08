@@ -40,6 +40,8 @@ export default function RelatorioClient({
   const countArea = (area: "qa" | "agilidade") =>
     rows.filter((r) => r.area === area).length;
 
+  const pendentes = filtered.filter((r) => r.must_change_password).length;
+
   return (
     <>
       <div className="mb-6">
@@ -52,6 +54,14 @@ export default function RelatorioClient({
           <span className="text-white/60">
             {filtered.length} {filtered.length === 1 ? "pessoa" : "pessoas"}
           </span>
+          {pendentes > 0 && (
+            <>
+              {" · "}
+              <span className="text-amber-300/90">
+                {pendentes} com senha pendente
+              </span>
+            </>
+          )}
           .
         </p>
 
@@ -84,11 +94,14 @@ export default function RelatorioClient({
         </div>
       </div>
 
-      <div className="rounded-2xl border border-white/10 overflow-hidden">
+      <div className="rounded-2xl border border-white/10 overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-white/5 text-white/60 text-left">
               <th className="px-4 py-3 font-semibold">Colaborador</th>
+              <th className="px-4 py-3 font-semibold w-32 whitespace-nowrap">
+                Senha
+              </th>
               <th className="px-4 py-3 font-semibold w-24 text-right">
                 Concluído
               </th>
@@ -118,6 +131,19 @@ export default function RelatorioClient({
                       </span>
                     )}
                   </td>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    {r.must_change_password ? (
+                      <span className="inline-flex items-center gap-1.5 text-xs text-amber-300/90">
+                        <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+                        Pendente
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 text-xs text-emerald-300/90">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                        Trocada
+                      </span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-right text-white/70 tabular-nums">
                     {r.completed}/{totalTopics}
                   </td>
@@ -140,7 +166,7 @@ export default function RelatorioClient({
             {filtered.length === 0 && (
               <tr>
                 <td
-                  colSpan={3}
+                  colSpan={4}
                   className="px-4 py-8 text-center text-sm text-white/40"
                 >
                   Nenhum colaborador nesta área ainda.

@@ -2387,3 +2387,30 @@ export const ROADMAP: Section[] = [
 
 export const ALL_TOPICS: Topic[] = ROADMAP.flatMap((s) => s.topics);
 export const TOTAL_TOPICS = ALL_TOPICS.length;
+
+/**
+ * Tópicos de ferramenta/técnica profunda de teste: relevantes para o QA operar,
+ * mas periféricos ao dia a dia do Agilista. Na trilha Agilidade eles aparecem
+ * esmaecidos e marcados como "foco QA" (o agilista entende o conceito, não opera
+ * a ferramenta). Ninguém é escondido — só sinalizado.
+ */
+export const QA_PRIMARY_TOPICS: ReadonlySet<string> = new Set([
+  "cypress-ai",
+  "zephyr-ai",
+  "playwright-mcp",
+  "wdio-mcp",
+  "browserstack-ai",
+  "k6-ai",
+  "self-healing",
+  "ai-test-generation",
+  "ai-validators",
+  "flaky-detection",
+  "nondeterministic-assertions",
+  "visual-testing-ai",
+]);
+
+/** Um tópico é relevante para a trilha, considerando a lente. */
+export function isRelevant(topicId: string, view: RoadmapView): boolean {
+  if (view !== "agilidade") return true;
+  return !QA_PRIMARY_TOPICS.has(topicId);
+}

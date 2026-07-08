@@ -3,9 +3,12 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  ALL_TOPICS,
   LEVEL_META,
+  QA_PRIMARY_TOPICS,
   ROADMAP,
   TOTAL_TOPICS,
+  isRelevant,
   type Level,
   type RoadmapView,
   type Topic,
@@ -37,11 +40,13 @@ function TopicCard({
   topic,
   index,
   done,
+  dimmed,
   onClick,
 }: {
   topic: Topic;
   index: number;
   done: boolean;
+  dimmed: boolean;
   onClick: () => void;
 }) {
   const meta = LEVEL_META[topic.level];
@@ -52,7 +57,7 @@ function TopicCard({
         done
           ? "bg-emerald-500/[0.07] border-emerald-400/30"
           : "bg-white/[0.03] border-white/10 hover:border-white/25 hover:bg-white/[0.06]"
-      }`}
+      } ${dimmed && !done ? "opacity-55 hover:opacity-100" : ""}`}
     >
       <div className="flex items-start gap-3">
         <span
@@ -65,9 +70,16 @@ function TopicCard({
           {done ? "✓" : index}
         </span>
         <div className="min-w-0">
-          <h3 className="font-semibold leading-snug text-[15px] text-white/95 group-hover:text-white">
-            {topic.title}
-          </h3>
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <h3 className="font-semibold leading-snug text-[15px] text-white/95 group-hover:text-white">
+              {topic.title}
+            </h3>
+            {dimmed && (
+              <span className="shrink-0 text-[10px] font-bold uppercase tracking-wide text-emerald-300/70 bg-emerald-500/10 ring-1 ring-emerald-400/25 rounded px-1.5 py-0.5">
+                foco QA
+              </span>
+            )}
+          </div>
           <p className="mt-1 text-[13px] leading-snug text-white/55">
             {topic.short}
           </p>
@@ -113,6 +125,13 @@ const VIEW_TABS: { view: RoadmapView; href: string; label: string }[] = [
   { view: "agilidade", href: "/agilidade", label: "🔄 Agilidade" },
 ];
 
+function norm(s: string) {
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
 export default function RoadmapClient({
   initialDone = [],
   isPublic = false,
@@ -125,6 +144,7 @@ export default function RoadmapClient({
   const [done, setDone] = useState<Set<string>>(() => new Set(initialDone));
   const [selected, setSelected] = useState<Topic | null>(null);
   const [filter, setFilter] = useState<Level | "todos">("todos");
+  const [query, setQuery] = useState("");
 
   // Modo público: progresso vive só no navegador (localStorage), nada no banco.
   useEffect(() => {
@@ -135,7 +155,6 @@ export default function RoadmapClient({
     } catch {}
   }, [isPublic]);
 
-  const loaded = true;
   const doneCount = done.size;
   const isDone = useCallback((id: string) => done.has(id), [done]);
 
@@ -147,12 +166,10 @@ export default function RoadmapClient({
         if (willComplete) next.add(id);
         else next.delete(id);
         if (isPublic) {
-          // só no navegador do visitante
           try {
             localStorage.setItem(LS_KEY, JSON.stringify([...next]));
           } catch {}
         } else {
-          // persiste no banco (otimista; ignora falha de rede silenciosamente)
           void toggleProgressAction(id, willComplete).catch(() => {});
         }
         return next;
@@ -172,12 +189,60 @@ export default function RoadmapClient({
     }
   }, [isPublic]);
 
+  // Progresso por nível
+  const perLevel = useMemo(() => {
+    const acc: Record<Level, { done: number; total: number }> = {
+      basico: { done: 0, total: 0 },
+      intermediario: { done: 0, total: 0 },
+      avancado: { done: 0, total: 0 },
+      especialista: { done: 0, total: 0 },
+    };
+    for (const t of ALL_TOPICS) {
+      acc[t.level].total++;
+      if (done.has(t.id)) acc[t.level].done++;
+    }
+    return acc;
+  }, [done]);
+
+  // "Continuar de onde parou": 1º tópico relevante ainda não concluído.
+  const nextTopic = useMemo(
+    () => ALL_TOPICS.find((t) => !done.has(t.id) && isRelevant(t.id, view)),
+    [done, view],
+  );
+
+  const q = norm(query.trim());
+  const matches = useCallback(
+    (t: Topic) =>
+      !q ||
+      norm(t.title).includes(q) ||
+      norm(t.short).includes(q) ||
+      t.tags.some((tag) => norm(tag).includes(q)),
+    [q],
+  );
+
   const sections = useMemo(
     () =>
-      filter === "todos"
-        ? ROADMAP
-        : ROADMAP.filter((s) => s.level === filter),
+      filter === "todos" ? ROADMAP : ROADMAP.filter((s) => s.level === filter),
     [filter],
+  );
+
+  // Seções com seus tópicos visíveis (aplica busca), preservando o índice original.
+  const visibleSections = useMemo(
+    () =>
+      sections
+        .map((s) => ({
+          section: s,
+          topics: s.topics
+            .map((topic, i) => ({ topic, index: i + 1 }))
+            .filter(({ topic }) => matches(topic)),
+        }))
+        .filter((s) => s.topics.length > 0),
+    [sections, matches],
+  );
+
+  const totalMatches = visibleSections.reduce(
+    (a, s) => a + s.topics.length,
+    0,
   );
 
   return (
@@ -216,40 +281,121 @@ export default function RoadmapClient({
       )}
 
       {/* ───────────── Painel de progresso ───────────── */}
-      <div className="mx-auto max-w-xl rounded-2xl border border-white/10 bg-white/[0.03] p-5 mb-8">
-        <ProgressBar done={loaded ? doneCount : 0} total={TOTAL_TOPICS} />
-        {loaded && doneCount > 0 && (
-          <button
-            onClick={reset}
-            className="mt-3 text-xs text-white/40 hover:text-white/70 transition-colors"
-          >
-            Zerar progresso
-          </button>
-        )}
+      <div className="mx-auto max-w-xl rounded-2xl border border-white/10 bg-white/[0.03] p-5 mb-6">
+        <ProgressBar done={doneCount} total={TOTAL_TOPICS} />
+
+        {/* Progresso por nível */}
+        <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {(Object.keys(LEVEL_META) as Level[]).map((lvl) => {
+            const { done: d, total } = perLevel[lvl];
+            const pct = total ? Math.round((d / total) * 100) : 0;
+            return (
+              <button
+                key={lvl}
+                onClick={() => setFilter(filter === lvl ? "todos" : lvl)}
+                className={`text-left rounded-xl px-3 py-2 ring-1 transition-colors ${
+                  filter === lvl
+                    ? "bg-white/10 ring-white/25"
+                    : "bg-white/[0.02] ring-white/10 hover:bg-white/[0.06]"
+                }`}
+              >
+                <div
+                  className={`flex items-center gap-1.5 text-[11px] font-semibold ${LEVEL_META[lvl].color}`}
+                >
+                  <span
+                    className={`h-1.5 w-1.5 rounded-full ${LEVEL_META[lvl].dot}`}
+                  />
+                  {LEVEL_META[lvl].label}
+                </div>
+                <div className="mt-1 text-[13px] text-white/70 tabular-nums">
+                  {d}/{total}
+                </div>
+                <div className="mt-1 h-1 rounded-full bg-white/10 overflow-hidden">
+                  <div
+                    className={`h-full rounded-full ${LEVEL_META[lvl].dot}`}
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="mt-4 flex items-center gap-3">
+          {nextTopic && (
+            <button
+              onClick={() => setSelected(nextTopic)}
+              className="inline-flex items-center gap-2 rounded-lg bg-white text-black text-sm font-semibold px-3.5 py-2 hover:bg-white/90 transition-colors"
+            >
+              ▶ Continuar
+              <span className="max-w-[16rem] truncate font-normal text-black/60">
+                {nextTopic.title}
+              </span>
+            </button>
+          )}
+          {doneCount > 0 && (
+            <button
+              onClick={reset}
+              className="text-xs text-white/40 hover:text-white/70 transition-colors"
+            >
+              Zerar progresso
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* ───────────── Filtro por nível ───────────── */}
-      <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-        <FilterChip
-          active={filter === "todos"}
-          onClick={() => setFilter("todos")}
-          label="Todos"
-        />
-        {(Object.keys(LEVEL_META) as Level[]).map((lvl) => (
-          <FilterChip
-            key={lvl}
-            active={filter === lvl}
-            onClick={() => setFilter(lvl)}
-            label={LEVEL_META[lvl].label}
-            dot={LEVEL_META[lvl].dot}
-          />
-        ))}
+      {/* ───────────── Controles: busca + filtro por nível (sticky) ───────────── */}
+      <div className="sticky top-14 z-30 -mx-4 px-4 py-3 mb-8 bg-[#0a0a0f]/85 backdrop-blur border-y border-white/5">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          <div className="relative flex-1">
+            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-sm">
+              🔎
+            </span>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Buscar tópico (ex.: MCP, eval, Jira, agente…)"
+              className="w-full rounded-xl bg-white/5 border border-white/10 focus:border-sky-400/50 outline-none pl-9 pr-9 py-2 text-sm text-white placeholder:text-white/30 transition-colors"
+            />
+            {query && (
+              <button
+                onClick={() => setQuery("")}
+                aria-label="Limpar busca"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/70 text-sm"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <FilterChip
+              active={filter === "todos"}
+              onClick={() => setFilter("todos")}
+              label="Todos"
+            />
+            {(Object.keys(LEVEL_META) as Level[]).map((lvl) => (
+              <FilterChip
+                key={lvl}
+                active={filter === lvl}
+                onClick={() => setFilter(lvl)}
+                label={LEVEL_META[lvl].label}
+                dot={LEVEL_META[lvl].dot}
+              />
+            ))}
+          </div>
+        </div>
+        {q && (
+          <p className="mt-2 text-xs text-white/40">
+            {totalMatches} resultado{totalMatches === 1 ? "" : "s"} para “{query}”
+          </p>
+        )}
       </div>
 
       {/* ───────────── O MAPA ───────────── */}
       <div className="relative">
-        {sections.map((section) => {
+        {visibleSections.map(({ section, topics }) => {
           const meta = LEVEL_META[section.level];
+          const lvl = perLevel[section.level];
           return (
             <div key={section.id} className="mb-4">
               {/* Conector + Milestone do nível */}
@@ -263,6 +409,9 @@ export default function RoadmapClient({
                   >
                     <span className={`h-2 w-2 rounded-full ${meta.dot}`} />
                     {meta.label}
+                    <span className="text-white/40 font-semibold normal-case tracking-normal">
+                      · {lvl.done}/{lvl.total}
+                    </span>
                   </div>
                   <h2 className="mt-1.5 text-xl font-bold text-white">
                     {section.title}
@@ -279,14 +428,16 @@ export default function RoadmapClient({
 
               {/* Tópicos ramificando da espinha */}
               <div className="relative">
-                {section.topics.map((topic, i) => {
+                {topics.map(({ topic, index }, i) => {
                   const left = i % 2 === 0;
+                  const dimmed =
+                    view === "agilidade" && QA_PRIMARY_TOPICS.has(topic.id);
                   return (
                     <div
                       key={topic.id}
                       className="grid grid-cols-[36px_1fr] md:grid-cols-[1fr_56px_1fr] items-center"
                     >
-                      {/* Espinha central (col 1 no mobile, col 2 no desktop) */}
+                      {/* Espinha central */}
                       <div className="relative col-start-1 md:col-start-2 self-stretch flex justify-center">
                         <div className="w-px bg-white/15 h-full" />
                         <div className="absolute top-1/2 -translate-y-1/2 flex items-center">
@@ -296,7 +447,6 @@ export default function RoadmapClient({
                             }`}
                           />
                         </div>
-                        {/* conector horizontal (desktop) */}
                         <div
                           className={`hidden md:block absolute top-1/2 h-px w-7 bg-white/15 ${
                             left ? "right-1/2 mr-1.5" : "left-1/2 ml-1.5"
@@ -314,8 +464,9 @@ export default function RoadmapClient({
                       >
                         <TopicCard
                           topic={topic}
-                          index={i + 1}
+                          index={index}
                           done={isDone(topic.id)}
+                          dimmed={dimmed}
                           onClick={() => setSelected(topic)}
                         />
                       </div>
@@ -327,13 +478,30 @@ export default function RoadmapClient({
           );
         })}
 
-        {/* Fim do mapa */}
-        <div className="flex flex-col items-center">
-          <div className="h-8 w-px bg-white/15" />
-          <div className="rounded-full bg-gradient-to-r from-emerald-400 to-violet-400 px-5 py-2 text-sm font-bold text-black">
-            🎓 Engenheiro de Qualidade de IA
+        {totalMatches === 0 && (
+          <div className="text-center py-16 text-white/40">
+            <p className="text-lg">Nenhum tópico encontrado.</p>
+            <button
+              onClick={() => {
+                setQuery("");
+                setFilter("todos");
+              }}
+              className="mt-3 text-sm text-sky-300 hover:text-sky-200"
+            >
+              Limpar busca e filtros
+            </button>
           </div>
-        </div>
+        )}
+
+        {/* Fim do mapa */}
+        {totalMatches > 0 && !q && filter === "todos" && (
+          <div className="flex flex-col items-center">
+            <div className="h-8 w-px bg-white/15" />
+            <div className="rounded-full bg-gradient-to-r from-emerald-400 to-violet-400 px-5 py-2 text-sm font-bold text-black">
+              🎓 {view === "agilidade" ? "Agilista de IA" : "Engenheiro de Qualidade de IA"}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ───────────── Rodapé ───────────── */}

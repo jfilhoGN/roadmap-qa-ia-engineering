@@ -1,6 +1,6 @@
 import LoginForm from "./LoginForm";
 
-export const metadata = { title: "Entrar — Roadmap de IA para QAs" };
+export const metadata = { title: "Entrar — Roadmap de IA" };
 
 export default function LoginPage() {
   return (
@@ -8,10 +8,10 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <span className="text-xs font-semibold tracking-widest text-white/40 uppercase">
-            COE Qualidade
+            COE Qualidade &amp; Agilidade
           </span>
           <h1 className="mt-2 text-3xl font-extrabold bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent">
-            IA para QAs
+            Roadmap de IA
           </h1>
           <p className="mt-2 text-sm text-white/50">
             Entre com seu usuário para acessar o roadmap.

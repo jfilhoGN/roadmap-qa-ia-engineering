@@ -32,9 +32,12 @@ export async function login(
     username: user.username,
     isAdmin: user.is_admin,
     mc: user.must_change_password,
+    area: user.area,
   });
 
-  redirect(user.must_change_password ? "/trocar-senha" : "/");
+  // Primeiro acesso troca a senha; senão, cai direto na trilha da sua área.
+  if (user.must_change_password) redirect("/trocar-senha");
+  redirect(user.area === "agilidade" ? "/agilidade" : "/qa");
 }
 
 export async function changePassword(
@@ -53,7 +56,7 @@ export async function changePassword(
 
   await setUserPassword(session.uid, await hashPassword(p1));
   await setSession({ ...session, mc: false });
-  redirect("/");
+  redirect(session.area === "agilidade" ? "/agilidade" : "/qa");
 }
 
 export async function logout(): Promise<void> {

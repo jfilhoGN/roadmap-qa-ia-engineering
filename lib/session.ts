@@ -2,12 +2,16 @@ import { SignJWT, jwtVerify } from "jose";
 
 export const COOKIE_NAME = "rqa_session";
 
+export type SessionArea = "qa" | "agilidade";
+
 export type SessionPayload = {
   uid: string;
   username: string;
   isAdmin: boolean;
   /** must change password */
   mc: boolean;
+  /** área/trilha do colaborador */
+  area: SessionArea;
 };
 
 const encoder = new TextEncoder();
@@ -37,6 +41,8 @@ export async function verifySession(
       username: String(payload.username),
       isAdmin: Boolean(payload.isAdmin),
       mc: Boolean(payload.mc),
+      // sessões antigas (emitidas antes da coluna area) caem em 'qa'
+      area: payload.area === "agilidade" ? "agilidade" : "qa",
     };
   } catch {
     return null;
