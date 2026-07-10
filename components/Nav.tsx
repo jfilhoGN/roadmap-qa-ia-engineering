@@ -29,6 +29,7 @@ export default function Nav({
 
   const links = [
     { href: "/", label: "Roadmap" },
+    { href: "/glossario", label: "Glossário" },
     { href: "/playground", label: "Playground" },
     { href: "/anotacoes", label: "Anotações" },
     { href: "/estudos", label: "Próximos estudos" },
