@@ -482,6 +482,50 @@ export const ROADMAP: Section[] = [
           { label: "LMArena — ranking comparativo de modelos", url: "https://lmarena.ai" },
         ],
       },
+      {
+        id: "context-rot",
+        title: "Context Rot: perda de qualidade em contexto longo",
+        short: "Mais contexto nem sempre é melhor — o modelo 'esquece' o meio.",
+        level: "basico",
+        tags: ["fundamento","contexto","qualidade"],
+        whatIsIt:
+          "Modelos aceitam janelas de contexto enormes, mas a qualidade não é uniforme ao longo delas. O que está no começo e no fim é bem aproveitado; a informação enterrada no meio de um contexto longo tende a ser ignorada — fenômeno chamado 'lost in the middle' ou context rot. Encher o contexto com tudo pode piorar a resposta, não melhorar.",
+        whyQA:
+          "Um teste que passa com contexto curto pode falhar quando o mesmo prompt roda com muito contexto — e vice-versa. O QA precisa testar com o tamanho e a posição reais da informação em produção, e verificar se dados críticos no meio do contexto são de fato usados, não só se 'cabem' na janela.",
+        qaExample:
+          "O bot de suporte responde certo nos testes (pergunta + 1 documento). Em produção, com 40 documentos no contexto, ele ignora a política que está no documento 20 e inventa. Você cria o 'teste do meio': posiciona a informação-chave no meio de um contexto grande e verifica se a resposta realmente a usa.",
+        whyAgile:
+          "Explica por que 'dar todo o contexto para a IA' não é a solução mágica que parece — e por que vale investir em curadoria e RAG em vez de despejar tudo. Para o agilista, é entender um limite real que afeta a previsibilidade da qualidade conforme o produto e a base de conhecimento crescem.",
+        agileExample:
+          "No refinamento de uma feature de IA, o time propõe 'é só mandar o manual inteiro no prompt'. Sabendo do context rot, você levanta a pergunta certa: 'e se a informação relevante ficar no meio de 50 páginas?' — e o critério de aceite passa a incluir recuperar o trecho certo, não só o volume de contexto.",
+        prompt:
+          "Explique de forma simples o fenômeno 'lost in the middle' (context rot) em LLMs e por que encher a janela de contexto pode reduzir a qualidade da resposta. Depois liste 5 formas de testar se um sistema realmente usa a informação enterrada no meio de um contexto longo.",
+        resources: [
+          { label: "Liu et al. — Lost in the Middle (Stanford)", url: "https://arxiv.org/abs/2307.03172" },
+        ],
+      },
+      {
+        id: "sycophancy",
+        title: "Sycophancy: quando a IA concorda com você (e erra junto)",
+        short: "O modelo tende a te agradar — inclusive validando o que está errado.",
+        level: "basico",
+        tags: ["fundamento","risco","confiabilidade"],
+        whatIsIt:
+          "Sycophancy (bajulação) é a tendência dos LLMs de concordar com o usuário e reforçar o que ele já pensa, em vez de discordar quando ele está errado. Se você sugere uma resposta na própria pergunta, o modelo tende a validá-la; se demonstra uma opinião, ele a espelha. É um viés aprendido no treino — o modelo foi otimizado para agradar.",
+        whyQA:
+          "É um modo de falha traiçoeiro: o modelo 'confirma' o bug que você suspeita, dá falso positivo na sua hipótese ou aprova um plano ruim porque você pareceu confiante. O QA precisa testar com prompts neutros e adversariais — perguntar sem induzir a resposta — e desconfiar de concordância fácil.",
+        qaExample:
+          "Você pergunta 'esse código tem um bug de concorrência, certo?' e a IA concorda e 'acha' o bug — mesmo quando não há. Refazendo com prompt neutro ('analise este código') a IA não aponta nada. Vira caso de teste: a mesma pergunta, com e sem indução, deve dar respostas consistentes.",
+        whyAgile:
+          "Afeta diretamente a facilitação: se o time usa IA para validar decisões, ela pode virar uma câmara de eco que concorda com quem falou por último. O agilista precisa saber que 'a IA concordou' não é evidência — e desenhar o uso para evitar viés de confirmação em planning e retro.",
+        agileExample:
+          "Na retro, alguém joga a hipótese no chat: 'o gargalo é o QA, né?' e mostra a resposta que concorda. Sabendo de sycophancy, você propõe reformular de forma neutra ('onde estão os maiores tempos de espera no fluxo?') e trazer dados do board — separando a opinião confirmada pela IA do diagnóstico real.",
+        prompt:
+          "Explique o que é sycophancy (bajulação) em LLMs e por que o modelo tende a concordar com o usuário mesmo quando ele está errado. Depois me dê 5 técnicas de prompt para reduzir esse viés e obter uma resposta honesta e crítica.",
+        resources: [
+          { label: "Anthropic — Towards Understanding Sycophancy in Language Models", url: "https://www.anthropic.com/research/towards-understanding-sycophancy-in-language-models" },
+        ],
+      },
     ],
   },
 
@@ -1036,6 +1080,44 @@ export const ROADMAP: Section[] = [
         resources: [
           { label: "DSPy — otimização programática de prompts", url: "https://github.com/stanfordnlp/dspy" },
         ],
+      },
+      {
+        id: "model-routing",
+        title: "Model Routing: cascata de modelos por dificuldade",
+        short: "Manda a pergunta fácil pro modelo barato e a difícil pro caro.",
+        level: "intermediario",
+        tags: ["arquitetura","custo","otimizacao"],
+        whatIsIt:
+          "Model routing (ou cascata/roteamento de modelos) é usar um roteador que decide, por requisição, qual modelo atende: um pequeno e barato para casos simples, um grande e caro só para os difíceis. Reduz custo e latência sem sacrificar qualidade onde importa. O roteador pode ser uma regra, um classificador ou o próprio LLM avaliando a dificuldade.",
+        whyQA:
+          "Cria uma nova superfície de teste: o roteador acerta o encaminhamento? Casos difíceis não estão indo para o modelo fraco (e degradando a resposta)? O QA valida a decisão de roteamento em si — não só a resposta final — e mede qualidade por faixa de dificuldade.",
+        qaExample:
+          "O chat roteia perguntas simples ('horário de funcionamento') para o modelo mini e complexas (cálculo de reembolso) para o grande. Você monta casos rotulados por dificuldade e verifica: (a) o roteador manda o difícil para o grande e (b) a qualidade no mini é aceitável só nos fáceis. Um caso difícil roteado errado é bug.",
+        whyAgile:
+          "É uma alavanca concreta de custo × qualidade que o agilista ajuda a negociar com stakeholders: '90% do tráfego é simples e vai para o modelo barato; o caro entra só nos 10% críticos'. Entender isso permite discutir trade-offs de orçamento e experiência sem que a decisão fique só na mão da engenharia.",
+        agileExample:
+          "O custo de IA do produto está alto e vira pauta. Em vez de 'cortar a IA', você traz a opção de roteamento: um spike para classificar o tráfego por dificuldade e rotear. Onde aceitar o modelo mais barato (e o risco de qualidade) vira conversa de produto priorizada, não um corte às cegas.",
+        prompt:
+          "Explique o padrão de model routing (cascata de modelos por dificuldade) e quando ele vale a pena. Depois desenhe uma estratégia de roteamento para um chatbot de suporte: como classificar a dificuldade, quando escalar para o modelo maior e quais métricas monitorar.",
+      },
+      {
+        id: "semantic-caching",
+        title: "Semantic Caching: cache por significado, não por texto exato",
+        short: "Reaproveita respostas de perguntas parecidas, não só idênticas.",
+        level: "intermediario",
+        tags: ["arquitetura","custo","performance"],
+        whatIsIt:
+          "Cache tradicional só acerta com entrada idêntica. Semantic caching guarda perguntas e respostas por significado (via embeddings): se uma nova pergunta é semanticamente parecida com uma já respondida, devolve a resposta cacheada, poupando uma chamada ao modelo. Diferente do prompt caching (que reaproveita o prefixo de um mesmo prompt), aqui o match é por similaridade.",
+        whyQA:
+          "Abre um modo de falha novo: o cache pode devolver a resposta de uma pergunta 'parecida, mas diferente' — e entregar algo errado com cara de certo. O QA testa o limiar de similaridade: casos que DEVEM acertar o cache e casos parecidos que NÃO devem (mesma aparência, resposta diferente).",
+        qaExample:
+          "'Qual o prazo de entrega para São Paulo?' cacheia a resposta. Depois 'Qual o prazo para São Paulo no feriado?' bate no cache por similaridade e devolve o prazo errado. Você cria pares 'parecido mas diferente' e verifica que o cache não os confunde — testando o limiar de similaridade.",
+        whyAgile:
+          "É uma alavanca de latência e custo que impacta a experiência (respostas instantâneas) e o orçamento. Para o agilista, entender o trade-off — mais cache é mais barato e rápido, mas com mais risco de resposta 'quase certa' — ajuda a priorizar o ajuste fino como item de valor, não detalhe de infra.",
+        agileExample:
+          "Usuários reclamam de lentidão e o custo por resposta é alto. Você traz o semantic caching como iniciativa e ajuda o time a enquadrar o risco: definir, junto com o QA, quais perguntas podem ser cacheadas por similaridade e quais são sensíveis demais — virando critério de aceite, não só otimização.",
+        prompt:
+          "Explique a diferença entre cache tradicional, prompt caching (prefixo) e semantic caching (por similaridade). Depois liste os riscos do semantic caching e 5 casos de teste para validar que ele não devolve a resposta de uma pergunta parecida porém diferente.",
       },
     ],
   },
@@ -1976,6 +2058,47 @@ export const ROADMAP: Section[] = [
         prompt:
           "Vou colocar um agente de IA para rodar comandos no repositório do time. Monte um checklist de sandboxing e permissões: o que isolar, o que bloquear por padrão, quais ações devem exigir aprovação humana e como eu testaria cada limite com testes de abuso.",
       },
+      {
+        id: "rag-evaluation",
+        title: "Avaliação de RAG (faithfulness, precision, recall)",
+        short: "Medir onde o RAG erra: na busca ou na geração?",
+        level: "avancado",
+        tags: ["eval","rag","qualidade"],
+        whatIsIt:
+          "Avaliar um sistema de RAG exige métricas próprias, além de 'a resposta ficou boa': faithfulness (a resposta se apoia nos documentos recuperados, sem inventar), context precision e recall (a busca trouxe os trechos certos e não trouxe lixo) e answer relevancy (a resposta responde à pergunta). Frameworks como RAGAS automatizam isso, separando a falha em dois eixos: recuperação vs geração.",
+        whyQA:
+          "RAG pode errar em dois lugares e o QA precisa saber qual: a busca não achou o documento (recall baixo) ou o modelo ignorou/deturpou o que achou (faithfulness baixa). Medir cada eixo direciona a correção — mexer no índice/embeddings vs no prompt/modelo. É evals aplicado ao caso mais comum de IA em empresa.",
+        qaExample:
+          "O bot responde errado sobre reembolso. Com métricas de RAG você descobre context recall = 0.4 — a busca nem trouxe o documento certo. O problema é o índice, não o modelo. Sem separar os eixos, o time perderia tempo ajustando prompt. Você monta um golden set com pergunta + documento esperado + resposta esperada.",
+        whyAgile:
+          "Traduz 'o RAG está ruim' em números acionáveis que orientam a priorização: se o problema é recuperação, é trabalho de dados/índice; se é geração, é prompt/modelo. Para o agilista, é o sinal de qualidade que permite dividir e priorizar o trabalho certo no backlog, em vez de um épico vago de 'melhorar a IA'.",
+        agileExample:
+          "A qualidade do assistente interno cai e vira o épico 'melhorar a IA'. Você pede ao QA as métricas de RAG e descobre que o recall está bom, mas a faithfulness está baixa — o modelo inventa mesmo com o documento certo em mãos. O épico se divide em histórias precisas (prompt/guardrail), com critério de aceite medido pela faithfulness.",
+        prompt:
+          "Explique as principais métricas de avaliação de um sistema RAG (faithfulness, context precision, context recall, answer relevancy) e como cada uma separa falha de recuperação de falha de geração. Depois descreva como eu montaria um eval de RAG com um golden dataset.",
+        resources: [
+          { label: "RAGAS — métricas de avaliação de RAG", url: "https://docs.ragas.io" },
+        ],
+      },
+      {
+        id: "deep-research",
+        title: "Deep Research: agentes de pesquisa multi-fonte",
+        short: "O agente que planeja, busca em várias fontes e sintetiza com citações.",
+        level: "avancado",
+        tags: ["agente","pesquisa","tendencia"],
+        whatIsIt:
+          "Deep research (ou busca agêntica) é o padrão em que um agente decompõe uma pergunta ampla em subquestões, busca em múltiplas fontes (web, docs internos), lê, verifica e sintetiza um relatório com citações — em vez de uma única resposta de LLM. Virou produto em 2025. Na prática é RAG + planejamento + verificação rodando em loop.",
+        whyQA:
+          "A superfície de teste deixa de ser 'a resposta' e passa a ser a trajetória: o agente cobriu as fontes certas? Citou o que realmente diz? Não misturou fontes? O QA avalia o processo de pesquisa e a rastreabilidade das citações, não só o texto final — e testa perguntas sem resposta (o agente admite a lacuna ou inventa?).",
+        qaExample:
+          "Você pede um comparativo de 3 fornecedores e o agente entrega um relatório bonito. Você audita: cada afirmação tem citação? A citação sustenta a frase? Alguma fonte é inventada? Cria um caso com uma pergunta cuja resposta não existe publicamente e verifica se o agente admite a lacuna em vez de fabricar.",
+        whyAgile:
+          "É discovery aumentado: o agilista usa deep research para levantar contexto de mercado, comparar abordagens e sintetizar insumo para uma iniciativa em minutos. Entender como funciona — e seus limites de confiabilidade — permite usar como acelerador de descoberta sem confiar cegamente no relatório.",
+        agileExample:
+          "Antes de abrir uma iniciativa, você usa um agente de deep research para mapear como concorrentes resolvem o problema e quais riscos aparecem. Em vez de aceitar o relatório, trata como rascunho: confere as citações-chave e leva à discovery com o time — acelerando o levantamento sem terceirizar a decisão.",
+        prompt:
+          "Explique como funciona um agente de deep research (busca agêntica): decomposição da pergunta, busca multi-fonte, verificação e síntese com citações. Depois liste 6 cenários de teste para validar a confiabilidade das citações e o comportamento diante de perguntas sem resposta.",
+      },
     ],
   },
 
@@ -2380,6 +2503,44 @@ export const ROADMAP: Section[] = [
           "O fornecedor anuncia que o modelo atual será desligado em 90 dias. Em vez de deixar virar crise na semana 11, você abre a migração como iniciativa no plano do quarter, com marcos: baseline de evals, comparação de candidatos, ajuste de prompts, canary com parte do tráfego, rollout. Reserva capacidade nas sprints, comunica o trade-off aos stakeholders — e o time migra sem parar uma única entrega de produto.",
         prompt:
           "Monte um plano de migração de modelo de IA para um produto em produção: etapas (baseline, comparação com evals, ajuste de prompts, canary, rollback), critérios de aprovação por etapa e os riscos que cada etapa mitiga. Formate como checklist executável.",
+      },
+      {
+        id: "shadow-ai",
+        title: "Shadow AI: governança do uso de IA no time",
+        short: "O que o time cola em ferramentas de IA quando ninguém define a regra.",
+        level: "especialista",
+        tags: ["governanca","seguranca","lideranca"],
+        whatIsIt:
+          "Shadow AI é o uso não-oficial de ferramentas de IA pelo time — colar código, dados de cliente ou documentos internos em LLMs públicos sem política nem aprovação. Acontece por padrão quando não há diretriz clara. Cria risco de vazamento de dados, de propriedade intelectual e de compliance, e escapa de qualquer governança.",
+        whyQA:
+          "O QA ajuda a tornar a política testável e monitorável: o que pode ou não ser enviado a um LLM, quais ferramentas são aprovadas e como detectar/prevenir vazamento (ex.: PII em prompts). Conecta com guardrails e detecção de PII — mas no nível de processo do time, não só do produto.",
+        qaExample:
+          "Você descobre que colegas colam logs com dados de cliente em um chat público para 'resumir o bug'. Junto ao time, ajuda a definir a regra (anonimizar antes, usar a ferramenta corporativa) e cria uma checagem: um guardrail que detecta PII antes de sair, e um caso de teste para o fluxo aprovado.",
+        whyAgile:
+          "É pauta de liderança do agilista: transformar o uso informal de IA em um acordo de trabalho claro — o que pode, o que não pode, quais ferramentas — sem matar a produtividade. Governança leve, definida com o time, é mais eficaz que proibição. Cabe ao agilista facilitar essa política e mantê-la viva.",
+        agileExample:
+          "Você percebe, na daily, várias menções a 'joguei no ChatGPT'. Em vez de proibir, facilita um acordo de trabalho na retro: ferramentas aprovadas, o que nunca colar (dado de cliente, segredo) e como pedir exceção. Vira um item vivo do time — revisitado quando surge caso novo — e reduz o shadow AI sem travar o fluxo.",
+        prompt:
+          "Aja como facilitador. Monte um acordo de trabalho (política leve) de uso de IA para um time de produto: ferramentas aprovadas, o que nunca deve ser colado em um LLM, como pedir exceção e como manter a política viva. Formato: uma página, tom prático, sem juridiquês.",
+      },
+      {
+        id: "ai-incident-response",
+        title: "Resposta a Incidentes de IA (post-mortem)",
+        short: "O que fazer quando a IA falha em produção — e como aprender com isso.",
+        level: "especialista",
+        tags: ["operacao","governanca","lideranca"],
+        whatIsIt:
+          "Sistemas de IA falham de formas novas (alucinação, drift, prompt injection, resposta tóxica) e exigem um processo de resposta a incidente próprio: detectar, conter (guardrail, rollback, kill switch), comunicar, corrigir e fazer post-mortem sem culpa. É engenharia de confiabilidade aplicada ao comportamento probabilístico — um plano montado antes do incidente, não durante.",
+        whyQA:
+          "O QA prepara o incidente antes de acontecer: playbook de contenção, casos de reprodução e o eval que vira teste de regressão depois ('isso não pode voltar'). Fecha o ciclo entre produção e testes — cada incidente de IA vira um caso no golden set.",
+        qaExample:
+          "A IA começou a recomendar um concorrente por causa de um prompt injection num documento. Você aciona o playbook: contém (desliga a fonte comprometida), reproduz o caso, adiciona ao eval de segurança como regressão e valida o fix. O incidente vira conhecimento versionado, não só um susto.",
+        whyAgile:
+          "O agilista facilita o post-mortem sem culpa e garante que o aprendizado vire ação no backlog — não fique na conversa. Também cuida da comunicação com stakeholders durante o incidente. É trazer a cultura ágil de melhoria contínua para o comportamento probabilístico da IA.",
+        agileExample:
+          "Depois de um incidente em que a IA deu uma resposta errada a muitos usuários, você facilita o post-mortem: linha do tempo, causa, o que conteve, o que faltou. Sem apontar culpado, o time sai com 3 ações priorizadas no backlog (guardrail, eval de regressão, alerta) e um combinado de comunicação para a próxima vez.",
+        prompt:
+          "Monte um playbook de resposta a incidentes para um produto com IA: como detectar, conter (rollback/guardrail/kill switch), comunicar, corrigir e conduzir um post-mortem sem culpa. Inclua o que deve virar teste de regressão depois. Formato: passos acionáveis.",
       },
     ],
   },
