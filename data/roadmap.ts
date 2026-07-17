@@ -103,12 +103,14 @@ export const ROADMAP: Section[] = [
             label: "3Blue1Brown — But what is a Neural Network? (visual, legendável)",
             url: "https://www.youtube.com/watch?v=aircAruvnKk",
           },
+          { label: "Filipe Deschamps — Qual a diferença entre Inteligência Artificial, Machine Learning, Data Science, Deep Learning, etc?", url: "https://www.youtube.com/watch?v=ccZ2pyr3YDw" },
         ],
         resources: [
           {
             label: "Google — Introdução ao Machine Learning",
             url: "https://developers.google.com/machine-learning/intro-to-ml",
           },
+          { label: "Alura — Qual a diferença entre Data Science, Machine Learning e Inteligência Artificial?", url: "https://www.alura.com.br/artigos/qual-e-a-diferenca-de-data-science-machine-learning-e-inteligencia-artificial" },
         ],
       },
       {
@@ -138,12 +140,14 @@ export const ROADMAP: Section[] = [
             label: "3Blue1Brown — Large Language Models explained briefly",
             url: "https://www.youtube.com/watch?v=LPZh9BOjkQs",
           },
+          { label: "Asimov Academy — Por dentro das LLMs como ChatGPT (curso completo em pt-BR)", url: "https://www.youtube.com/watch?v=CVXsLyRC1bY" },
         ],
         resources: [
           {
             label: "Anthropic — Modelos do Claude",
             url: "https://docs.anthropic.com/en/docs/about-claude/models",
           },
+          { label: "Alura — LLMs: entenda o impacto dos modelos de linguagem em TI", url: "https://www.alura.com.br/empresas/artigos/llms" },
         ],
       },
       {
@@ -167,12 +171,14 @@ export const ROADMAP: Section[] = [
             label: "What Are Tokens in LLM? — Tokenization Explained",
             url: "https://www.youtube.com/watch?v=Xe2B6IIbrLg",
           },
+          { label: "Inteligência Mil Grau — O Que São Tokens? O Que É Janela De Contexto? (ChatGPT, Claude, Gemini e Llama)", url: "https://www.youtube.com/watch?v=HuO2KeW2es4" },
         ],
         resources: [
           {
             label: "OpenAI Tokenizer (visualize os tokens)",
             url: "https://platform.openai.com/tokenizer",
           },
+          { label: "TechTudo — O que é um token? Entenda o significado do termo em modelos de IA", url: "https://www.techtudo.com.br/guia/2025/10/o-que-e-um-token-entenda-significado-do-termo-em-modelos-de-ia-edsoftwares.ghtml" },
         ],
       },
       {
@@ -191,6 +197,9 @@ export const ROADMAP: Section[] = [
           "A janela de contexto é a 'memória de trabalho' da IA numa conversa — como um quadro branco que vai enchendo: quando lota, o que foi escrito primeiro é apagado. É por isso que, em conversas longas ou com documentos enormes, a IA parece 'esquecer' o começo ou ignorar partes do material. Saber disso evita a conclusão errada de que 'a IA é burra' — e te dá a solução: dividir o trabalho em partes.",
         agileExample:
           "Você está montando o relatório de uma iniciativa grande e cola 40 páginas de documentos de uma vez. A IA responde bem sobre o final e ignora o início. Em vez de desistir, você pede um resumo por épico, um de cada vez, e depois pede para consolidar os resumos — e o resultado fica completo.",
+        resources: [
+          { label: "IBM Brasil — O que é uma janela de contexto?", url: "https://www.ibm.com/br-pt/think/topics/context-window" },
+        ],
       },
       {
         id: "prompt",
@@ -239,6 +248,9 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=vI35anoe_fY",
           },
         ],
+        resources: [
+          { label: "IBM Brasil — O que é temperatura do LLM?", url: "https://www.ibm.com/br-pt/think/topics/llm-temperature" },
+        ],
       },
       {
         id: "reasoning-models",
@@ -268,6 +280,9 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=xCRvOUykOX0",
           },
         ],
+        resources: [
+          { label: "IBM Brasil — O que é um modelo de raciocínio?", url: "https://www.ibm.com/br-pt/think/topics/reasoning-model" },
+        ],
       },
       {
         id: "multimodal",
@@ -292,6 +307,10 @@ export const ROADMAP: Section[] = [
             label: "IBM Technology — What is Multimodal AI?",
             url: "https://www.youtube.com/watch?v=J51oZYcNvP8",
           },
+          { label: "Asimov Academy — O poder das LLMs Multimodais (e projetos que você pode construir com elas)", url: "https://www.youtube.com/watch?v=MFZYWufjxyA" },
+        ],
+        resources: [
+          { label: "Alura — O que é IA Multimodal? A revolução que conecta texto, imagem, áudio e vídeo", url: "https://www.alura.com.br/artigos/ia-multimodal" },
         ],
       },
       {
@@ -318,6 +337,9 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=cfqtFvWOfg0",
           },
         ],
+        resources: [
+          { label: "Google Cloud — O que são alucinações de IA?", url: "https://cloud.google.com/discover/what-are-ai-hallucinations?hl=pt-BR" },
+        ],
       },
       {
         id: "training-inference",
@@ -335,6 +357,10 @@ export const ROADMAP: Section[] = [
           "O modelo aprendeu tudo o que sabe uma única vez, no passado — e, por padrão, não aprende nada com as suas conversas. Pense nele como um consultor recém-chegado: brilhante, mas não conhece o seu time, seus processos, suas decisões — e esquece tudo ao fim de cada conversa. A consequência prática: não adianta esperar que ele 'aprenda com o tempo'; é você quem fornece o contexto, toda vez.",
         agileExample:
           "Você pergunta sobre 'o processo de discovery da empresa' e a IA responde algo genérico de livro. Aí você cola a página do Confluence que descreve o SEU processo e repete a pergunta — agora a resposta é sobre a sua realidade. Você não 'treinou' a IA; você a informou. Essa diferença evita expectativas erradas no time inteiro.",
+        resources: [
+          { label: "IBM Brasil — O que é inferência de IA?", url: "https://www.ibm.com/br-pt/think/topics/ai-inference" },
+          { label: "Lenovo Brasil — Treinamento vs Inferência em IA: entenda os dois pilares da inteligência de máquina", url: "https://www.lenovo.com/br/pt/knowledgebase/ai-training-vs-inference-a-comprehensive-guide/" },
+        ],
       },
       {
         id: "foundation-models",
@@ -362,6 +388,10 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=y9k-U9AuDeM",
           },
         ],
+        resources: [
+          { label: "AWS Brasil — O que são modelos de base (foundation models)?", url: "https://aws.amazon.com/pt/what-is/foundation-models/" },
+          { label: "IBM Brasil — O que são modelos de base?", url: "https://www.ibm.com/br-pt/think/topics/foundation-models" },
+        ],
       },
       {
         id: "copilots",
@@ -381,6 +411,12 @@ export const ROADMAP: Section[] = [
           "Um mês depois de o time adotar um assistente de código, você nota nos dados do eazyBI que o tempo de desenvolvimento caiu, mas a fila de revisão dobrou — o gargalo mudou de lugar. Na retro, você traz os números e facilita a conversa: o time decide ajustar o limite de trabalho em paralelo e criar um combinado novo para revisões.",
         prompt:
           "No seu copilot: 'Gere um teste Playwright em TypeScript para o fluxo de login (sucesso, senha errada, usuário bloqueado), usando data-testid como seletor e o padrão Page Object Model.'",
+        videos: [
+          { label: "Código Fonte TV — O GitHub Copilot Veio Mesmo para Ajudar os Programadores?", url: "https://www.youtube.com/watch?v=4XmiupzNBSk" },
+        ],
+        resources: [
+          { label: "Alura — GitHub Copilot: desenvolva aplicativos e sites com IA de forma prática", url: "https://www.alura.com.br/artigos/o-que-e-github-copilot" },
+        ],
       },
       {
         id: "slm",
@@ -398,6 +434,9 @@ export const ROADMAP: Section[] = [
           "Nem toda tarefa de IA precisa do modelo mais poderoso — existem modelos pequenos, rápidos e muito mais baratos que resolvem bem tarefas simples. É como escolher entre bicicleta e caminhão: para entregar um envelope na esquina, a bicicleta ganha. Quando o custo de IA de uma iniciativa entrar na conversa de priorização, entender essa escolha te ajuda a facilitar a discussão em vez de só assistir.",
         agileExample:
           "No planejamento de uma iniciativa, o custo estimado da parte de IA quase inviabiliza o caso de negócio. Um dev comenta que 'um modelo menor talvez resolva a parte simples'. Você aproveita e ajuda o time a fatiar a entrega: uma primeira versão barata com o modelo pequeno, medir o resultado real, e só então decidir se o modelo caro se justifica.",
+        resources: [
+          { label: "IBM Brasil — O que são pequenos modelos de linguagem (SLMs)?", url: "https://www.ibm.com/br-pt/think/topics/small-language-models" },
+        ],
       },
       {
         id: "when-rag-vs-ft",
@@ -415,6 +454,10 @@ export const ROADMAP: Section[] = [
           "Existem três jeitos de fazer a IA trabalhar com o conhecimento da empresa, com custos e prazos muito diferentes: explicar na hora (colar a informação no pedido), dar um manual para consultar (a IA busca nos seus documentos a cada pergunta) ou mandar fazer um curso (treinar uma versão especializada — caro e demorado). Você não escolhe a técnica, mas entender que são três caminhos com tamanhos diferentes muda como você ajuda a quebrar e priorizar iniciativas de IA.",
         agileExample:
           "Na quebra da iniciativa 'assistente que responde dúvidas sobre políticas internas', o time explica que vai usar a abordagem de 'consultar documentos'. Como as políticas mudam sempre, isso faz sentido — e te dá o gancho de facilitação: 'dá pra começar com só 10 documentos e medir se as respostas prestam?'. A iniciativa vira fatias com aprendizado, em vez de um épico gigante de seis meses.",
+        resources: [
+          { label: "Rocketseat — O que é RAG? A revolução que torna a IA generativa muito mais inteligente", url: "https://www.rocketseat.com.br/blog/artigos/post/o-que-e-rag-retrieval-augmented-generation" },
+          { label: "IBM Brasil — Qual a diferença entre RAG e Fine-tuning?", url: "https://www.ibm.com/br-pt/think/topics/rag-vs-fine-tuning" },
+        ],
       },
       {
         id: "harness-conceito",
@@ -439,6 +482,7 @@ export const ROADMAP: Section[] = [
             label: "Anthropic — Building effective agents",
             url: "https://www.anthropic.com/research/building-effective-agents",
           },
+          { label: "Databricks (pt-BR) — O que é um harness de agente de IA?", url: "https://www.databricks.com/br/blog/ai-harness" },
         ],
       },
       {
@@ -459,6 +503,10 @@ export const ROADMAP: Section[] = [
           "Na planning, o time propõe trocar o modelo do produto pela versão mini para cortar 80% do custo, e alguém diz que 'é só trocar uma configuração'. Você pergunta: 'e como vamos saber que a qualidade não caiu?'. A resposta vira um item de trabalho de verdade na sprint — teste com casos reais antes da troca — em vez de uma surpresa com clientes depois.",
         prompt:
           "Explique de forma simples o que é quantização e destilação de modelos de IA e por que a versão 'mini' de um modelo pode errar mais em raciocínio matemático. Depois liste 5 tipos de teste que um QA deveria rodar antes de aprovar a troca para um modelo menor em produção.",
+        resources: [
+          { label: "IBM Brasil — O que é quantização?", url: "https://www.ibm.com/br-pt/think/topics/quantization" },
+          { label: "IBM Brasil — O que é destilação de conhecimento?", url: "https://www.ibm.com/br-pt/think/topics/knowledge-distillation" },
+        ],
       },
       {
         id: "benchmarks",
@@ -480,6 +528,7 @@ export const ROADMAP: Section[] = [
           "Explique, para um QA, o que medem os benchmarks MMLU, HumanEval, SWE-bench e GPQA, e liste 4 razões pelas quais um modelo bem colocado nesses rankings pode ainda assim ir mal no meu produto específico.",
         resources: [
           { label: "LMArena — ranking comparativo de modelos", url: "https://lmarena.ai" },
+          { label: "IBM Brasil — O que são benchmarks de LLM?", url: "https://www.ibm.com/br-pt/think/topics/llm-benchmarks" },
         ],
       },
       {
@@ -502,6 +551,7 @@ export const ROADMAP: Section[] = [
           "Explique de forma simples o fenômeno 'lost in the middle' (context rot) em LLMs e por que encher a janela de contexto pode reduzir a qualidade da resposta. Depois liste 5 formas de testar se um sistema realmente usa a informação enterrada no meio de um contexto longo.",
         resources: [
           { label: "Liu et al. — Lost in the Middle (Stanford)", url: "https://arxiv.org/abs/2307.03172" },
+          { label: "IBM Brasil — O que é uma janela de contexto?", url: "https://www.ibm.com/br-pt/think/topics/context-window" },
         ],
       },
       {
@@ -524,6 +574,8 @@ export const ROADMAP: Section[] = [
           "Explique o que é sycophancy (bajulação) em LLMs e por que o modelo tende a concordar com o usuário mesmo quando ele está errado. Depois me dê 5 técnicas de prompt para reduzir esse viés e obter uma resposta honesta e crítica.",
         resources: [
           { label: "Anthropic — Towards Understanding Sycophancy in Language Models", url: "https://www.anthropic.com/research/towards-understanding-sycophancy-in-language-models" },
+          { label: "Olhar Digital — Chatbots concordam com usuários mesmo quando estão errados, revela estudo", url: "https://olhardigital.com.br/2026/03/30/inteligencia-artificial/chatbots-tendem-a-concordar-com-usuarios-mesmo-quando-estao-errados-revela-estudo/" },
+          { label: "CNN Brasil — IA como conselheira? Estudo aponta que chatbots concordam demais", url: "https://www.cnnbrasil.com.br/tecnologia/ia-como-conselheira-estudo-aponta-que-chatbots-concordam-demais/" },
         ],
       },
     ],
@@ -560,6 +612,10 @@ export const ROADMAP: Section[] = [
             label: "IBM Technology — 4 Methods of Prompt Engineering",
             url: "https://www.youtube.com/watch?v=1c9iyoVIwDs",
           },
+          { label: "Código Fonte TV — Engenharia de Prompt (Além da Tentativa e Erro) // Dicionário do Programador", url: "https://www.youtube.com/watch?v=abJe_kV1cJU" },
+        ],
+        resources: [
+          { label: "Alura — O que é Engenharia de Prompt e quais as suas principais técnicas?", url: "https://www.alura.com.br/artigos/engenharia-prompt" },
         ],
       },
       {
@@ -586,6 +642,10 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=7zczUN30wSw",
           },
         ],
+        resources: [
+          { label: "IBM Brasil — O que é o few-shot learning?", url: "https://www.ibm.com/br-pt/think/topics/few-shot-learning" },
+          { label: "DIO — Few-Shot Prompting: o potencial da geração de texto com poucos exemplos", url: "https://www.dio.me/articles/few-shot-prompting-apresentando-o-potencial-da-geracao-de-texto-com-poucos-dados" },
+        ],
       },
       {
         id: "chain-of-thought",
@@ -611,6 +671,10 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=AFE6x81AP4k",
           },
         ],
+        resources: [
+          { label: "IBM Brasil — O que é o prompt de cadeia de pensamento (CoT)?", url: "https://www.ibm.com/br-pt/think/topics/chain-of-thoughts" },
+          { label: "Learn Prompting (pt-BR) — Prompting com Cadeia de Pensamento", url: "https://learnprompting.org/pt/docs/intermediate/chain_of_thought" },
+        ],
       },
       {
         id: "roles",
@@ -628,6 +692,10 @@ export const ROADMAP: Section[] = [
           "O system prompt é onde se definem as regras fixas de um assistente — o 'acordo de trabalho' da IA. Entender a diferença entre system e user explica por que alguns assistentes se comportam de forma consistente e outros não: as regras estavam no lugar certo. Quando o time criar um assistente para o fluxo (triagem de tickets, resumo de dailies), é você quem sabe quais regras de processo precisam estar gravadas ali.",
         agileExample:
           "O time monta um assistente que ajuda a escrever histórias no Jira. Você contribui com o system prompt: 'Toda história deve ter critérios de aceite; nunca estime — estimativa é do time; se faltar o objetivo de negócio, pergunte antes de escrever'. Depois, na revisão, você testa se o assistente segue: pede para ele estimar uma história e valida que recusa. As regras do processo viram regras da ferramenta.",
+        resources: [
+          { label: "Microsoft Learn (pt-BR) — Mensagens de sistema de segurança: como escrever regras no system prompt", url: "https://learn.microsoft.com/pt-br/azure/ai-services/openai/concepts/system-message" },
+          { label: "Canaltech — O que é system prompt? Entenda as 'regras' nas respostas das IAs", url: "https://canaltech.com.br/inteligencia-artificial/o-que-e-system-prompt-entenda-as-regras-nas-respostas-das-ias/" },
+        ],
       },
       {
         id: "structured-output",
@@ -647,6 +715,9 @@ export const ROADMAP: Section[] = [
           "Você pede à IA para quebrar uma iniciativa e exige a saída como array JSON com {titulo, descricao, criterios_aceite, dependencia, time_sugerido}. Em vez de reformatar texto, você usa esse JSON para criar os itens no Jira via importação em lote. Meia hora de trabalho manual de cadastro vira um passo automático — e o padrão dos campos fica garantido.",
         prompt:
           "Classifique cada log abaixo. Responda APENAS com um array JSON válido no schema: [{\"mensagem\": string, \"severidade\": \"alta|media|baixa\", \"modulo\": string, \"acao_sugerida\": string}]. Logs: [cole aqui].",
+        resources: [
+          { label: "Microsoft Learn (pt-BR) — Como usar saídas estruturadas (structured outputs)", url: "https://learn.microsoft.com/pt-br/azure/ai-services/openai/how-to/structured-outputs" },
+        ],
       },
       {
         id: "function-calling",
@@ -669,6 +740,9 @@ export const ROADMAP: Section[] = [
             label: "How LLM Tool Calling Works",
             url: "https://www.youtube.com/watch?v=QiRdYCNXAxk",
           },
+        ],
+        resources: [
+          { label: "Microsoft Learn (pt-BR) — Como usar a chamada de função (function calling)", url: "https://learn.microsoft.com/pt-br/azure/ai-services/openai/how-to/function-calling" },
         ],
       },
       {
@@ -693,6 +767,9 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=QiRdYCNXAxk",
           },
         ],
+        resources: [
+          { label: "IBM Brasil — O que é um agente ReAct?", url: "https://www.ibm.com/br-pt/think/topics/react-agent" },
+        ],
       },
       {
         id: "embeddings",
@@ -716,6 +793,9 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=wgfSDrqYMJ4",
           },
         ],
+        resources: [
+          { label: "IBM Brasil — O que é embedding?", url: "https://www.ibm.com/br-pt/think/topics/embedding" },
+        ],
       },
       {
         id: "vector-db",
@@ -738,6 +818,10 @@ export const ROADMAP: Section[] = [
             label: "IBM Technology — What is a Vector Database?",
             url: "https://www.youtube.com/watch?v=t9IDoenf-lo",
           },
+          { label: "DIO — Introdução a Bancos Vetoriais", url: "https://www.youtube.com/watch?v=Dwa2pXkF0Pk" },
+        ],
+        resources: [
+          { label: "IBM Brasil — O que é um banco de dados vetorial?", url: "https://www.ibm.com/br-pt/think/topics/vector-database" },
         ],
       },
       {
@@ -763,6 +847,10 @@ export const ROADMAP: Section[] = [
             label: "IBM Technology — What is Retrieval-Augmented Generation (RAG)?",
             url: "https://www.youtube.com/watch?v=T-D1OfcDW1M",
           },
+          { label: "Código Fonte TV — RAG (Retrieval-Augmented Generation) // Dicionário do Programador", url: "https://www.youtube.com/watch?v=CuPKOGdA46Q" },
+        ],
+        resources: [
+          { label: "IBM Brasil — O que é RAG (retrieval-augmented generation)?", url: "https://www.ibm.com/br-pt/think/topics/retrieval-augmented-generation" },
         ],
       },
       {
@@ -787,6 +875,9 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=pN-LfxNFiTc",
           },
         ],
+        resources: [
+          { label: "Data Science Academy — Além do Prompt: um guia definitivo sobre Context Engineering", url: "https://blog.dsacademy.com.br/alem-do-prompt-um-guia-definitivo-sobre-context-engineering-engenharia-de-contexto/" },
+        ],
       },
       {
         id: "fine-tuning",
@@ -810,6 +901,10 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=LGpbtaykD1U",
           },
         ],
+        resources: [
+          { label: "IBM Brasil — O que é ajuste fino (fine-tuning)?", url: "https://www.ibm.com/br-pt/think/topics/fine-tuning" },
+          { label: "Alura — Unsloth: domine o fine-tuning com o poder do Llama 3", url: "https://www.alura.com.br/conteudo/unsloth-domine-fine-tuning-poder-llama-3" },
+        ],
       },
       {
         id: "prompt-caching",
@@ -827,6 +922,9 @@ export const ROADMAP: Section[] = [
           "Se o seu time constrói produto com IA, custo por chamada é um tema que atravessa o planejamento — e prompt caching é uma das principais alavancas de economia. Entender o conceito te ajuda a ler conversas técnicas do time sobre custo e latência, e a traduzi-las para stakeholders quando o assunto vira orçamento ou meta de eficiência.",
         agileExample:
           "Na review, o time comemora que o custo do assistente caiu 60% depois de ativar caching do contexto fixo. Um stakeholder pergunta se dá para cortar mais. Você traduz com precisão: a parte fixa já está cacheada; o custo restante cresce com o uso, então economia adicional vem de outro lugar. A conversa segue produtiva porque você entende a alavanca — e não promete o impossível.",
+        resources: [
+          { label: "AWS Brasil — Otimizando custos e latência com Prompt Caching do Amazon Bedrock", url: "https://aws.amazon.com/pt/blogs/aws-brasil/otimizando-custos-e-latencia-com-prompt-caching-do-amazon-bedrock/" },
+        ],
       },
       {
         id: "streaming",
@@ -844,6 +942,9 @@ export const ROADMAP: Section[] = [
           "Streaming é a resposta aparecendo aos poucos — e explica por que produtos de IA 'parecem' rápidos mesmo quando a resposta completa demora. Para você, importa em dois momentos: ao avaliar ferramentas para o time (a latência percebida muda a adoção) e ao entender por que o time de produto trata 'tempo até o primeiro token' como métrica de experiência.",
         agileExample:
           "O time discute na review por que os usuários abandonam o assistente do produto: a resposta demora 15 segundos para começar a aparecer. Você ajuda a reenquadrar a conversa com o PM: a meta não é 'resposta em menos tempo total', é 'primeiro conteúdo em 2 segundos' — streaming muda a percepção sem mudar o modelo. O item entra no backlog com um critério de aceite mensurável.",
+        resources: [
+          { label: "Blog NVIDIA Brasil — Benchmarking de Inferência de LLM: Conceitos Fundamentais (streaming e tempo até o primeiro token)", url: "https://blog.nvidia.com.br/blog/benchmarking-de-inferencia-de-llm-conceitos-fundamentais/" },
+        ],
       },
       {
         id: "chunking-reranking",
@@ -861,6 +962,10 @@ export const ROADMAP: Section[] = [
           "Quando o assistente do time 'não acha' uma informação que está na base, a causa costuma ser como os documentos foram fatiados e ordenados — não o modelo. Entender isso muda a qualidade da sua conversa com o time técnico: em vez de 'a IA é ruim', você reporta 'a recuperação falha para perguntas sobre X', que é acionável.",
         agileExample:
           "O assistente sobre a base do Confluence responde bem sobre processos, mas falha em perguntas sobre acordos de times específicos. Na conversa com o time, você traz exemplos concretos das perguntas que falharam. O dev identifica: as páginas de acordos são longas e o chunking cortou no meio das seções. Uma sprint depois, com fatiamento por seção, o assistente acha. Você removeu o impedimento porque soube descrevê-lo.",
+        resources: [
+          { label: "Data Science Academy — Re-Ranking em RAG: melhorando a relevância nas respostas geradas por IA", url: "https://blog.dsacademy.com.br/re-ranking-em-rag-melhorando-a-relevancia-nas-respostas-geradas-por-ia/" },
+          { label: "Data Science Academy — Estratégias de Chunking em Aplicações de IA Generativa", url: "https://blog.dsacademy.com.br/estrategias-de-chunking-em-aplicacoes-de-ia-generativa/" },
+        ],
       },
       {
         id: "grounding",
@@ -878,6 +983,9 @@ export const ROADMAP: Section[] = [
           "Uma IA pode citar uma fonte e afirmar algo que a fonte não diz — e num contexto de comunicação com stakeholders, uma afirmação sem suporte que você repassa vira problema seu. Grounding é o hábito de verificar se cada afirmação da IA se sustenta no documento citado. Para quem produz resumos e relatórios que outros vão ler, é higiene básica.",
         agileExample:
           "Você pede à IA um resumo executivo do quarter com base nas páginas de status das iniciativas. Ela escreve 'a iniciativa de checkout está no prazo [status de junho]'. Antes de enviar à diretoria, você confere: o status de junho diz 'no prazo, com risco na dependência do time de pagamentos'. Você devolve: 'reescreva mantendo os riscos mencionados nas fontes'. O resumo que sai tem seu nome — e se sustenta.",
+        resources: [
+          { label: "Conversion — O que é Grounding em IAs e como é usado para reduzir alucinações", url: "https://www.conversion.com.br/blog/o-que-e-grounding/" },
+        ],
       },
       {
         id: "logprobs-confidence",
@@ -895,6 +1003,9 @@ export const ROADMAP: Section[] = [
           "Nem toda resposta de IA merece a mesma confiança — e sistemas bem desenhados usam o nível de confiança do modelo para decidir o que segue automático e o que vai para revisão humana. Esse conceito te dá um princípio de desenho de fluxo: automatize o que a IA acerta com confiança, roteie o incerto para uma pessoa. É gestão de fluxo aplicada à IA.",
         agileExample:
           "O time desenha uma triagem automática de tickets: alta confiança na classificação → roteia direto; baixa confiança → cai numa fila de revisão humana. Na discussão de fluxo, você traz a pergunta de capacidade: quantos por cento vão cair na fila humana e quem absorve esse trabalho? O limiar de confiança vira uma decisão de processo — apertado demais, a fila explode; frouxo demais, erro passa direto.",
+        resources: [
+          { label: "Mario Filho — Como usar o GPT via API da OpenAI em Python (logprobs para medir confiança)", url: "https://mariofilho.com/gpt-openai-api-python/" },
+        ],
       },
       {
         id: "determinism",
@@ -912,6 +1023,9 @@ export const ROADMAP: Section[] = [
           "A mesma pergunta pode gerar respostas diferentes a cada execução — isso é da natureza dos LLMs, não um defeito. Para você, tem duas consequências práticas: relatórios e análises geradas por IA podem variar entre rodadas (rode mais de uma vez antes de confiar num número), e o trabalho do time para testar features de IA é maior do que parece — o que explica estimativas que soam infladas.",
         agileExample:
           "Na planning, o time estima 8 pontos para 'testar o classificador de tickets' e um stakeholder estranha o tamanho. Você contextualiza: como a saída varia, o time precisa rodar cada caso várias vezes e medir consistência, não só 'passou/falhou' uma vez. A estimativa se sustenta e a conversa vira sobre risco, não sobre desconfiança. Você defendeu o time com argumento técnico, não com autoridade.",
+        resources: [
+          { label: "AI Brasil — Temperatura em LLM: o que é e como funciona na geração de texto", url: "https://aibrasil.ai/artigo/temperatura-em-llm-o-que-e-e-como-funciona-na-geracao-de-texto" },
+        ],
       },
       {
         id: "sdd",
@@ -933,6 +1047,8 @@ export const ROADMAP: Section[] = [
           "Aja como QA. Transforme esta user story em uma especificação no estilo EARS (Easy Approach to Requirements Syntax), com requisitos testáveis e critérios de aceite explícitos, destacando ambiguidades. Story: [cole aqui].",
         resources: [
           { label: "GitHub Spec Kit (repositório oficial)", url: "https://github.com/github/spec-kit" },
+          { label: "Microsoft Learn (pt-BR) — Introdução ao Spec-Driven Development e ao GitHub Spec Kit", url: "https://learn.microsoft.com/pt-br/training/modules/spec-driven-development-github-spec-kit-greenfield-intro/" },
+          { label: "AWS Builder Center (pt) — O que é Spec-Driven Development e como implementá-lo com o Kiro", url: "https://builder.aws.com/content/3CpAi6yZG77h0iq2Doesicu1IDU/o-que-e-desenvolvimento-orientado-por-especificacoes-spec-driven-development-e-como-implementa-lo-com-kiro" },
         ],
       },
       {
@@ -953,6 +1069,10 @@ export const ROADMAP: Section[] = [
           "Duas sprints após o time adotar um agente de código, você nota no board: itens saem de 'em desenvolvimento' mais rápido, mas acumulam em 'em revisão'. Na retro, você traz o dado do cycle time por coluna e facilita a conversa: o time decide criar acordos de revisão para código gerado por IA e limitar o WIP de revisão. O ganho da ferramenta só vira ganho de fluxo porque alguém olhou o sistema inteiro — você.",
         resources: [
           { label: "Anthropic — Building Effective Agents", url: "https://www.anthropic.com/engineering/building-effective-agents" },
+          { label: "Alura — Vibe coding: o que é, como surgiu, riscos e mais!", url: "https://www.alura.com.br/empresas/artigos/vibe-coding" },
+        ],
+        videos: [
+          { label: "Tropical on Rails — Fabio Akita: Minha Experiência com Agile Vibe Coding", url: "https://www.youtube.com/watch?v=U3bZavG8qQY" },
         ],
       },
       {
@@ -971,6 +1091,10 @@ export const ROADMAP: Section[] = [
           "Review automático de PR mexe diretamente numa das maiores fontes de espera do fluxo: código parado aguardando revisor. Entender o que a IA cobre (primeira passada, padrões, riscos óbvios) e o que continua humano (decisões de design) te permite medir o efeito real no lead time e mediar os acordos de time sobre o novo fluxo de revisão.",
         agileExample:
           "O time ativa review de IA nos PRs e você acompanha o efeito no eazyBI: o tempo médio em 'aguardando revisão' cai de 26 para 9 horas em um mês. Na retro, porém, um dev aponta que comentários irrelevantes da IA geram ruído. Você facilita o acordo: IA faz a primeira passada e humano decide — e o time define quais categorias de comentário ela deve suprimir. Ferramenta nova, acordo novo, e o número comprova o ganho.",
+        resources: [
+          { label: "Rocketseat — Como usar IA para revisar seu próprio código", url: "https://www.rocketseat.com.br/blog/artigos/post/ia-revisar-codigo-prompts-code-review" },
+          { label: "Microsoft Learn (pt-BR) — Aperfeiçoando revisões de código e pull requests com o GitHub Copilot", url: "https://learn.microsoft.com/pt-br/training/modules/code-reviews-pull-requests-github-copilot/" },
+        ],
       },
       {
         id: "cypress-ai",
@@ -990,6 +1114,9 @@ export const ROADMAP: Section[] = [
           "Você percebe no Jira que toda sprint carrega 2-3 itens de 'corrigir testes quebrados', somando quase um dia de capacidade. Quando o QA propõe adotar os recursos de IA do Cypress, você apoia com o dado e define com o time como medir: se em dois meses esses itens recorrentes caírem, o ganho é real. Na review do trimestre, você mostra a capacidade recuperada — em horas, não em promessa.",
         resources: [
           { label: "Cypress — Lançamento do cy.prompt()", url: "https://www.cypress.io/blog/cy-prompt-experimental-launch" },
+        ],
+        videos: [
+          { label: "Alan Void — O Despertar do Cypress: criando testes com IA e cy.prompt", url: "https://www.youtube.com/watch?v=_3BeswdYkDg" },
         ],
       },
       {
@@ -1035,6 +1162,7 @@ export const ROADMAP: Section[] = [
             label: "OpenAI Evals — framework de avaliação (conceitos)",
             url: "https://github.com/openai/evals",
           },
+          { label: "IBM Brasil — O que é a Avaliação de Agentes de IA?", url: "https://www.ibm.com/br-pt/think/topics/ai-agent-evaluation" },
         ],
       },
       {
@@ -1057,6 +1185,8 @@ export const ROADMAP: Section[] = [
           "Escreva um arquivo de instruções (AGENTS.md) para um repositório de automação de testes em Playwright: convenções de nomenclatura, estrutura de pastas, padrão de seletores, o que o agente deve fazer antes de finalizar (lint + testes) e o que ele nunca deve fazer.",
         resources: [
           { label: "AGENTS.md — formato aberto de instruções para agentes", url: "https://agents.md" },
+          { label: "Devin Docs (pt-BR) — AGENTS.md: instruções para agentes de código", url: "https://docs.devin.ai/pt-BR/onboard-devin/agents-md" },
+          { label: "Claude Docs (pt-BR) — Visão geral das Agent Skills", url: "https://platform.claude.com/docs/pt-BR/agents-and-tools/agent-skills/overview" },
         ],
       },
       {
@@ -1079,6 +1209,7 @@ export const ROADMAP: Section[] = [
           "Aqui está um prompt que uso para gerar casos de teste: [cole seu prompt]. Critique-o como um engenheiro de prompts: liste ambiguidades, informações faltantes e pontos frágeis. Depois proponha uma versão melhorada e explique cada mudança.",
         resources: [
           { label: "DSPy — otimização programática de prompts", url: "https://github.com/stanfordnlp/dspy" },
+          { label: "RDD10+ — Meta Prompting: a nova fronteira na otimização de prompts", url: "https://www.robertodiasduarte.com.br/meta-prompting-a-nova-fronteira-na-otimizacao-de-prompts/" },
         ],
       },
       {
@@ -1099,6 +1230,9 @@ export const ROADMAP: Section[] = [
           "O custo de IA do produto está alto e vira pauta. Em vez de 'cortar a IA', você traz a opção de roteamento: um spike para classificar o tráfego por dificuldade e rotear. Onde aceitar o modelo mais barato (e o risco de qualidade) vira conversa de produto priorizada, não um corte às cegas.",
         prompt:
           "Explique o padrão de model routing (cascata de modelos por dificuldade) e quando ele vale a pena. Depois desenhe uma estratégia de roteamento para um chatbot de suporte: como classificar a dificuldade, quando escalar para o modelo maior e quais métricas monitorar.",
+        resources: [
+          { label: "Data Science Academy — LLM Routing: Orquestrando Modelos de Linguagem Para Eficiência e Escala", url: "https://blog.dsacademy.com.br/llm-routing-orquestrando-modelos-de-linguagem-para-eficiencia-e-escala/" },
+        ],
       },
       {
         id: "semantic-caching",
@@ -1118,6 +1252,10 @@ export const ROADMAP: Section[] = [
           "Usuários reclamam de lentidão e o custo por resposta é alto. Você traz o semantic caching como iniciativa e ajuda o time a enquadrar o risco: definir, junto com o QA, quais perguntas podem ser cacheadas por similaridade e quais são sensíveis demais — virando critério de aceite, não só otimização.",
         prompt:
           "Explique a diferença entre cache tradicional, prompt caching (prefixo) e semantic caching (por similaridade). Depois liste os riscos do semantic caching e 5 casos de teste para validar que ele não devolve a resposta de uma pergunta parecida porém diferente.",
+        resources: [
+          { label: "Microsoft Learn (pt-BR) — Cache semântico para modelos de linguagem grandes (Azure Cosmos DB)", url: "https://learn.microsoft.com/pt-br/azure/cosmos-db/gen-ai/semantic-cache" },
+          { label: "Data Science Academy — Cache Semântico em Aplicações de IA Generativa: Como Reduzir Custos de LLMs Sem Perder Qualidade?", url: "https://blog.dsacademy.com.br/cache-semantico-em-aplicacoes-de-ia-generativa-como-reduzir-custos-de-llms-sem-perder-qualidade/" },
+        ],
       },
     ],
   },
@@ -1151,6 +1289,7 @@ export const ROADMAP: Section[] = [
           "Você é um facilitador de refinamento. Recebe este épico: [cole o épico]. Faça: (1) proponha a quebra em histórias no formato 'Como... quero... para...'; (2) para cada história, escreva 3-5 critérios de aceite testáveis (Dado/Quando/Então); (3) liste ambiguidades e perguntas que o time deve resolver antes de estimar; (4) aponte riscos de dependência entre as histórias. Responda em português, em tópicos.",
         resources: [
           { label: "Atlassian Agile Coach — histórias de usuário", url: "https://www.atlassian.com/agile/project-management/user-stories" },
+          { label: "StackSpot — Refinamento de backlog inteligente com IA", url: "https://stackspot.com/pt/blog/refinamento-de-backlog/" },
         ],
       },
       {
@@ -1173,6 +1312,7 @@ export const ROADMAP: Section[] = [
           "Recebe a lista de itens de uma sprint com status, datas de movimentação e responsáveis: [cole os dados exportados do board]. Faça: (1) resuma o estado da sprint em 5 linhas; (2) liste itens parados há mais tempo que o normal e possíveis gargalos por coluna; (3) aponte sinais de risco para a entrega (itens sem teste, bugs reabertos, dependências); (4) rascunhe um update de status para stakeholders em tom objetivo. Responda em português.",
         resources: [
           { label: "Atlassian Agile Coach — métricas de fluxo em kanban", url: "https://www.atlassian.com/agile/kanban" },
+          { label: "Fundação Vanzolini — Como usar inteligência artificial para projetos ágeis?", url: "https://vanzolini.org.br/blog/inteligencia-artificial-para-projetos/" },
         ],
       },
       {
@@ -1195,6 +1335,8 @@ export const ROADMAP: Section[] = [
           "Você apoia o planejamento de portfólio. Recebe esta iniciativa: [descreva a iniciativa] e estas metas do período: [cole as metas]. Faça: (1) proponha a quebra em épicos com uma frase de resultado esperado para cada; (2) mapeie dependências entre os épicos e com outros times; (3) liste os 5 maiores riscos (técnicos, de qualidade e de prazo) com uma sugestão de mitigação; (4) indique como cada épico contribui para as metas. Responda em português, em tópicos.",
         resources: [
           { label: "Atlassian Agile Coach — agile em escala", url: "https://www.atlassian.com/agile/agile-at-scale" },
+          { label: "Exactaworks — OKR: como melhorar a gestão por resultados com IA", url: "https://blog.exactaworks.com.br/2025/06/16/okr-ia/" },
+          { label: "SoftDesign — Planejamento estratégico com IA: tendências e oportunidades", url: "https://www.softdesign.com.br/blog/planejamento-estrategico-com-ia/" },
         ],
       },
     ],
@@ -1229,6 +1371,7 @@ export const ROADMAP: Section[] = [
           "Resuma esta página de documentação para uma pessoa que entra agora no time: [cole o conteúdo]. Estruture em: (1) o que é e para que serve; (2) as 5 regras/decisões mais importantes; (3) o que parece desatualizado ou contraditório e merece revisão. Responda em português, em tópicos curtos.",
         resources: [
           { label: "Atlassian — IA no Confluence", url: "https://www.atlassian.com/software/confluence/ai" },
+          { label: "Atlassian (pt-BR) — Rovo no Confluence: funções de IA", url: "https://www.atlassian.com/br/software/confluence/ai" },
         ],
       },
       {
@@ -1251,6 +1394,8 @@ export const ROADMAP: Section[] = [
           "Escreva consultas JQL para estas 4 perguntas sobre meu projeto Jira (chave: [SUA-CHAVE]): (1) histórias da sprint atual que ainda não entraram em teste; (2) bugs reabertos nos últimos 30 dias; (3) itens sem responsável parados há mais de 3 dias; (4) épicos do trimestre sem data de vencimento. Para cada uma, explique em 1 linha o que a consulta faz.",
         resources: [
           { label: "Atlassian — Atlassian Intelligence", url: "https://www.atlassian.com/platform/artificial-intelligence" },
+          { label: "CSP Tech — Atlassian Intelligence: os novos recursos de IA na nuvem da Atlassian", url: "https://blog.csptecnologia.com/atlassian-intelligence-conheca-os-novos-recursos-de-ia-na-nuvem-da-atlassian/" },
+          { label: "Atlassian (pt-BR) — Rovo no Jira: funções de IA", url: "https://www.atlassian.com/br/software/jira/ai" },
         ],
       },
       {
@@ -1273,6 +1418,7 @@ export const ROADMAP: Section[] = [
           "Ajude-me a estruturar metas conectadas ao trabalho. Contexto do time/período: [descreva]. Faça: (1) transforme estes objetivos vagos em 3 metas com resultado mensurável: [cole os objetivos]; (2) para cada meta, sugira que épicos/projetos deveriam estar conectados a ela; (3) inclua pelo menos 1 meta de qualidade; (4) rascunhe o primeiro update de status de cada uma em 3 linhas (situação, progresso, próximo passo). Responda em português.",
         resources: [
           { label: "Atlassian Home — trabalho e metas conectados", url: "https://www.atlassian.com/software/home" },
+          { label: "Atlassian (pt-BR) — Metas da Atlassian (Goals)", url: "https://www.atlassian.com/br/platform/platform-apps/goals" },
         ],
       },
       {
@@ -1295,6 +1441,7 @@ export const ROADMAP: Section[] = [
           "Quero desenhar um Rovo Agent para meu time. Contexto: [descreva o time e a rotina que quer automatizar, ex.: relatório semanal de fluxo, triagem de bugs, resumo de sprint]. Faça: (1) escreva as instruções do agente (papel, o que deve fazer, formato de saída); (2) liste as fontes que ele precisa consultar (projetos Jira, espaços Confluence); (3) defina os pontos em que um humano deve revisar antes de a ação valer; (4) sugira 3 perguntas para testar se o agente funciona bem. Responda em português.",
         resources: [
           { label: "Atlassian — Rovo", url: "https://www.atlassian.com/software/rovo" },
+          { label: "Atlassian (pt-BR) — Rovo: IA com o conhecimento da sua organização", url: "https://www.atlassian.com/br/software/rovo" },
         ],
       },
       {
@@ -1317,6 +1464,7 @@ export const ROADMAP: Section[] = [
           "Você é um analista de métricas ágeis. Recebe estes dados exportados do eazyBI (Jira): [cole a tabela — ex.: lead time, cycle time por coluna, throughput por sprint]. Faça: (1) descreva as 3 principais tendências; (2) aponte anomalias e mudanças de comportamento com a sprint em que começaram; (3) levante hipóteses de causa (sem afirmar — são hipóteses para o time validar); (4) escreva um parágrafo de resumo para stakeholder não técnico. Responda em português.",
         resources: [
           { label: "eazyBI for Jira — documentação", url: "https://docs.eazybi.com" },
+          { label: "Nimble Evolution — Como estruturar indicadores de negócio no Jira com eazyBI", url: "https://br.nimbleevolution.com/como-estruturar-indicadores-de-negocio-no-jira-com-eazybi/" },
         ],
       },
       {
@@ -1339,6 +1487,7 @@ export const ROADMAP: Section[] = [
           "Preciso de um script Groovy para ScriptRunner no Jira Cloud. Requisito: [descreva a automação, ex.: 'quando uma história for movida para Concluído, fechar todas as subtarefas abertas e comentar na issue']. Gere: (1) o script comentado linha a linha em português; (2) a lista de casos de borda que devo testar antes de aplicar (ex.: reabertura, permissões, subtarefas já fechadas); (3) o que muda se for Jira Data Center. Avise explicitamente sobre qualquer parte em que você não tem certeza da API.",
         resources: [
           { label: "ScriptRunner for Jira — Adaptavist", url: "https://www.adaptavist.com/products/scriptrunner-for-jira" },
+          { label: "LuizTools — Como criar automações e scripts no Jira (ScriptRunner/Groovy)", url: "https://www.luiztools.com.br/post/como-criar-automacoes-e-scripts-no-jira-server/" },
         ],
       },
       {
@@ -1361,6 +1510,7 @@ export const ROADMAP: Section[] = [
           "Quero criar regras no Jira Automation. Para cada rotina abaixo, descreva a regra no formato gatilho → condições → ações, indicando os componentes do Jira Automation a usar: (1) bug crítico sem resposta há 24h → escalar para o líder; (2) bug reaberto → etiquetar e notificar o QA; (3) item entrou na sprint sem estimativa → comentar marcando o PO; (4) item parado 5 dias na mesma coluna → avisar no canal do time. Aponte limitações que eu deva verificar (ex.: limites de execução do plano).",
         resources: [
           { label: "Atlassian — Jira Automation", url: "https://www.atlassian.com/software/jira/features/automation" },
+          { label: "Atlassian (pt-BR) — Automação no Jira", url: "https://www.atlassian.com/br/software/jira/features/automation" },
         ],
       },
     ],
@@ -1395,6 +1545,10 @@ export const ROADMAP: Section[] = [
             label: "IBM Technology — What are AI Agents?",
             url: "https://www.youtube.com/watch?v=F8NKVhkZZWI",
           },
+          { label: "Código Fonte TV — Agentes de IA (O que são e como trabalhar com eles) // Dicionário do Programador", url: "https://www.youtube.com/watch?v=wxD8MaD0xXk" },
+        ],
+        resources: [
+          { label: "IBM Brasil — O que são agentes de IA?", url: "https://www.ibm.com/br-pt/think/topics/ai-agents" },
         ],
       },
       {
@@ -1424,6 +1578,7 @@ export const ROADMAP: Section[] = [
             label: "Anthropic — Building Effective Agents (artigo de referência)",
             url: "https://www.anthropic.com/engineering/building-effective-agents",
           },
+          { label: "IBM Brasil — O que são fluxos de trabalho agênticos?", url: "https://www.ibm.com/br-pt/think/topics/agentic-workflows" },
         ],
       },
       {
@@ -1447,6 +1602,10 @@ export const ROADMAP: Section[] = [
             label: "IBM Technology — Multi AI Agent Systems: When One Brain Isn't Enough",
             url: "https://www.youtube.com/watch?v=kYkZI3oj2W4",
           },
+        ],
+        resources: [
+          { label: "IBM Brasil — O que é um sistema multiagentes?", url: "https://www.ibm.com/br-pt/think/topics/multiagent-system" },
+          { label: "Alura — Multiagentes de IA: como funciona e quais suas aplicações", url: "https://www.alura.com.br/empresas/artigos/multiagentes-de-ia" },
         ],
       },
       {
@@ -1472,6 +1631,7 @@ export const ROADMAP: Section[] = [
             label: "Anthropic — How we built our multi-agent research system",
             url: "https://www.anthropic.com/engineering/built-multi-agent-research-system",
           },
+          { label: "Microsoft Learn (pt-BR) — Padrões multiagente de orquestrador e subagente", url: "https://learn.microsoft.com/pt-br/agents/architecture/multi-agent-orchestrator-sub-agent" },
         ],
       },
       {
@@ -1495,9 +1655,11 @@ export const ROADMAP: Section[] = [
             label: "IBM Technology — What is MCP? Integrate AI Agents with DBs & APIs",
             url: "https://www.youtube.com/watch?v=eur8dUO9mvE",
           },
+          { label: "Código Fonte TV — MCP: Model Context Protocol (O USB das IAs) // Dicionário do Programador", url: "https://www.youtube.com/watch?v=deprLB_y6Ho" },
         ],
         resources: [
           { label: "MCP — site oficial", url: "https://modelcontextprotocol.io" },
+          { label: "Alura — Model Context Protocol (MCP): o guia definitivo do \"conector universal\" da IA", url: "https://www.alura.com.br/artigos/model-context-protocol-mcp" },
         ],
       },
       {
@@ -1516,6 +1678,10 @@ export const ROADMAP: Section[] = [
           "Ferramentas de orquestração — especialmente as low-code como n8n — são a porta de entrada para você automatizar o operacional do próprio processo ágil sem depender de dev: avisos de card parado, resumo de reunião postado no Confluence, alerta quando o WIP estoura. Conhecer o que existe te dá autonomia para prototipar e vocabulário para conversar com o time sobre o que vale industrializar.",
         agileExample:
           "Você monta em uma ferramenta low-code um fluxo simples: toda sexta, coleta os cards que não se moveram na semana, pede à IA um resumo do motivo (pelos comentários) e posta no canal do time antes da retro. O time chega na retro com os pontos de atrito já mapeados — e a discussão parte dos dados, não da memória de cada um.",
+        resources: [
+          { label: "IBM Brasil — O que é orquestração de agentes de IA?", url: "https://www.ibm.com/br-pt/think/topics/ai-agent-orchestration" },
+          { label: "Alura — CrewAI: o que é e como criar seu primeiro projeto do zero", url: "https://www.alura.com.br/artigos/o-que-e-crewai" },
+        ],
       },
       {
         id: "memory",
@@ -1539,6 +1705,9 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=BacJ6sEhqMo",
           },
         ],
+        resources: [
+          { label: "IBM Brasil — O que é memória de agente de IA?", url: "https://www.ibm.com/br-pt/think/topics/ai-agent-memory" },
+        ],
       },
       {
         id: "human-in-the-loop",
@@ -1556,6 +1725,9 @@ export const ROADMAP: Section[] = [
           "Decidir onde o humano aprova e onde a IA segue sozinha é desenho de processo — e desenho de processo é o seu ofício. A mesma lógica dos seus fluxos de trabalho vale aqui: ações reversíveis e de baixo impacto podem ser autônomas; ações que afetam pessoas, compromissos ou dados pedem checkpoint. Você é a pessoa certa para facilitar essa conversa quando o time (ou a empresa) começa a automatizar com IA.",
         agileExample:
           "O time quer um agente que atualiza cards no Jira. Você facilita o desenho do fluxo: adicionar comentário e etiquetar, tudo bem sozinho; mover card para 'concluído' ou alterar estimativa, só com aprovação de alguém do time. Vocês desenham juntos a matriz de 'ação × autonomia' num quadro — e o combinado vira parte do acordo de trabalho do time, revisado na retro como qualquer outro.",
+        resources: [
+          { label: "IBM Brasil — O que é Human in the Loop (HITL)?", url: "https://www.ibm.com/br-pt/think/topics/human-in-the-loop" },
+        ],
       },
       {
         id: "guardrails",
@@ -1578,6 +1750,10 @@ export const ROADMAP: Section[] = [
             label: "IBM Technology — Building Safer AI: AI Guardrails (Granite Guardian)",
             url: "https://www.youtube.com/watch?v=NprCSRT09T0",
           },
+        ],
+        resources: [
+          { label: "AWS Brasil — Melhores práticas de segurança em projetos de IA generativa", url: "https://aws.amazon.com/pt/blogs/aws-brasil/melhores-praticas-de-seguranca-em-projetos-de-ia-generativa/" },
+          { label: "AWS Brasil — Guardrails for Amazon Bedrock detecta alucinações e protege aplicações", url: "https://aws.amazon.com/pt/about-aws/whats-new/2024/07/guardrails-bedrock-hallucinations-safeguard-apps-fm/" },
         ],
       },
       {
@@ -1634,6 +1810,7 @@ export const ROADMAP: Section[] = [
             label: "IBM Technology — LLM as a Judge: Scaling AI Evaluation",
             url: "https://www.youtube.com/watch?v=trfUBIDeI1Y",
           },
+          { label: "Fabricio Veronez — Como Avaliar IA Sem Achismo: LLM como Juiz na Prática", url: "https://www.youtube.com/watch?v=32NpGOnQuQM" },
         ],
       },
       {
@@ -1658,6 +1835,9 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=reISMhbZ2XE",
           },
         ],
+        resources: [
+          { label: "Alura — Curso LangFuse: observabilidade de LLMs (monitoramento e avaliação)", url: "https://www.alura.com.br/curso-online-langfuse-observabilidade-llms" },
+        ],
       },
       {
         id: "model-drift",
@@ -1675,6 +1855,9 @@ export const ROADMAP: Section[] = [
           "Drift quebra uma premissa silenciosa do planejamento: a de que o que está entregue continua funcionando. Uma feature de IA pode degradar sem ninguém encostar no código — o que significa que 'pronto' não é para sempre e o roadmap precisa reservar capacidade para monitoramento e recalibração. Você é quem garante que essa manutenção contínua apareça no portfólio, em vez de virar trabalho invisível que come a capacidade da sprint.",
         agileExample:
           "Seis meses após o lançamento, o classificador de chamados do time começa a errar e as reclamações chegam via stakeholder, não via monitoramento. Na retro, o time percebe que tratou a feature de IA como 'entregue e esquecida'. Você propõe o ajuste no processo: toda feature de IA no portfólio ganha um item recorrente de acompanhamento de qualidade — e o macro tema passa a prever essa capacidade, sprint sim, sprint não.",
+        resources: [
+          { label: "IBM Brasil — O que é um desvio do modelo? (model drift)", url: "https://www.ibm.com/br-pt/think/topics/model-drift" },
+        ],
       },
       {
         id: "prompt-injection",
@@ -1705,6 +1888,7 @@ export const ROADMAP: Section[] = [
             label: "OWASP Top 10 para LLM",
             url: "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
           },
+          { label: "IBM Brasil — O que é um ataque de injeção de prompt?", url: "https://www.ibm.com/br-pt/think/topics/prompt-injection" },
         ],
       },
       {
@@ -1723,6 +1907,10 @@ export const ROADMAP: Section[] = [
           "Viés e ética em IA são risco de produto e de reputação — e risco é pauta sua no planejamento de iniciativas. Além disso, o tema toca o seu próprio uso: se você usa IA para analisar desempenho de fluxo ou resumir contribuições em retros, precisa se perguntar se a análise não penaliza injustamente alguém. IA responsável, no dia a dia ágil, é garantir que a conversa sobre impacto em pessoas aconteça antes da entrega, não depois.",
         agileExample:
           "Numa iniciativa de IA que prioriza atendimento de clientes, você leva ao refinamento a pergunta: 'a priorização trata clientes de perfis diferentes de forma consistente? Quem valida isso?'. O time adiciona um critério de equidade à definição de pronto. E no seu próprio uso: ao pedir à IA um resumo das contribuições da retro, você revisa se o resumo não apaga as falas de quem participa menos — o resumo influencia percepção, e percepção influencia o time.",
+        resources: [
+          { label: "IBM Brasil — O que é IA responsável?", url: "https://www.ibm.com/br-pt/think/topics/responsible-ai" },
+          { label: "MIT Technology Review Brasil — Ética em IA: a pergunta que não estamos fazendo", url: "https://mittechreview.com.br/etica-em-ia-a-pergunta-que-nao-estamos-fazendo/" },
+        ],
       },
       {
         id: "rlhf-alignment",
@@ -1740,6 +1928,9 @@ export const ROADMAP: Section[] = [
           "Entender alinhamento explica comportamentos da IA que afetam seu dia a dia: por que ela recusa certos pedidos, por que tende a concordar demais (e valida qualquer ideia que você apresentar com entusiasmo), e por que muda de comportamento entre versões. Esse conhecimento calibra seu uso: você aprende a pedir crítica explicitamente e a não tratar a concordância da IA como validação da sua decisão de processo.",
         agileExample:
           "Você pede à IA uma opinião sobre a proposta de reorganizar as cerimônias do time, e ela elogia o plano. Sabendo que modelos alinhados tendem a agradar, você inverte: 'aja como um crítico: liste os 5 maiores riscos dessa proposta e em que contexto ela falharia'. As respostas mudam completamente — e duas críticas viram ajustes reais antes de você apresentar a proposta na retro.",
+        resources: [
+          { label: "IBM Brasil — O que é aprendizado de reforço com feedback humano (RLHF)?", url: "https://www.ibm.com/br-pt/think/topics/rlhf" },
+        ],
       },
       {
         id: "computer-use",
@@ -1774,6 +1965,9 @@ export const ROADMAP: Section[] = [
           "Saber que alucinação é mensurável muda sua postura em dois níveis. No seu uso: todo resumo, relatório ou análise que a IA gera para você pode conter afirmações inventadas — então você adota o hábito de verificar contra a fonte antes de repassar a stakeholders. No planejamento: uma feature de IA sem taxa de alucinação medida é uma feature com risco desconhecido, e essa medição é trabalho que precisa estar visível no backlog.",
         agileExample:
           "Você pede à IA um resumo executivo do andamento da iniciativa para a diretoria. O texto vem ótimo — mas cita uma entrega 'concluída' que ainda está em andamento. Você pega o hábito de pedir: 'para cada afirmação, cite o card ou documento de origem' e confere as principais antes de enviar. O resumo continua economizando uma hora do seu dia, mas nunca mais viaja sem verificação.",
+        resources: [
+          { label: "IBM Brasil — O que são alucinações de IA?", url: "https://www.ibm.com/br-pt/think/topics/ai-hallucinations" },
+        ],
       },
       {
         id: "agent-eval",
@@ -1791,6 +1985,10 @@ export const ROADMAP: Section[] = [
           "Avaliar a trajetória — o caminho, não só o resultado — é algo que você já faz com times: um resultado bom por processo ruim é sorte, não capacidade. Com agentes é igual: o que importa é se o processo é confiável e repetível. Quando o time adotar agentes em fluxos de trabalho, essa lente te ajuda a perguntar o que interessa: não 'funcionou dessa vez?', mas 'o caminho que ele toma é estável o suficiente para dependermos dele?'.",
         agileExample:
           "O time demonstra na review um agente que triou os bugs da semana corretamente. Você faz a pergunta de trajetória: 'ele acertou pelo caminho certo? Se o volume dobrar ou o formato do log mudar, continua acertando?'. O dev mostra os traces e vocês descobrem que ele pulou uma verificação em 3 dos 10 casos — acertou por sorte. A definição de pronto do agente ganha um critério de processo, não só de resultado.",
+        resources: [
+          { label: "Leo Cavalcante — Avaliando Agentes de IA Além do \"Vibes Check\"", url: "https://leocavalcante.dev/avaliando-agentes-de-ia-alem-do-vibes-check/" },
+          { label: "DIO — Frameworks de avaliação de agentes LLM em 2026", url: "https://www.dio.me/articles/frameworks-de-avaliacao-de-agentes-llm-em-2026-58d3106b0575" },
+        ],
       },
       {
         id: "flaky-detection",
@@ -1808,6 +2006,12 @@ export const ROADMAP: Section[] = [
           "Testes flaky são um ladrão de previsibilidade: pipeline vermelho sem causa real significa retrabalho, espera e cards que não fluem — e isso aparece nas suas métricas antes de aparecer em qualquer conversa. Você não vai operar a ferramenta de detecção, mas entender que IA transforma 'o CI é instável' em uma lista priorizada de causas te dá um caminho concreto para atacar um atrito crônico do fluxo.",
         agileExample:
           "Na retro, 'o pipeline vive quebrando' aparece pela terceira vez, sempre como desabafo genérico. Você pergunta ao QA se dá para usar IA no histórico do CI para quantificar: quantos testes são flaky, quanto tempo o time perde re-rodando builds. O resultado — '12 testes causam 70% das falhas falsas, custando ~4 horas por semana' — vira um item de melhoria negociável com o PO, com custo e benefício na mesa.",
+        videos: [
+          { label: "Dev Eficiente — Flaky tests: o que comem, onde vivem, e como reproduzem", url: "https://www.youtube.com/watch?v=NE0Hf4HsH7o" },
+        ],
+        resources: [
+          { label: "Zup Innovation — Tudo sobre teste flaky: o que é, como ocorre e mais", url: "https://zup.com.br/blog/teste-flaky/" },
+        ],
       },
       {
         id: "rca-ai",
@@ -1825,6 +2029,10 @@ export const ROADMAP: Section[] = [
           "Investigação de causa-raiz é tempo em que o card fica parado e o time fica em modo reativo — puro impacto no lead time. IA que correlaciona logs e mudanças e propõe a causa provável encurta esse ciclo de horas para minutos. E o padrão serve para você também: causa-raiz não é só de incidente técnico — dá para aplicar a mesma lógica sobre os dados do fluxo para investigar por que a previsibilidade caiu.",
         agileExample:
           "O throughput do time caiu 30% no último mês e o comitê quer explicação. Você dá à IA os dados dos cards do período — datas de transição, bloqueios, comentários — e pede hipóteses de causa com evidências. Ela aponta: cards de um mesmo componente esperando revisão de uma única pessoa, que estava dividida com outro projeto. Você valida com o time na retro e leva ao comitê a causa com dado, não desculpa.",
+        resources: [
+          { label: "IBM Brasil — O que é uma análise de causa raiz?", url: "https://www.ibm.com/br-pt/think/topics/root-cause-analysis" },
+          { label: "ManageEngine Brasil — Análise de causa raiz baseada em IA para operações de TI", url: "https://blogs.manageengine.com/pt-br/2023/11/18/analise-de-causa-raiz-baseada-em-ia-para-operacoes-aprimoradas-de-ti-empresarial.html" },
+        ],
       },
       {
         id: "test-prioritization",
@@ -1842,6 +2050,10 @@ export const ROADMAP: Section[] = [
           "Priorizar testes por risco é a mesma decisão que você facilita no backlog — dado que não dá para fazer tudo, o que gera mais valor primeiro? — aplicada ao pipeline. O efeito no fluxo é direto: feedback mais rápido no CI significa cards passando menos tempo em espera. Entender o conceito te permite reconhecer essa alavanca quando as métricas mostram que 'esperando pipeline' virou gargalo.",
         agileExample:
           "O cumulative flow mostra cards acumulando na coluna de validação, e o time explica: a suíte completa leva 2 horas por PR. Você traz o conceito para a discussão de melhoria: 'e se rodássemos primeiro só os testes relevantes para cada mudança?'. O QA prototipa a seleção por risco, o feedback cai para 25 minutos, e no mês seguinte o cycle time da coluna cai junto — melhoria de fluxo que você consegue mostrar no dashboard.",
+        resources: [
+          { label: "Verx — Como a IA está transformando os testes de software (priorização por risco)", url: "https://www.verx.com.br/como-a-inteligencia-artificial-esta-transformando-os-testes-de-software/" },
+          { label: "Accurate — Automação de testes com IA: priorização inteligente e qualidade", url: "https://blog.accurate.com.br/automacao-testes-ia/" },
+        ],
       },
       {
         id: "jailbreak",
@@ -1859,6 +2071,10 @@ export const ROADMAP: Section[] = [
           "Jailbreak é o lembrete de que os limites de uma IA podem ser contornados por usuários criativos — e produto com IA exposta ao público carrega esse risco de reputação. Para você, o valor é na leitura de esforço e risco: quando o QA propõe tempo de sprint para 'tentar quebrar' a feature de IA antes do lançamento, isso não é perfeccionismo, é gestão de risco. Seu papel é garantir que esse trabalho tenha espaço no planejamento.",
         agileExample:
           "Perto do lançamento do chatbot, o QA pede uma sprint de red teaming e o stakeholder pressiona para pular direto para produção. Você media a conversa com uma pergunta de risco: 'qual é o custo de um print do nosso bot falando algo indevido circulando publicamente?'. A comparação entre uma sprint de teste e um incidente de marca torna a decisão óbvia — e o cronograma da iniciativa absorve o red teaming com o patrocínio do próprio stakeholder.",
+        resources: [
+          { label: "Duranium — Jailbreak em LLMs: entendendo as ameaças", url: "https://blog.duranium.io/p/jailbreak-em-llms-entendendo-as-ameacas" },
+          { label: "Canaltech — O que é jailbreak? Prática explorada para burlar restrições de segurança da IA", url: "https://canaltech.com.br/inteligencia-artificial/o-que-e-jailbreak-pratica-e-explorada-para-burlar-restricoes-de-seguranca-da-ia/" },
+        ],
       },
       {
         id: "pii-detection",
@@ -1876,6 +2092,9 @@ export const ROADMAP: Section[] = [
           "Você lida diariamente com dados sensíveis de pessoas: PDPs no Confluence, feedbacks de retro, avaliações, conflitos de time. Antes de colar qualquer coisa disso numa IA, a pergunta 'tem dado pessoal aqui?' precisa ser reflexo. Entender PII e mascaramento te protege de transformar uma facilitação em incidente de LGPD — e te habilita a puxar o acordo de time sobre o que pode e o que não pode ir para ferramentas de IA.",
         agileExample:
           "Você quer usar IA para identificar padrões nos feedbacks de retro do trimestre. Antes de enviar, remove nomes e substitui por papéis ('dev A', 'PO'), e confere se não há relatos que identifiquem alguém pelo contexto. Depois, leva o tema para o acordo de trabalho: o time define juntos o que é aceitável compartilhar com IA — e a regra fica escrita no Confluence, não na cabeça de cada um.",
+        resources: [
+          { label: "Microsoft Learn (pt-BR) — O que é a detecção de PII (Azure AI Language)", url: "https://learn.microsoft.com/pt-br/azure/ai-services/language-service/personally-identifiable-information/overview" },
+        ],
       },
       {
         id: "playwright-mcp",
@@ -1895,6 +2114,8 @@ export const ROADMAP: Section[] = [
           "Um bug intermitente vai e volta há três sprints porque ninguém consegue reproduzi-lo — e o card virou morador do board. O QA usa o agente para tentar dezenas de variações do fluxo e finalmente captura os passos exatos. Na retro, você usa o caso para uma conversa de processo: quanto tempo de investigação o time gastava nesse tipo de card, e o que muda nas estimativas agora que existe esse recurso.",
         resources: [
           { label: "Microsoft — Playwright MCP (repositório oficial)", url: "https://github.com/microsoft/playwright-mcp" },
+          { label: "TabNews — Playwright MCP: como devs e QAs podem usar IA para criar automações", url: "https://www.tabnews.com.br/ericl/playwright-mcp-como-desenvolvedores-e-qas-podem-usar-ia-para-criar-automacoes-e-acelerar-testes" },
+          { label: "TabNews — Automação de Testes Web NoCode com IA, MCP e Playwright", url: "https://www.tabnews.com.br/AnderOliveiraNascimento/automacao-de-testes-web-nocode-com-ia-mcp-e-playwright" },
         ],
       },
       {
@@ -1935,6 +2156,7 @@ export const ROADMAP: Section[] = [
           "O QA relata na retro que a manutenção de testes caiu de 30% para 10% do tempo dele graças ao self-healing. Você celebra o ganho de capacidade — e faz a pergunta de controle: 'quem revisa o que a ferramenta consertou sozinha?'. O time institui uma revisão semanal do relatório de curas. O ganho de fluxo fica, e o risco de defeito mascarado ganha dono e cadência.",
         resources: [
           { label: "BrowserStack — AI Agents (Low-Code Automation)", url: "https://www.browserstack.com/low-code-automation/ai-agents" },
+          { label: "BrowserStack — Webinar em português: Acelerando QA com IA (low-code + agentes)", url: "https://www.browserstack.com/webinars/acelerando-qa-com-ia" },
         ],
       },
       {
@@ -1955,6 +2177,10 @@ export const ROADMAP: Section[] = [
           "Há meses o time adia 'testar a carga do checkout' porque nunca cabe na sprint. Quando o QA mostra que agora consegue gerar e rodar o cenário com apoio de IA em poucas horas, você leva a pauta ao refinamento: performance entra como critério de aceite nas histórias de fluxo crítico. Um trabalho que era um épico eterno no backlog vira prática contínua — e o risco de incidente em produção cai junto.",
         resources: [
           { label: "Grafana — k6 2.0 com testes assistidos por IA", url: "https://grafana.com/blog/k6-2-0-release/" },
+          { label: "Elton Minetto — Teste de carga usando o k6", url: "https://eltonminetto.dev/post/2024-01-11-load-test-k6/" },
+        ],
+        videos: [
+          { label: "Daniel Jesus — Conhecendo o K6 para os testes de carga", url: "https://www.youtube.com/watch?v=gqvpco8uF6E" },
         ],
       },
       {
@@ -1975,6 +2201,7 @@ export const ROADMAP: Section[] = [
           "Toda segunda você gastava a manhã preparando o report da sprint: varrer o board, cruzar com o Confluence, montar o resumo por iniciativa. Com o agente conectado ao Rovo MCP, você pede: 'resuma o progresso das 3 iniciativas do trimestre, destaque cards bloqueados há mais de 3 dias e desvios de escopo'. Em minutos vem o rascunho; você revisa, ajusta o tom e envia. A manhã liberada vira uma conversa 1:1 com o time que você vinha adiando.",
         resources: [
           { label: "Atlassian — Remote (Rovo) MCP Server", url: "https://www.atlassian.com/blog/announcements/remote-mcp-server" },
+          { label: "Vericode — Explorando o Rovo: gestão do conhecimento com IA da Atlassian", url: "https://blog.vericode.com.br/rovo-atlassian/" },
         ],
       },
       {
@@ -1995,6 +2222,8 @@ export const ROADMAP: Section[] = [
           "Na review, o PO pergunta se a feature entregue na sprint passada 'está sendo usada e aguentando bem'. Em vez de anotar para perguntar ao dev depois, alguém consulta o agente na hora: uso crescente, latência estável, zero alertas desde o deploy. A review deixa de terminar em 'vamos verificar e retornamos' — a resposta com dado acontece dentro da cerimônia.",
         resources: [
           { label: "Grafana — MCP server (repositório oficial)", url: "https://github.com/grafana/mcp-grafana" },
+          { label: "Gilberto Sales — Guia completo para Grafana MCP: integração com IA", url: "https://gilbertosales.com.br/blog/guia-completo-para-grafana-mcp-integracao-com-ia/" },
+          { label: "ndd.tech (Medium) — Grafana MCP na Prática: suas métricas respondendo perguntas", url: "https://making.ndd.tech/grafana-mcp-na-pr%C3%A1tica-suas-m%C3%A9tricas-respondendo-perguntas-661e2de9ba2b" },
         ],
       },
       {
@@ -2015,6 +2244,8 @@ export const ROADMAP: Section[] = [
           "Um incidente consumiu dois dias da sprint e a retro ameaça virar caça às bruxas. Você abre a conversa com a cadeia de causa que a IA da observabilidade montou: timeout numa dependência, iniciado após um deploy de outro time. Com a causa objetiva na mesa, a discussão sai de 'quem errou' para 'que acordo fazemos com o outro time para sermos avisados de deploys que nos afetam' — e vira uma ação de processo entre squads.",
         resources: [
           { label: "Dynatrace — Model Context Protocol (MCP)", url: "https://www.dynatrace.com/knowledge-base/model-context-protocol/" },
+          { label: "Inforchannel — Dynatrace lança observabilidade com foco em IA e análise de dados", url: "https://inforchannel.com.br/2024/02/02/dynatrace-lanca-observabilidade-com-foco-em-ia-e-analise-de-dados/" },
+          { label: "CryptoID — Inteligência Artificial Davis da Dynatrace: oportunidades para a observabilidade", url: "https://cryptoid.com.br/ciberseguranca-seguranca-da-informacao/dynatrace-anuncia-no-brasil-inteligencia-artificial-hipermodal/" },
         ],
       },
       {
@@ -2037,6 +2268,8 @@ export const ROADMAP: Section[] = [
           "Explique a diferença entre MCP e A2A para um QA e liste 8 cenários de teste para uma integração em que o agente da minha empresa delega tarefas a um agente de um fornecedor externo (inclua falhas, timeout, respostas maliciosas e violação de contrato).",
         resources: [
           { label: "A2A Project — protocolo Agent2Agent (Linux Foundation)", url: "https://github.com/a2aproject/A2A" },
+          { label: "IBM Brasil — O que é o protocolo Agent2Agent (A2A)?", url: "https://www.ibm.com/br-pt/think/topics/agent2agent-protocol" },
+          { label: "Crawly — A2A: o protocolo que potencializa a colaboração entre agentes de IA", url: "https://www.crawly.com.br/blog/agent-to-agent-a2a" },
         ],
       },
       {
@@ -2057,6 +2290,10 @@ export const ROADMAP: Section[] = [
           "Antes de ativar o agente que atualiza cards do board automaticamente, você define os limites com o time: pode comentar e etiquetar; não pode mover para 'concluído', alterar estimativa nem fechar sprint — isso é gente. O combinado vai para o acordo de trabalho no Confluence e ganha revisão na retro. Quando o agente erra um comentário, o dano é pequeno e corrigível — porque o raio de ação foi desenhado antes, não depois do estrago.",
         prompt:
           "Vou colocar um agente de IA para rodar comandos no repositório do time. Monte um checklist de sandboxing e permissões: o que isolar, o que bloquear por padrão, quais ações devem exigir aprovação humana e como eu testaria cada limite com testes de abuso.",
+        resources: [
+          { label: "Fabio Akita — ai-jail: Sandbox para Agentes de IA (de shell script a ferramenta real)", url: "https://akitaonrails.com/2026/03/01/ai-jail-sandbox-para-agentes-de-ia-de-shell-script-a-ferramenta-real/" },
+          { label: "4Linux — Rodando Agentes de IA no Kubernetes com o Agent Sandbox", url: "https://blog.4linux.com.br/rodando-agentes-de-ia-no-kubernetes-com-o-agent-sandbox/" },
+        ],
       },
       {
         id: "rag-evaluation",
@@ -2078,6 +2315,7 @@ export const ROADMAP: Section[] = [
           "Explique as principais métricas de avaliação de um sistema RAG (faithfulness, context precision, context recall, answer relevancy) e como cada uma separa falha de recuperação de falha de geração. Depois descreva como eu montaria um eval de RAG com um golden dataset.",
         resources: [
           { label: "RAGAS — métricas de avaliação de RAG", url: "https://docs.ragas.io" },
+          { label: "Microsoft Learn (pt-BR) — Avaliação de ponta a ponta de uma solução RAG", url: "https://learn.microsoft.com/pt-br/azure/architecture/ai-ml/guide/rag/rag-llm-evaluation-phase" },
         ],
       },
       {
@@ -2098,6 +2336,12 @@ export const ROADMAP: Section[] = [
           "Antes de abrir uma iniciativa, você usa um agente de deep research para mapear como concorrentes resolvem o problema e quais riscos aparecem. Em vez de aceitar o relatório, trata como rascunho: confere as citações-chave e leva à discovery com o time — acelerando o levantamento sem terceirizar a decisão.",
         prompt:
           "Explique como funciona um agente de deep research (busca agêntica): decomposição da pergunta, busca multi-fonte, verificação e síntese com citações. Depois liste 6 cenários de teste para validar a confiabilidade das citações e o comportamento diante de perguntas sem resposta.",
+        videos: [
+          { label: "InvestNews BR — Como usar o Deep Research da OpenAI para produzir pesquisas complexas em minutos", url: "https://www.youtube.com/watch?v=z5C14dzENww" },
+        ],
+        resources: [
+          { label: "Canaltech — O que é Deep Research? Saiba como usar o recurso de IA", url: "https://canaltech.com.br/inteligencia-artificial/o-que-e-deep-research-saiba-como-usar-o-recurso-de-ia/" },
+        ],
       },
     ],
   },
@@ -2133,6 +2377,10 @@ export const ROADMAP: Section[] = [
             label: "Smart QA: Unleash the Power of AI-Driven Software Testing",
             url: "https://www.youtube.com/watch?v=TjIbJyY2TfI",
           },
+          { label: "Iterasys — QArentena 36: 5 Aplicações de IA/ML em Testes, por Júlio de Lima", url: "https://www.youtube.com/watch?v=YWJzG2AxDAQ" },
+        ],
+        resources: [
+          { label: "DIO — IA Generativa no Controle de Qualidade", url: "https://www.dio.me/articles/ia-generativa-no-controle-de-qualidade" },
         ],
       },
       {
@@ -2151,6 +2399,9 @@ export const ROADMAP: Section[] = [
           "Manutenção de automação é trabalho invisível: não vira card, não aparece no board, mas consome capacidade e distorce toda estimativa. Entender self-healing te dá vocabulário para nomear esse toil na retro, quantificá-lo e defender o investimento na ferramenta com argumento de fluxo — não de fé. E te dá também o contraponto honesto: uma 'cura' errada pode mascarar um defeito real, então a revisão humana continua no processo.",
         agileExample:
           "Na retro, o time reclama que 'a sprint evaporou', mas o board não explica por quê. Você puxa a conversa e descobre horas semanais consertando testes que quebraram por mudança de UI. Propõe medir esse tempo por duas sprints e leva o número para a conversa de adoção de self-healing — três meses depois, compara o throughput antes e depois no relatório de stakeholders.",
+        resources: [
+          { label: "DEV Community (pt-BR) — Ferramentas de self-healing em testes automatizados: até onde elas reduzem regressão manual?", url: "https://dev.to/leandro-perez/ferramentas-de-self-healing-em-testes-automatizados-ate-onde-elas-reduzem-regressao-manual-26o1" },
+        ],
       },
       {
         id: "synthetic-data",
@@ -2170,6 +2421,10 @@ export const ROADMAP: Section[] = [
           "Um card está bloqueado há cinco dias aguardando massa de teste anonimizada de outro time. Em vez de só escalar o impedimento, você pergunta ao QA: 'dados sintéticos resolveriam?'. O time gera a massa em uma tarde, o card destrava, e na análise mensal de bloqueios essa categoria de dependência simplesmente some do gráfico.",
         prompt:
           "Gere 20 registros sintéticos de clientes para teste de um sistema bancário, em JSON, respeitando: CPF válido (algoritmo), idade 18-90, renda coerente com profissão, e inclua 5 casos de borda (renda zero, idade limite, nomes com acento/caracteres especiais).",
+        resources: [
+          { label: "IBM Brasil — O que são dados sintéticos?", url: "https://www.ibm.com/br-pt/think/topics/synthetic-data" },
+          { label: "AWS Brasil — O que são dados sintéticos?", url: "https://aws.amazon.com/pt/what-is/synthetic-data/" },
+        ],
       },
       {
         id: "ai-validators",
@@ -2193,6 +2448,9 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=NprCSRT09T0",
           },
         ],
+        resources: [
+          { label: "SoftDesign — Guardrails: como tornar a IA mais confiável, segura e governável", url: "https://www.softdesign.com.br/blog/guardrails/" },
+        ],
       },
       {
         id: "prompt-versioning",
@@ -2210,6 +2468,9 @@ export const ROADMAP: Section[] = [
           "À medida que o time adota IA nos rituais e no dia a dia, os prompts viram ativos do time — o prompt que quebra épicos bem, o que resume a sprint no tom certo. Sem gestão, esse conhecimento fica na cabeça (ou no histórico de chat) de uma pessoa. Tratar prompts como artefatos versionados e compartilhados é governança do sistema de trabalho, e liderar isso é seu papel.",
         agileExample:
           "Você organiza no Confluence a biblioteca de prompts do time: quebra de épico, rascunho de relatório de sprint, resumo de atas. Alguém 'melhora' o prompt de quebra de épico e as quebras começam a vir rasas; como as versões estão registradas, vocês comparam as duas lado a lado num caso real e voltam atrás com evidência. Na retro do trimestre, revisar a biblioteca vira item fixo.",
+        resources: [
+          { label: "Rocketseat — Engenharia de prompts para times: como padronizar o uso de IA", url: "https://www.rocketseat.com.br/blog/artigos/post/engenharia-de-prompts-para-times-de-tecnologia" },
+        ],
       },
       {
         id: "cost-latency",
@@ -2233,6 +2494,9 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=7gMg98Hf3uM",
           },
         ],
+        resources: [
+          { label: "Code Capital (Rafael Quintanilha) — O verdadeiro custo de um LLM", url: "https://codecapital.substack.com/p/o-verdadeiro-custo-de-um-llm" },
+        ],
       },
       {
         id: "ci-cd-ai",
@@ -2250,6 +2514,9 @@ export const ROADMAP: Section[] = [
           "Gates automáticos de qualidade no pipeline são o que torna o fluxo previsível — e agora eles incluem evals e checagens de IA. Você precisa entender isso para ler o board direito: um PR parado porque o eval reprovou não é um impedimento a remover à força, é o sistema de qualidade funcionando. Sua atuação é garantir que o sinal gere conversa, não bypass.",
         agileExample:
           "O lead time dos PRs que mexem em prompts sobe e alguém sugere 'desligar aquele check que vive falhando'. Você investiga antes: o eval está barrando merges porque a acurácia cai abaixo do baseline. Em vez de facilitar o bypass, você facilita a conversa certa — o time descobre que o baseline estava desatualizado, ajusta o dataset e o fluxo volta a correr sem sacrificar o gate.",
+        resources: [
+          { label: "Microsoft Learn (pt-BR) — GenAIOps com prompt flow e GitHub: avaliação e deploy de LLM no pipeline", url: "https://learn.microsoft.com/pt-br/azure/machine-learning/prompt-flow/how-to-end-to-end-llmops-with-prompt-flow?view=azureml-api-2" },
+        ],
       },
       {
         id: "eval-driven-dev",
@@ -2272,6 +2539,9 @@ export const ROADMAP: Section[] = [
             label: "IBM Technology — LLM as a Judge: Scaling AI Evaluation",
             url: "https://www.youtube.com/watch?v=trfUBIDeI1Y",
           },
+        ],
+        resources: [
+          { label: "DEV Community (pt-BR) — Aprenda a avaliar a qualidade do seu agente de AI, RAG e LLM", url: "https://dev.to/airton_lirajunior_2ddebd/aprenda-avaliar-a-qualidade-do-seu-agente-de-ai-rag-e-llm-2369" },
         ],
       },
       {
@@ -2298,6 +2568,9 @@ export const ROADMAP: Section[] = [
             url: "https://www.youtube.com/watch?v=5ZA1lTxTH3c",
           },
         ],
+        resources: [
+          { label: "Microsoft Learn (pt-BR) — Planejando o red teaming para LLMs e suas aplicações", url: "https://learn.microsoft.com/pt-br/azure/ai-foundry/openai/concepts/red-teaming" },
+        ],
       },
       {
         id: "golden-dataset",
@@ -2315,6 +2588,9 @@ export const ROADMAP: Section[] = [
           "Curar um golden dataset é trabalho de verdade — horas de gente sênior rotulando casos — e é cronicamente invisível no planejamento, o que faz todo épico de IA estourar. Entender esse conceito te permite tratá-lo como história de primeira classe, com estimativa e dono, e melhorar a previsibilidade das iniciativas de IA. É o mesmo princípio das suas métricas: sem dado curado e confiável, qualquer avaliação vira opinião.",
         agileExample:
           "O primeiro épico de IA do time estoura em três semanas e, na retro, a causa aparece: 'montar o dataset de avaliação' não estava no plano — foi feito nas coxas, à noite. Na iniciativa seguinte, você garante que a curadoria entre no backlog como história estimada, com QAs sêniores alocados. O épico seguinte termina no prazo, e você documenta o padrão no Confluence para os próximos times.",
+        resources: [
+          { label: "IBM Brasil — O que é a verdade fundamental (ground truth) no aprendizado de máquina?", url: "https://www.ibm.com/br-pt/think/topics/ground-truth" },
+        ],
       },
       {
         id: "visual-testing-ai",
@@ -2332,6 +2608,10 @@ export const ROADMAP: Section[] = [
           "Bugs visuais que escapam viram retrabalho com o pior custo: reportados por stakeholder, fora de fluxo, furando qualquer planejamento de sprint. Você não vai configurar a ferramenta, mas entender que a IA reduz os falsos positivos do teste visual tradicional te permite facilitar a decisão de adoção com expectativa realista — e medir o efeito onde ele importa: no fluxo.",
         agileExample:
           "Todo release, chegam dois ou três reports de 'layout quebrado no mobile' direto de stakeholders, e o time para o que está fazendo para corrigir. Você levanta a frequência desses cards não planejados nas últimas dez sprints e leva o número para a conversa de adoção de teste visual com IA. Três meses depois, o gráfico de trabalho não planejado por bug visual é o destaque do seu relatório.",
+        resources: [
+          { label: "Talking About Testing (Walmyr) — Boas práticas em automação de testes de regressão visual", url: "https://talkingabouttesting.com/2023/03/01/boas-praticas-em-automacao-de-testes-de-regressao-visual/" },
+          { label: "Auditeste — Ferramentas de IA para teste de software (inclui Visual AI/Applitools)", url: "https://auditeste.com.br/ferramentas-de-ia-para-testar-software/" },
+        ],
       },
       {
         id: "nondeterministic-assertions",
@@ -2349,6 +2629,9 @@ export const ROADMAP: Section[] = [
           "Você não vai escrever asserções — mas precisa entender por que 'pronto' em IA não é sim/não, é um limiar. Isso muda o refinamento: critérios de aceite de histórias de IA precisam virar medidas ('similaridade acima de X', 'zero vazamento de dado pessoal'), não frases vagas. Quem facilita a escrita de critérios testáveis é você, e essa é a competência que torna histórias de IA refináveis.",
         agileExample:
           "No refinamento, o critério de aceite de uma história diz 'a resposta do resumidor deve estar correta'. Você, entendendo o conceito, provoca: 'correta como? quem decide? com que tolerância?'. O time reescreve: presença dos pontos-chave obrigatórios, similaridade mínima com o resumo de referência, nenhum dado pessoal. A história sai da cerimônia testável — e a discussão de 'passou ou não passou' morre antes de nascer.",
+        resources: [
+          { label: "DEV Community (pt-BR) — Como testar aplicações LLM: guia completo do Promptfoo (asserções semânticas e llm-rubric)", url: "https://dev.to/lucas_ferreira/como-testar-aplicacoes-llm-guia-completo-do-promptfoo-2026-4fhh" },
+        ],
       },
       {
         id: "ai-governance",
@@ -2366,6 +2649,10 @@ export const ROADMAP: Section[] = [
           "Governança de IA não é só sobre o produto — é sobre o sistema de trabalho do time, e esse sistema é seu. O que pode ser colado numa ferramenta de IA? Ata com dado de cliente entra? Quem revisa a saída antes de virar decisão? Sem acordo explícito, cada pessoa inventa a própria regra, e o risco fica invisível até dar errado. Facilitar esse acordo de trabalho é liderança sua, em paralelo à governança técnica que o QA constrói.",
         agileExample:
           "Você facilita a criação do 'acordo de uso de IA' do time, registrado no Confluence: quais dados nunca entram em prompt, quando a saída da IA exige revisão humana antes de virar decisão, como marcar documentos rascunhados com IA. O acordo entra na revisão trimestral junto com os demais working agreements — e quando um time vizinho tem um incidente com dado sensível, o seu já tinha a resposta escrita.",
+        resources: [
+          { label: "IBM Brasil — O que é governança de IA?", url: "https://www.ibm.com/br-pt/think/topics/ai-governance" },
+          { label: "SoftDesign — Governança de IA: pilares, riscos e implementação nas empresas", url: "https://www.softdesign.com.br/blog/governanca-de-ia/" },
+        ],
       },
       {
         id: "ai-first-mindset",
@@ -2385,6 +2672,12 @@ export const ROADMAP: Section[] = [
           "Postura antiga: passar a sexta-feira montando o relatório de sprint para stakeholders. Postura AI First: a IA compila os dados do Jira, rascunha o relatório no formato acordado, e você gasta trinta minutos interpretando, ajustando o tom e decidindo o que merece uma conversa em vez de um parágrafo. Depois, na retro, você mostra o fluxo ao time e pergunta: 'qual tarefa de vocês merece esse mesmo tratamento?'.",
         prompt:
           "Aja como mentor de carreira em QA. Pegue uma tarefa operacional que faço hoje manualmente (vou descrever) e proponha como transformá-la num fluxo AI First: o que a IA faz, onde entra a validação humana e quais habilidades preciso desenvolver. Tarefa: [descreva].",
+        videos: [
+          { label: "Alura — Alura Commit #001: Mercado, IA e carreira — o que você precisa saber agora", url: "https://www.youtube.com/watch?v=t-gmqcumdT8" },
+        ],
+        resources: [
+          { label: "SoftDesign — AI First: o que é e como empresas estão transformando produtos e processos com IA", url: "https://www.softdesign.com.br/blog/ai-first/" },
+        ],
       },
       {
         id: "ai-first-qa-flow",
@@ -2409,6 +2702,8 @@ export const ROADMAP: Section[] = [
             label: "IBM Technology — AI Agents Best Practices: Monitoring & Governance",
             url: "https://www.youtube.com/watch?v=446x7GqXdaA",
           },
+          { label: "Papo com Qualidade — IA na prática para QAs: agentes autônomos e testes inteligentes", url: "https://www.youtube.com/watch?v=Oha7sp_caYY" },
+          { label: "Semana da Computação UFJF — Palestra: Inteligência Artificial em Teste de Software (Eliane Colins)", url: "https://www.youtube.com/watch?v=005KLRSW-AY" },
         ],
       },
       {
@@ -2432,6 +2727,10 @@ export const ROADMAP: Section[] = [
             label: "Building Better AI Agents: Observability and Evaluation",
             url: "https://www.youtube.com/watch?v=reISMhbZ2XE",
           },
+        ],
+        resources: [
+          { label: "Alura — Observabilidade para LLMs: monitoramento e avaliação com Langfuse (curso)", url: "https://www.alura.com.br/conteudo/langfuse-observabilidade-llms" },
+          { label: "iMasters — Como avaliar LLMs, RAG e Agentes de IA: teoria e prática", url: "https://imasters.com.br/inteligencia-artificial/como-avaliar-llms-rag-e-agentes-de-ia-teoria-e-pratica" },
         ],
       },
       {
@@ -2461,6 +2760,7 @@ export const ROADMAP: Section[] = [
             label: "Chip Huyen — Building LLM applications for production",
             url: "https://huyenchip.com/2023/04/11/llm-engineering.html",
           },
+          { label: "AWS Brasil — Minimizando alucinações em orquestrações multi-agentes", url: "https://aws.amazon.com/pt/blogs/aws-brasil/minimizando-alucinacoes-em-orquestracoes-multi-agentes/" },
         ],
       },
       {
@@ -2483,6 +2783,7 @@ export const ROADMAP: Section[] = [
           "Desenhe um sistema de simulação de usuários para testar um chatbot de suporte: 6 personas com objetivo e comportamento, critério de sucesso por conversa, como um LLM juiz avaliaria cada trajetória e quais métricas agregadas eu reportaria por build.",
         resources: [
           { label: "τ-bench — benchmark de agentes com usuários simulados", url: "https://github.com/sierra-research/tau-bench" },
+          { label: "Tech for Humans — Avaliação de Agentes de IA: métricas, desafios e práticas (inclui LLM no papel de usuário)", url: "https://blog.techforhumans.com.br/post/avaliacao-de-agentes-de-ia-metricas-desafios-e-praticas" },
         ],
       },
       {
@@ -2503,6 +2804,9 @@ export const ROADMAP: Section[] = [
           "O fornecedor anuncia que o modelo atual será desligado em 90 dias. Em vez de deixar virar crise na semana 11, você abre a migração como iniciativa no plano do quarter, com marcos: baseline de evals, comparação de candidatos, ajuste de prompts, canary com parte do tráfego, rollout. Reserva capacidade nas sprints, comunica o trade-off aos stakeholders — e o time migra sem parar uma única entrega de produto.",
         prompt:
           "Monte um plano de migração de modelo de IA para um produto em produção: etapas (baseline, comparação com evals, ajuste de prompts, canary, rollback), critérios de aprovação por etapa e os riscos que cada etapa mitiga. Formate como checklist executável.",
+        resources: [
+          { label: "Microsoft Learn (pt-BR) — Descontinuidade de modelos do Azure OpenAI: prazos e migração", url: "https://learn.microsoft.com/pt-br/azure/ai-foundry/openai/concepts/model-retirements?view=foundry-classic" },
+        ],
       },
       {
         id: "shadow-ai",
@@ -2522,6 +2826,9 @@ export const ROADMAP: Section[] = [
           "Você percebe, na daily, várias menções a 'joguei no ChatGPT'. Em vez de proibir, facilita um acordo de trabalho na retro: ferramentas aprovadas, o que nunca colar (dado de cliente, segredo) e como pedir exceção. Vira um item vivo do time — revisitado quando surge caso novo — e reduz o shadow AI sem travar o fluxo.",
         prompt:
           "Aja como facilitador. Monte um acordo de trabalho (política leve) de uso de IA para um time de produto: ferramentas aprovadas, o que nunca deve ser colado em um LLM, como pedir exceção e como manter a política viva. Formato: uma página, tom prático, sem juridiquês.",
+        resources: [
+          { label: "IBM Brasil — O que é IA invisível (Shadow AI)?", url: "https://www.ibm.com/br-pt/think/topics/shadow-ai" },
+        ],
       },
       {
         id: "ai-incident-response",
@@ -2541,6 +2848,10 @@ export const ROADMAP: Section[] = [
           "Depois de um incidente em que a IA deu uma resposta errada a muitos usuários, você facilita o post-mortem: linha do tempo, causa, o que conteve, o que faltou. Sem apontar culpado, o time sai com 3 ações priorizadas no backlog (guardrail, eval de regressão, alerta) e um combinado de comunicação para a próxima vez.",
         prompt:
           "Monte um playbook de resposta a incidentes para um produto com IA: como detectar, conter (rollback/guardrail/kill switch), comunicar, corrigir e conduzir um post-mortem sem culpa. Inclua o que deve virar teste de regressão depois. Formato: passos acionáveis.",
+        resources: [
+          { label: "Alura — O que são Blameless Postmortems?", url: "https://www.alura.com.br/artigos/o-que-sao-blameless-postmortems" },
+          { label: "Google Cloud (pt-BR) — Realize análises post-mortem completas (Architecture Framework)", url: "https://cloud.google.com/architecture/framework/reliability/conduct-postmortems?hl=pt-br" },
+        ],
       },
     ],
   },
