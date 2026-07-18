@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import {
   getNews,
   pickPills,
@@ -27,12 +28,42 @@ const CAT: Record<
   },
 };
 
+/** Skeleton exibido enquanto as notícias chegam via streaming. */
+function NewsSkeleton() {
+  return (
+    <section className="mx-auto max-w-5xl px-4 pt-8">
+      <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="flex items-center gap-2 text-lg font-bold text-white">
+            <span aria-hidden>📰</span> Giro de IA
+          </h2>
+          <span className="text-sm text-white/30">carregando…</span>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="sm:col-span-2 lg:row-span-2 h-40 rounded-xl bg-white/[0.04] animate-pulse" />
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-24 rounded-xl bg-white/[0.03] animate-pulse" />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /**
  * Painel "Giro de IA" das homes logadas: destaque + grade de notícias.
- * Server component; agrega as fontes (cache ~1h) e linka cada card para
- * a notícia dentro de /news (âncora por id).
+ * O wrapper com Suspense faz a home renderizar IMEDIATAMENTE — o painel
+ * chega por streaming quando as fontes respondem (cache agregado ~1h).
  */
-export default async function NewsPills() {
+export default function NewsPills() {
+  return (
+    <Suspense fallback={<NewsSkeleton />}>
+      <NewsPanel />
+    </Suspense>
+  );
+}
+
+async function NewsPanel() {
   const items = await getNews();
   if (items.length === 0) return null;
   const picks = pickPills(items, 7);

@@ -6,6 +6,8 @@
  * Toda fonte é best-effort: se uma cair, as demais seguem.
  */
 
+import { unstable_cache } from "next/cache";
+
 export type NewsCategory = "anthropic" | "brasil" | "mundo";
 
 export type NewsItem = {
@@ -44,7 +46,7 @@ async function fetchText(url: string): Promise<string | null> {
   try {
     const res = await fetch(url, {
       headers: UA,
-      signal: AbortSignal.timeout(9000),
+      signal: AbortSignal.timeout(6000),
       next: { revalidate: REVALIDATE },
     });
     if (!res.ok) return null;
@@ -197,11 +199,11 @@ async function safe<T>(p: Promise<T>, fallback: T): Promise<T> {
   }
 }
 
-export async function getNews(): Promise<NewsItem[]> {
+async function aggregateNews(): Promise<NewsItem[]> {
   const [anthNews, anthResearch, tecno, mit, gnews, tc, verge] =
     await Promise.all([
       safe(anthropicSection("news", 6), []),
-      safe(anthropicSection("research", 5), []),
+      safe(anthropicSection("research", 4), []),
       safe(
         fetchText("https://tecnoblog.net/feed/").then((x) =>
           x ? parseRss(x, "Tecnoblog", "brasil", true, 6) : [],
@@ -252,6 +254,15 @@ export async function getNews(): Promise<NewsItem[]> {
   });
   return out;
 }
+
+/**
+ * getNews com cache do RESULTADO agregado (stale-while-revalidate, ~1h):
+ * requisições servem o payload cacheado na hora e a renovação roda em
+ * background — só a primeira requisição absoluta paga a agregação.
+ */
+export const getNews = unstable_cache(aggregateNews, ["ai-news-v1"], {
+  revalidate: REVALIDATE,
+});
 
 /** Pílulas da home: mistura recente das 3 categorias. */
 export function pickPills(items: NewsItem[], count = 6): NewsItem[] {
