@@ -1,4 +1,5 @@
 import Nav from "@/components/Nav";
+import NewsPills from "@/components/NewsPills";
 import RoadmapClient from "@/components/RoadmapClient";
 import { requireUser } from "@/lib/auth";
 import { getProgress } from "@/lib/data";
@@ -15,6 +16,7 @@ export default async function AgilidadeTrackPage() {
   return (
     <>
       <Nav username={session.username} isAdmin={session.isAdmin} />
+      <NewsPills />
       <RoadmapClient initialDone={done} view="agilidade" />
     </>
   );

@@ -1,7 +1,10 @@
 export type Level = "basico" | "intermediario" | "avancado" | "especialista";
 
-/** Trilhas de visualização do roadmap (o conteúdo é generalista; muda a lente). */
-export type RoadmapView = "geral" | "qa" | "agilidade";
+/**
+ * Trilhas de visualização do roadmap (o conteúdo é generalista; muda a lente).
+ * "claude" é o roadmap separado "Conhecendo o Claude" (data/claudeRoadmap.ts).
+ */
+export type RoadmapView = "geral" | "qa" | "agilidade" | "claude";
 
 export type Resource = { label: string; url: string };
 

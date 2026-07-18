@@ -3,14 +3,13 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  ALL_TOPICS,
   LEVEL_META,
   QA_PRIMARY_TOPICS,
   ROADMAP,
-  TOTAL_TOPICS,
   isRelevant,
   type Level,
   type RoadmapView,
+  type Section,
   type Topic,
 } from "@/data/roadmap";
 import { resetProgressAction, toggleProgressAction } from "@/app/actions/app";
@@ -117,6 +116,13 @@ const VIEW_HEADER: Record<
     highlight:
       " Aqui você não aprende a usar IA — aprende a colocá-la a serviço do fluxo e do time.",
   },
+  claude: {
+    badge: "COE Qualidade & Agilidade · Trilha Claude",
+    title: "Conhecendo o Claude",
+    sub: "O roadmap completo do ecossistema Claude: do app ao Claude Code, da API aos agentes.",
+    highlight:
+      " Prepare-se para usar tudo do Claude — e para a certificação que vem aí.",
+  },
 };
 
 const VIEW_TABS: { view: RoadmapView; href: string; label: string }[] = [
@@ -136,15 +142,30 @@ export default function RoadmapClient({
   initialDone = [],
   isPublic = false,
   view = "qa",
+  roadmapSections = ROADMAP,
 }: {
   initialDone?: string[];
   isPublic?: boolean;
   view?: RoadmapView;
+  /** Seções do mapa (default: roadmap principal; /claude passa o seu). */
+  roadmapSections?: Section[];
 }) {
   const [done, setDone] = useState<Set<string>>(() => new Set(initialDone));
   const [selected, setSelected] = useState<Topic | null>(null);
   const [filter, setFilter] = useState<Level | "todos">("todos");
   const [query, setQuery] = useState("");
+
+  // Tópicos deste mapa (o progresso no banco é compartilhado entre mapas;
+  // contamos só o que pertence a este).
+  const allTopics = useMemo(
+    () => roadmapSections.flatMap((s) => s.topics),
+    [roadmapSections],
+  );
+  const topicIds = useMemo(
+    () => new Set(allTopics.map((t) => t.id)),
+    [allTopics],
+  );
+  const totalTopics = allTopics.length;
 
   // Modo público: progresso vive só no navegador (localStorage), nada no banco.
   useEffect(() => {
@@ -155,7 +176,10 @@ export default function RoadmapClient({
     } catch {}
   }, [isPublic]);
 
-  const doneCount = done.size;
+  const doneCount = useMemo(
+    () => [...done].filter((id) => topicIds.has(id)).length,
+    [done, topicIds],
+  );
   const isDone = useCallback((id: string) => done.has(id), [done]);
 
   const toggle = useCallback(
@@ -197,17 +221,17 @@ export default function RoadmapClient({
       avancado: { done: 0, total: 0 },
       especialista: { done: 0, total: 0 },
     };
-    for (const t of ALL_TOPICS) {
+    for (const t of allTopics) {
       acc[t.level].total++;
       if (done.has(t.id)) acc[t.level].done++;
     }
     return acc;
-  }, [done]);
+  }, [done, allTopics]);
 
   // "Continuar de onde parou": 1º tópico relevante ainda não concluído.
   const nextTopic = useMemo(
-    () => ALL_TOPICS.find((t) => !done.has(t.id) && isRelevant(t.id, view)),
-    [done, view],
+    () => allTopics.find((t) => !done.has(t.id) && isRelevant(t.id, view)),
+    [done, view, allTopics],
   );
 
   const q = norm(query.trim());
@@ -222,8 +246,10 @@ export default function RoadmapClient({
 
   const sections = useMemo(
     () =>
-      filter === "todos" ? ROADMAP : ROADMAP.filter((s) => s.level === filter),
-    [filter],
+      filter === "todos"
+        ? roadmapSections
+        : roadmapSections.filter((s) => s.level === filter),
+    [filter, roadmapSections],
   );
 
   // Seções com seus tópicos visíveis (aplica busca), preservando o índice original.
@@ -261,8 +287,8 @@ export default function RoadmapClient({
         </p>
       </header>
 
-      {/* ───────────── Seletor de lente (só na área logada) ───────────── */}
-      {!isPublic && (
+      {/* ───────────── Seletor de lente (área logada; o mapa Claude não tem lentes) ───────────── */}
+      {!isPublic && view !== "claude" && (
         <div className="flex items-center justify-center gap-2 mb-8">
           {VIEW_TABS.map((t) => (
             <Link
@@ -282,7 +308,7 @@ export default function RoadmapClient({
 
       {/* ───────────── Painel de progresso ───────────── */}
       <div className="mx-auto max-w-xl rounded-2xl border border-white/10 bg-white/[0.03] p-5 mb-6">
-        <ProgressBar done={doneCount} total={TOTAL_TOPICS} />
+        <ProgressBar done={doneCount} total={totalTopics} />
 
         {/* Progresso por nível */}
         <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -498,7 +524,11 @@ export default function RoadmapClient({
           <div className="flex flex-col items-center">
             <div className="h-8 w-px bg-white/15" />
             <div className="rounded-full bg-gradient-to-r from-emerald-400 to-violet-400 px-5 py-2 text-sm font-bold text-black">
-              🎓 {view === "agilidade" ? "Agilista de IA" : "Engenheiro de Qualidade de IA"}
+              🎓 {view === "agilidade"
+                ? "Agilista de IA"
+                : view === "claude"
+                  ? "Especialista em Claude"
+                  : "Engenheiro de Qualidade de IA"}
             </div>
           </div>
         )}
@@ -510,7 +540,9 @@ export default function RoadmapClient({
           ? "Feito para o time de COE Qualidade · Clique em cada tópico para ver o exemplo aplicado a QA e um prompt para testar."
           : view === "agilidade"
             ? "Feito para o time de Agilidade · Clique em cada tópico para ver o exemplo aplicado a Agilidade e um prompt para testar."
-            : "Feito para os times de COE Qualidade & Agilidade · Clique em cada tópico e use os links de área para ver o exemplo aplicado ao seu contexto."}
+            : view === "claude"
+              ? "Trilha Conhecendo o Claude · Clique em cada tópico para ver o guia, um prompt para experimentar e os cursos oficiais."
+              : "Feito para os times de COE Qualidade & Agilidade · Clique em cada tópico e use os links de área para ver o exemplo aplicado ao seu contexto."}
       </footer>
 
       {/* Drawer de detalhe */}

@@ -29,7 +29,8 @@ function slugForHeading(children: React.ReactNode): string {
  * seção do Agilista e vice-versa; na visão geral mostramos as duas.
  */
 function filterArticleByView(markdown: string, view: RoadmapView): string {
-  if (view === "geral") return markdown;
+  // "geral" e "claude" mostram o artigo inteiro (o mapa Claude não tem lentes).
+  if (view === "geral" || view === "claude") return markdown;
   const drop = view === "qa" ? AGILE_SECTION : QA_SECTION;
   return markdown
     .split(/\n(?=## )/)
@@ -252,7 +253,7 @@ export default function TopicDetail({
                 <span aria-hidden>⏱️</span>
                 <span>~{readingMinutes} min de leitura</span>
                 {/* Visão geral: links para a parte dos exemplos de cada área */}
-                {view === "geral" && (
+                {view === "geral" && deepDive.includes(QA_SECTION) && (
                   <span className="flex items-center gap-1.5 ml-auto">
                     <span className="text-white/30">Exemplos por área:</span>
                     <a
@@ -308,11 +309,25 @@ export default function TopicDetail({
 
               {view !== "agilidade" && (
                 <>
-                  <Block label="Por que importa para o QA" icon="🎯">
+                  <Block
+                    label={
+                      view === "claude"
+                        ? "Por que importa para o time"
+                        : "Por que importa para o QA"
+                    }
+                    icon="🎯"
+                  >
                     {topic.whyQA}
                   </Block>
 
-                  <Block label="Exemplo aplicado a QA" icon="🧪">
+                  <Block
+                    label={
+                      view === "claude"
+                        ? "Exemplo aplicado"
+                        : "Exemplo aplicado a QA"
+                    }
+                    icon="🧪"
+                  >
                     <div className="rounded-xl bg-white/[0.04] ring-1 ring-white/10 p-4">
                       {topic.qaExample}
                     </div>

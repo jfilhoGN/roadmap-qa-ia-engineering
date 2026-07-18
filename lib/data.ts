@@ -180,13 +180,17 @@ export type UserProgressRow = {
   is_admin: boolean;
   area: "qa" | "agilidade";
   must_change_password: boolean;
+  /** Tópicos concluídos do roadmap principal (exclui a trilha Claude). */
   completed: number;
+  /** Tópicos concluídos da trilha "Conhecendo o Claude" (ids claude-%). */
+  completed_claude: number;
 };
 
 export async function getAllUsersProgress(): Promise<UserProgressRow[]> {
   return await sql<UserProgressRow[]>`
     select u.id, u.username, u.is_admin, u.area, u.must_change_password,
-           count(p.topic_id)::int as completed
+           count(p.topic_id) filter (where p.topic_id not like 'claude-%')::int as completed,
+           count(p.topic_id) filter (where p.topic_id like 'claude-%')::int as completed_claude
     from users u
     left join progress p on p.user_id = u.id
     group by u.id, u.username, u.is_admin, u.area, u.must_change_password

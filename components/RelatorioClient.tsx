@@ -20,9 +20,12 @@ function areaBadge(area: "qa" | "agilidade") {
 export default function RelatorioClient({
   rows,
   totalTopics,
+  totalClaudeTopics = 0,
 }: {
   rows: UserProgressRow[];
   totalTopics: number;
+  /** Total de tópicos da trilha "Conhecendo o Claude" (coluna própria). */
+  totalClaudeTopics?: number;
 }) {
   const [filtro, setFiltro] = useState<Filtro>("todos");
 
@@ -105,6 +108,11 @@ export default function RelatorioClient({
               <th className="px-4 py-3 font-semibold w-24 text-right">
                 Concluído
               </th>
+              {totalClaudeTopics > 0 && (
+                <th className="px-4 py-3 font-semibold w-24 text-right whitespace-nowrap">
+                  Claude
+                </th>
+              )}
               <th className="px-4 py-3 font-semibold w-1/3">Progresso</th>
             </tr>
           </thead>
@@ -147,6 +155,20 @@ export default function RelatorioClient({
                   <td className="px-4 py-3 text-right text-white/70 tabular-nums">
                     {r.completed}/{totalTopics}
                   </td>
+                  {totalClaudeTopics > 0 && (
+                    <td className="px-4 py-3 text-right tabular-nums">
+                      <span
+                        className={
+                          r.completed_claude >= totalClaudeTopics
+                            ? "text-amber-300"
+                            : "text-white/70"
+                        }
+                      >
+                        {r.completed_claude}/{totalClaudeTopics}
+                        {r.completed_claude >= totalClaudeTopics && " ✓"}
+                      </span>
+                    </td>
+                  )}
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <div className="flex-1 h-2 rounded-full bg-white/10 overflow-hidden">
@@ -166,7 +188,7 @@ export default function RelatorioClient({
             {filtered.length === 0 && (
               <tr>
                 <td
-                  colSpan={4}
+                  colSpan={totalClaudeTopics > 0 ? 5 : 4}
                   className="px-4 py-8 text-center text-sm text-white/40"
                 >
                   Nenhum colaborador nesta área ainda.
